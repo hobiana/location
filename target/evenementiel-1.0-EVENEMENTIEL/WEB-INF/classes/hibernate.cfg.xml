@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+  <session-factory>
+    <!-- Database connection settings -->
+    <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
+    <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/location</property>
+    <property name="hibernate.connection.username">diary</property>
+    <property name="hibernate.connection.password">diary</property>
+    <!-- SQL dialect -->
+    <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
+    <!-- JDBC connection pool (use the built-in) 
+		<property name="hibernate.c3p0.minPoolSize">1</property>
+        <property name="hibernate.c3p0.maxPoolSize">10</property>
+        <property name="hibernate.c3p0.initialPoolSize">1</property>
+        <property name="hibernate.c3p0.timeout">30</property>
+        <property name="hibernate.enable_lazy_load_no_trans">true</property>-->
+    <!-- Drop and re-create the database schema on startup -->
+    <!-- <property name="hbm2ddl.auto">update</property> -->
+    <!-- Echo all executed SQL to stdout -->
+    <property name="show_sql">true</property>
+    
+  </session-factory>
+</hibernate-configuration>

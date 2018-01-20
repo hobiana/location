@@ -1,0 +1,623 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+
+    <constant name="struts.devMode" value="true" />
+    <constant name="struts.multipart.maxSize" value="30000000" />
+    
+    <package name="action" namespace="/" extends="struts-default">
+        <action name="index" class="com.er.erproject.action.IndexAction" method="load">
+            <result name="error" type="redirect">accueil</result>
+            <result name="success">Archive/page/login.jsp</result>
+        </action>
+        <action name="login" class="com.er.erproject.action.IndexAction" method="login">
+            <result name="error">Archive/page/login.jsp</result>
+            <result name="success" type="redirect">accueil</result>
+        </action>
+        <action name="accueil" class="com.er.erproject.action.AccueilAction" method="load">
+            <result name="login" type="redirect">index</result>
+            <result name="success">Archive/page/listeSimple.jsp</result>
+            <result name="error"> Archive/page/listeSimple.jsp</result>
+        </action>
+        <action name="deconnexion" class="com.er.erproject.action.UtilAction" method="logout">
+            <result name="success" type="redirect">index</result> 
+        </action>
+        <action name="newOffre" class="com.er.erproject.action.AddAction" method="newLoadOffre">
+            <result name="success">Archive/page/appelOffre.jsp</result> 
+            <result name="none" type="redirect">index</result> 
+        </action>
+        <action name="saveOffre" class="com.er.erproject.action.AddAction" method="saveOffre">
+            <result name="success" type="redirect">accueil</result> 
+            <result name="error">Archive/page/appelOffre.jsp</result> 
+            <result name="none" type="redirect">index</result> 
+        </action>
+        <action name="loadPv" class="com.er.erproject.action.OffreAction" method="loadPv">
+            <result name="success">Archive/page/generat_pv.jsp</result> 
+            <result name="login" type="redirect">index</result> 
+            <!--            <result name="error">Archive/page/addPV.jsp</result> -->
+            <result name="none" type="redirect">accueil</result> 
+        </action>
+        <action name="saveCatalogue" class="com.er.erproject.action.CatalogueAction" method="saveCatalogue">
+            <result name="success" type="redirect">listeCatalogue</result> 
+            <result name="error">Archive/page/newCatalogue.jsp</result> 
+            <result name="login" type="redirect">index</result> 
+            <result name="none" type="redirect">accueil</result> 
+        </action>
+        <action name="gestionCatalogue" class="com.er.erproject.action.CatalogueAction" method="loadSave">
+            <result name="success">Archive/page/newCatalogue.jsp</result> 
+            <result name="error">Archive/page/newCatalogue.jsp</result> 
+            <result name="login" type="redirect">index</result> 
+            <result name="none" type="redirect">accueil</result> 
+        </action>
+        <action name="listeCatalogue" class="com.er.erproject.action.CatalogueAction" method="listeCatalogue">
+            <result name="success">Archive/page/listeCatalogue.jsp</result> 
+            <result name="error">Archive/page/listeCatalogue.jsp</result> 
+            <result name="login" type="redirect">index</result> 
+            <result name="none" type="redirect">accueil</result> 
+        </action>
+        <action name="listeHorsCatalogue" class="com.er.erproject.action.CatalogueAction" method="listeHorsCatalogue">
+            <result name="success">Archive/page/listeHorsCatalogue.jsp</result> 
+            <result name="login" type="redirect">index</result> 
+            <!--            <result name="error">Archive/page/addPV.jsp</result> -->
+            <result name="none" type="redirect">accueil</result> 
+        </action>
+        <action name="loadVentilation" class="com.er.erproject.action.FacturationAction" method="loadVentillation">
+            <result name="error" type="chain">
+                <param name="actionName">detailOffre</param>
+                <param name="idOffre">${idOffre}</param>
+                <param name="linkError">${linkError}</param>
+                <param name="messageError">${messageError}</param>
+            </result> 
+            <result name="success">Archive/page/ventillation.jsp</result> 
+            <result name="login" type="redirect">index</result> 
+            <!--            <result name="error">Archive/page/addPV.jsp</result> -->
+            <result name="none" type="redirect">accueil</result> 
+        </action>
+        <action name="saveVentilation" class="com.er.erproject.action.FacturationAction" method="saveVentillation">                                   
+            <result name="login" type="redirect">index</result> 
+            <result name="input" type="redirectAction">
+                <param name="actionName">loadVentilation</param>
+                <param name="idOffre">${idOffre}</param>
+                <param name="type">${type}</param>
+                <param name="ventillation">${ventillation}</param>
+                <param name="linkError">${block}</param>
+                <param name="messageError">importer que des fichiers PDF</param>
+            </result> 
+            <result name="success" type="redirect">${url}</result> 
+            <result name="error">Archive/page/ventillation.jsp</result> 
+            <result name="none" type="redirect">index</result>
+        </action>
+        <action name="detailOffre" class="com.er.erproject.action.OffreAction" method="loadFiche">
+            <result name="success">Archive/page/addPV.jsp</result> 
+            <result name="login" type="redirect">index</result> 
+            <!--            <result name="error">Archive/page/addPV.jsp</result> -->
+            <result name="none" type="redirect">accueil</result> 
+        </action>
+        <action name="gestionInitial" class="com.er.erproject.action.GestionTravauxAction" method="gestionIntial">
+            <result name="success">Archive/page/gestionTravaux.jsp</result> 
+            <result name="login" type="redirect">index</result> 
+            <!--            <result name="error">Archive/page/addPV.jsp</result> -->
+            <result name="none" type="redirect">accueil</result> 
+        </action>
+        <action name="download" class="com.er.erproject.action.GestionTravauxAction" method="genererDevice">
+            <result name="success" type="stream">
+                <param name="contentDisposition">attachment;filename=${fileName}</param>
+                <param name="contentType">application/vnd.ms-excel</param>
+                <param name="inputName">fileInputStream</param>
+                <param name="bufferSize">1024</param>
+            </result>
+            <result name="login" type="redirect">index</result> 
+            <result name="error" type="redirect">${url}</result> 
+            <result name="none" type="redirect">accueil</result> 
+        </action>
+        <action name="downloadPv" class="com.er.erproject.action.OffreAction" method="genererPV">
+            <result name="success" type="stream">
+                <param name="contentDisposition">attachment;filename=${fileName}</param>
+                <param name="contentType">application/vnd.ms-excel</param>
+                <param name="inputName">fileInputStream</param>
+                <param name="bufferSize">1024</param>
+            </result>
+            <result name="login" type="redirect">index</result> 
+            <result name="error" type="redirect">${url}</result> 
+            <result name="none" type="redirect">accueil</result> 
+        </action>
+        <action name="downloadOffre" class="com.er.erproject.action.AccueilAction" method="download">
+            <result name="success" type="stream">
+                <param name="contentDisposition">attachment;filename=${fileName}</param>
+                <param name="contentType">application/vnd.ms-excel</param>
+                <param name="inputName">fileInputStream</param>
+                <param name="bufferSize">1024</param>
+            </result>
+            <result name="login" type="redirect">index</result> 
+            <result name="error" type="redirectAction">
+                <param name="actionName">accueil</param>               
+                <param name="linkError">${linkError}</param>
+                <param name="messageError">${messageError}</param>
+            </result>
+            <result name="none" type="redirect">accueil</result> 
+        </action>
+        <action name="downloadListeFacture" class="com.er.erproject.action.FacturationAction" method="downloadListeFacture">
+            <result name="success" type="stream">
+                <param name="contentDisposition">attachment;filename=${fileName}</param>
+                <param name="contentType">application/vnd.ms-excel</param>
+                <param name="inputName">fileInputStream</param>
+                <param name="bufferSize">1024</param>
+            </result>
+            <result name="login" type="redirect">index</result> 
+            <result name="error" type="redirectAction">
+                <param name="actionName">listeFacturation</param>               
+                <param name="linkError">${linkError}</param>
+                <param name="messageError">${messageError}</param>
+            </result>
+            <result name="none" type="redirect">accueil</result> 
+        </action>
+        <action name="downloadListeFactureTS" class="com.er.erproject.action.FacturationAction" method="downloadListeFactureTS">
+            <result name="success" type="stream">
+                <param name="contentDisposition">attachment;filename=${fileName}</param>
+                <param name="contentType">application/vnd.ms-excel</param>
+                <param name="inputName">fileInputStream</param>
+                <param name="bufferSize">1024</param>
+            </result>
+            <result name="login" type="redirect">index</result> 
+            <result name="error" type="redirectAction">
+                <param name="actionName">listeFacturationTs</param>               
+                <param name="linkError">${linkError}</param>
+                <param name="messageError">${messageError}</param>
+            </result>
+            <result name="none" type="redirect">accueil</result> 
+        </action>
+        <action name="downloadFacture" class="com.er.erproject.action.FacturationAction" method="downloadFacture">
+            <result name="success" type="stream">
+                <param name="contentDisposition">attachment;filename=${fileName}</param>
+                <param name="contentType">application/vnd.ms-excel</param>
+                <param name="inputName">fileInputStream</param>
+                <param name="bufferSize">1024</param>
+            </result>
+            <result name="login" type="redirect">index</result> 
+            <result name="error" type="redirectAction">
+                <param name="actionName">facturation</param>
+                <param name="idOffre">${idOffre}</param>
+                <param name="responsable">${responsable}</param>
+                <param name="fonction">${fonction}</param>
+                <param name="linkError">${linkError}</param>
+                <param name="messageError">${messageError}</param>
+            </result>
+            <result name="none" type="redirect">accueil</result> 
+        </action>
+        <action name="downloadFactureTS" class="com.er.erproject.action.FacturationAction" method="downloadFactureTs">
+            <result name="success" type="stream">
+                <param name="contentDisposition">attachment;filename=${fileName}</param>
+                <param name="contentType">application/vnd.ms-excel</param>
+                <param name="inputName">fileInputStream</param>
+                <param name="bufferSize">1024</param>
+            </result>
+            <result name="login" type="redirect">index</result> 
+            <result name="error" type="redirectAction">
+                <param name="actionName">facturationTS</param>
+                <param name="idOffre">${idOffre}</param>
+                <param name="linkError">${linkError}</param>
+                <param name="messageError">${messageError}</param>
+            </result>
+           
+            <result name="none" type="redirect">accueil</result> 
+        </action>
+        <action name="saveParametre" class="com.er.erproject.action.OffreAction" method="saveParametre">
+            <result name="success" type="redirect">${url}</result> 
+            <result name="login" type="redirect">index</result> 
+            <result name="error" type="redirect">${url}</result> 
+            <result name="none" type="redirect">accueil</result> 
+        </action>
+        <action name="facturation" class="com.er.erproject.action.FacturationAction" method="loadFactureInit">
+            <result name="success">Archive/page/facturation.jsp</result> 
+            <result name="login" type="redirect">index</result> 
+            <!--            <result name="error">Archive/page/addPV.jsp</result> -->
+            <result name="none" type="redirect">accueil</result> 
+        </action>
+        <action name="facturationTS" class="com.er.erproject.action.FacturationAction" method="loadFactureTS">
+            <result name="success">Archive/page/facturationTS.jsp</result> 
+            <result name="login" type="redirect">index</result> 
+            <!--            <result name="error">Archive/page/addPV.jsp</result> -->
+            <result name="none" type="redirect">accueil</result> 
+        </action>
+        <action name="gestionSoumission" class="com.er.erproject.action.GestionTravauxAction" method="gestionSoumission">
+            <result name="success">Archive/page/gestionTravaux.jsp</result> 
+            <result name="login" type="redirect">index</result> 
+            <!--            <result name="error">Archive/page/addPV.jsp</result> -->
+            <result name="none" type="redirect">accueil</result> 
+        </action>
+        <action name="gestionPhoto" class="com.er.erproject.action.GestionTravauxAction" method="gestionPhoto">
+            <result name="success">Archive/page/gestionPhoto.jsp</result> 
+            <result name="login" type="redirect">index</result> 
+            <!--            <result name="error">Archive/page/addPV.jsp</result> -->
+            <result name="none" type="redirect">accueil</result> 
+        </action>
+        <action name="deletePhoto" class="com.er.erproject.action.PhotoAction" method="delete">
+            <result name="success" type="redirect">${url}</result> 
+            <result name="login" type="redirect">index</result> 
+            <result name="error" type="redirect">${url}</result> 
+            <result name="none" type="redirect">accueil</result> 
+        </action>
+        <action name="newPhoto" class="com.er.erproject.action.PhotoAction" method="load">
+            <result name="success">Archive/page/newPhoto.jsp</result> 
+            <result name="login" type="redirect">index</result> 
+            <!--            <result name="error">Archive/page/addPV.jsp</result> -->
+            <result name="none" type="redirect">accueil</result> 
+        </action>
+        <action name="savePhoto" class="com.er.erproject.action.PhotoAction" method="save">                        
+            <interceptor-ref name="fileUpload"> 
+                <param name="maximumSize">2097152</param> 
+                <param name="allowedTypes"> 
+                    image/png,image/gif,image/jpeg,image/pjpeg 
+                </param> 
+            </interceptor-ref> 
+            <interceptor-ref name="defaultStack"></interceptor-ref>             
+            <result name="login" type="redirect">index</result> 
+            <result name="success" type="redirect">${url}</result> 
+            <result name="error">Archive/page/newPhoto.jsp</result> 
+            <result name="none" type="redirect">index</result>
+        </action>
+        <action name="gestionMateriel" class="com.er.erproject.action.MateriauxAction" method="load">
+            <result name="success">Archive/page/updateMateriaux.jsp</result> 
+            <result name="login" type="redirect">index</result> 
+            <!--            <result name="error">Archive/page/addPV.jsp</result> -->
+            <result name="none" type="redirect">accueil</result> 
+        </action>
+        <action name="gestionSupplementaire" class="com.er.erproject.action.GestionTravauxAction" method="gestionSupplementaire">
+            <result name="success">Archive/page/gestionTravaux.jsp</result> 
+            <result name="login" type="redirect">index</result>           
+            <result name="none" type="redirect">accueil</result> 
+        </action>
+        <action name="deleteTravaux" class="com.er.erproject.action.GestionTravauxAction" method="deleteTache">
+            <result name="success" type="redirect">${url}</result> 
+            <result name="login" type="redirect">index</result> 
+            <result name="error" type="redirect">${url}</result> 
+            <result name="none" type="redirect">accueil</result> 
+        </action>
+        <action name="deleteReflect" class="com.er.erproject.action.ReflectAction" method="delete">
+            <result name="success" type="redirect">${url}</result> 
+            <result name="login" type="redirect">index</result> 
+            <result name="error" type="redirect">${url}</result> 
+            <result name="none" type="redirect">accueil</result> 
+        </action>
+        <action name="valider" class="com.er.erproject.action.OffreAction" method="valider">
+            <result name="success" type="redirect">${url}</result> 
+            <result name="login" type="redirect">index</result> 
+            <result name="error" type="redirect">${url}</result> 
+            <result name="none" type="redirect">accueil</result> 
+        </action>
+        <action name="newTache" class="com.er.erproject.action.GestionTravauxAction" method="newTache">
+            <result name="success">Archive/page/newTache.jsp</result> 
+            <result name="login" type="redirect">index</result> 
+            <result name="error" type="redirect">${url}</result> 
+            <result name="none" type="redirect">accueil</result> 
+        </action>
+        <action name="saveTache" class="com.er.erproject.action.GestionTravauxAction" method="saveTache">
+            <result name="success" type="redirectAction">
+                <param name="actionName">newTache</param>
+                <param name="idOffre">${idOffre}</param>
+                <param name="url">${url}</param>
+                <param name="reussite">${reussite}</param>
+                <param name="type">${type}</param>
+                
+            </result> 
+            <result name="error" type="chain">
+                <param name="actionName">newTache</param>
+                <param name="idOffre">${idOffre}</param>
+                <param name="linkError">${linkError}</param>
+                <param name="messageError">${messageError}</param>
+                <param name="url">${url}</param>
+            </result> 
+            <result name="login" type="redirect">index</result> 
+            <result name="none" type="redirect">accueil</result>     
+        </action>
+        <action name="saveMateriel" class="com.er.erproject.action.MateriauxAction" method="save">
+            <result name="success" type="redirect">${url}</result> 
+            <result name="login" type="redirect">index</result> 
+            <result name="error" type="redirect">${url}</result> 
+            <result name="none" type="redirect">accueil</result> 
+        </action>
+        <action name="plusEffect" class="com.er.erproject.action.GestionTravauxAction" method="plus">
+            <result name="success" type="redirect">${url}</result> 
+            <result name="login" type="redirect">index</result> 
+            <result name="error" type="redirect">${url}</result> 
+            <result name="none" type="redirect">accueil</result> 
+        </action>
+        <action name="minusEffect" class="com.er.erproject.action.GestionTravauxAction" method="minus">
+            <result name="success" type="redirect">${url}</result> 
+            <result name="login" type="redirect">index</result> 
+            <result name="error" type="redirect">${url}</result> 
+            <result name="none" type="redirect">accueil</result> 
+        </action>
+        <action name="manualEffect" class="com.er.erproject.action.GestionTravauxAction" method="changeManual">
+            <result name="success" type="redirect">${url}</result> 
+            <result name="login" type="redirect">index</result> 
+            <result name="error" type="redirect">${url}</result> 
+            <result name="none" type="redirect">accueil</result> 
+        </action>
+        <action name="allEffect" class="com.er.erproject.action.GestionTravauxAction" method="all">
+            <result name="success" type="redirect">${url}</result> 
+            <result name="login" type="redirect">index</result> 
+            <result name="error" type="redirect">${url}</result> 
+            <result name="none" type="redirect">accueil</result> 
+        </action>
+        <action name="allOffreEffect" class="com.er.erproject.action.GestionTravauxAction" method="allOffre">
+            <result name="success" type="redirect">${url}</result> 
+            <result name="login" type="redirect">index</result> 
+            <result name="error" type="redirect">${url}</result> 
+            <result name="none" type="redirect">accueil</result> 
+        </action>
+        <action name="changeStat" class="com.er.erproject.action.GestionTravauxAction" method="change">
+            <result name="success" type="redirect">${url}</result> 
+            <result name="login" type="redirect">index</result> 
+            <result name="error" type="redirect">${url}</result> 
+            <result name="none" type="redirect">accueil</result> 
+        </action>
+        
+        <action name="parametre" class="com.er.erproject.action.GestionTravauxAction" method="gestionParametre">
+            <result name="success">Archive/page/parametre.jsp</result> 
+            <result name="login" type="redirect">index</result> 
+            <result name="none" type="redirect">accueil</result> 
+        </action>
+        <action name="updateTache" class="com.er.erproject.action.GestionTravauxAction" method="updateParameter">
+            <result name="success" type="redirect">${url}</result> 
+            <result name="login" type="redirect">index</result> 
+            <result name="error" type="redirect">${url}</result> 
+            <result name="none" type="redirect">accueil</result> 
+        </action>
+        <action name="listeTypeFichier" class="com.er.erproject.action.TypeFichierAction" method="listeType">
+            <result name="success">Archive/page/listeType.jsp</result> 
+            <result name="error">Archive/page/listeType.jsp</result> 
+            <result name="login" type="redirect">index</result> 
+            <!--            <result name="error">Archive/page/addPV.jsp</result> -->
+            <result name="none" type="redirect">accueil</result> 
+        </action>
+        <action name="gestionTypeFichier" class="com.er.erproject.action.TypeFichierAction" method="loadNewType">
+            <result name="success">Archive/page/newTypeFichier.jsp</result> 
+            <result name="error" type="chain">
+                <param name="actionName">listeTypeFichier</param>
+                <param name="linkError">${linkError}</param>
+                <param name="messageError">${messageError}</param>
+            </result> 
+            <result name="login" type="redirect">index</result> 
+            <result name="none" type="redirect">accueil</result> 
+        </action>
+        
+        <action name="saveTypeFichier" class="com.er.erproject.action.TypeFichierAction" method="save">    
+            <result name="success" type="redirect">listeTypeFichier</result> 
+            <result name="error" type="redirectAction">
+                <param name="actionName">gestionTypeFichier</param>
+                <param name="idType">${idType}</param>
+                <param name="linkError">${linkError}</param>
+                <param name="messageError">${messageError}</param>
+            </result> 
+            <result name="login" type="redirect">index</result> 
+            <result name="none" type="redirect">accueil</result> 
+        </action>
+        <action name="listeArchive" class="com.er.erproject.action.ArchiveAction" method="listeArchive">
+            <result name="success">Archive/page/listeArchive.jsp</result> 
+            <result name="error">Archive/page/listeArchive.jsp</result> 
+            <result name="login" type="redirect">index</result> 
+            <result name="none" type="redirect">accueil</result> 
+        </action>
+        <action name="gestionArchive" class="com.er.erproject.action.ArchiveAction" method="gestionArchive">
+            <result name="success">Archive/page/newArchive.jsp</result> 
+            <result name="error" type="chain">
+                <param name="actionName">listeArchive</param>
+                <param name="idOffre">${idOffre}</param>
+                <param name="linkError">${linkError}</param>
+                <param name="messageError">${messageError}</param>
+            </result> 
+            <result name="login" type="redirect">index</result> 
+            <result name="none" type="redirect">accueil</result> 
+        </action>
+        <action name="deleteArchive" class="com.er.erproject.action.ArchiveAction" method="delete">
+            <result name="success" type="redirectAction">
+                <param name="actionName">listeArchive</param>
+                <param name="idOffre">${idOffre}</param>
+            </result> 
+            <result name="error" type="chain">
+                <param name="actionName">listeArchive</param>
+                <param name="idOffre">${idOffre}</param>
+                <param name="linkError">${linkError}</param>
+                <param name="messageError">${messageError}</param>
+            </result> 
+            <result name="login" type="redirect">index</result> 
+            <result name="none" type="redirect">accueil</result> 
+        </action>
+        <action name="saveArchive" class="com.er.erproject.action.ArchiveAction" method="save">
+            <interceptor-ref name="fileUpload"/> 
+            <interceptor-ref name="defaultStack"/>    
+            <result name="success" type="redirectAction">
+                <param name="actionName">listeArchive</param>
+                <param name="idOffre">${idOffre}</param>
+            </result> 
+            <result name="error" type="chain">
+                <param name="actionName">gestionArchive</param>
+                <param name="idOffre">${idOffre}</param>
+                <param name="linkError">${linkError}</param>
+                <param name="messageError">${messageError}</param>
+            </result> 
+            <result name="login" type="redirect">index</result> 
+            <result name="none" type="redirect">accueil</result> 
+        </action>
+         <action name="gestionBC" class="com.er.erproject.action.BonCommandeAction" method="gestionBonCommande">
+            <result name="success">Archive/page/newBC.jsp</result> 
+            <result name="error" type="chain">
+                <param name="actionName">detailOffre</param>
+                <param name="idOffre">${idOffre}</param>
+                <param name="linkError">${linkError}</param>
+                <param name="messageError">${messageError}</param>
+            </result> 
+            <result name="login" type="redirect">index</result> 
+            <result name="none" type="redirect">accueil</result> 
+        </action>
+         <action name="saveBC" class="com.er.erproject.action.BonCommandeAction" method="save">
+             <interceptor-ref name="fileUpload"> 
+                <param name="allowedTypes"> application/pdf</param>
+            </interceptor-ref> 
+            <interceptor-ref name="defaultStack"></interceptor-ref>         
+            <result name="success" type="redirectAction">
+                <param name="actionName">detailOffre</param>
+                <param name="idOffre">${idOffre}</param>
+            </result> 
+            
+            <result name="error" type="chain">
+                <param name="actionName">gestionBC</param>
+                <param name="idOffre">${idOffre}</param>
+                <param name="type">${type}</param>
+                <param name="service">${service}</param>
+                <param name="nif">${nif}</param>
+                <param name="stat">${stat}</param>
+                <param name="numero">${numero}</param>
+                <param name="referenceInterieure">${referenceInterieure}</param>
+                <param name="linkError">${linkError}</param>
+                <param name="messageError">${messageError}</param>
+            </result> 
+            <result name="input" type="redirectAction">
+                <param name="actionName">gestionBC</param>
+                <param name="idOffre">${idOffre}</param>
+                <param name="type">${type}</param>             
+                <param name="linkError">${block}</param>
+                <param name="messageError">importer que des fichiers PDF</param>
+            </result> 
+            <result name="login" type="redirect">index</result> 
+            <result name="none" type="redirect">accueil</result> 
+        </action>
+        <action name="gestionPaiement" class="com.er.erproject.action.FacturationAction" method="loadGestionPaiement">
+            <result name="success">Archive/page/gestionPaiement.jsp</result> 
+            <result name="error" type="chain">
+                <param name="actionName">detailOffre</param>
+                <param name="idOffre">${idOffre}</param>
+                <param name="linkError">${linkError}</param>
+                <param name="messageError">${messageError}</param>
+            </result> 
+            <result name="login" type="redirect">index</result> 
+            <result name="none" type="redirect">accueil</result> 
+        </action>
+        <action name="payePaiement" class="com.er.erproject.action.FacturationAction" method="payePaiement">
+            <result name="success" type="redirectAction">
+                <param name="actionName">gestionPaiement</param>
+                <param name="idOffre">${idOffre}</param>
+                <param name="linkError">${linkError}</param>
+                <param name="messageError">${messageError}</param>              
+            </result> 
+            <result name="error" type="chain">
+                <param name="actionName">gestionPaiement</param>
+                <param name="idOffre">${idOffre}</param>
+                <param name="linkError">${linkError}</param>
+                <param name="messageError">${messageError}</param>
+            </result> 
+            <result name="login" type="redirect">index</result> 
+            <result name="none" type="redirect">accueil</result> 
+        </action>
+        <action name="gestionHistorique" class="com.er.erproject.action.HistoriqueAction" method="loadHistorique">
+            <result name="success">Archive/page/historique.jsp</result> 
+            <result name="error" type="chain">
+                <param name="actionName">detailOffre</param>
+                <param name="idOffre">${idOffre}</param>
+                <param name="linkError">${linkError}</param>
+                <param name="messageError">${messageError}</param>
+            </result> 
+            <result name="login" type="redirect">index</result> 
+            <result name="none" type="redirect">accueil</result> 
+        </action>
+        <action name="closeOffre" class="com.er.erproject.action.OffreAction" method="closeOffre">
+            <result name="success" type="redirectAction">
+                <param name="actionName">detailOffre</param>
+                <param name="idOffre">${idOffre}</param>
+            </result> 
+            <result name="error" type="chain">
+                <param name="actionName">detailOffre</param>
+                <param name="idOffre">${idOffre}</param>
+                <param name="linkError">${linkError}</param>
+                <param name="messageError">${messageError}</param>
+            </result> 
+            <result name="login" type="redirect">index</result> 
+            <result name="none" type="redirect">accueil</result> 
+        </action>
+        <action name="openOffre" class="com.er.erproject.action.OffreAction" method="openOffre">
+            <result name="success" type="redirectAction">
+                <param name="actionName">detailOffre</param>
+                <param name="idOffre">${idOffre}</param>
+            </result> 
+            <result name="error" type="chain">
+                <param name="actionName">detailOffre</param>
+                <param name="idOffre">${idOffre}</param>
+                <param name="linkError">${linkError}</param>
+                <param name="messageError">${messageError}</param>
+            </result> 
+            <result name="login" type="redirect">index</result> 
+            <result name="none" type="redirect">accueil</result> 
+        </action>
+        <action name="saveDowngrade" class="com.er.erproject.action.OffreAction" method="saveDowngrade">
+            <result name="success" type="redirectAction">
+                <param name="actionName">detailOffre</param>
+                <param name="idOffre">${idOffre}</param>
+            </result> 
+            <result name="error" type="chain">
+                <param name="actionName">loadDowngrade</param>
+                <param name="idOffre">${idOffre}</param>
+                <param name="linkError">${linkError}</param>
+                <param name="messageError">${messageError}</param>
+            </result> 
+            <result name="login" type="redirect">index</result> 
+            <result name="none" type="redirect">accueil</result> 
+        </action>
+        <action name="loadDowngrade" class="com.er.erproject.action.OffreAction" method="loadDowngrade">
+            <result name="success">Archive/page/downgrade.jsp</result> 
+            <result name="login" type="redirect">index</result> 
+            <!--            <result name="error">Archive/page/addPV.jsp</result> -->
+            <result name="none" type="redirect">accueil</result> 
+        </action>
+        <action name="listeUser" class="com.er.erproject.action.UserAction" method="loadList">
+            <result name="success">Archive/page/listeUser.jsp</result> 
+            <result name="error">Archive/page/listeUser.jsp</result> 
+            <result name="login" type="redirect">index</result> 
+            <result name="none" type="redirect">accueil</result> 
+        </action>
+        <action name="newUser" class="com.er.erproject.action.UserAction" method="newUser">
+            <result name="success">Archive/page/newUser.jsp</result>
+            <result name="none" type="redirect">accueil</result>  
+            <result name="login" type="redirect">index</result> 
+        </action>
+        <action name="saveUser" class="com.er.erproject.action.UserAction" method="saveUser">
+            <result name="success" type="redirectAction">
+                <param name="actionName">listeUser</param>
+            </result> 
+            <result name="error" type="chain">
+                <param name="actionName">newUser</param>
+                <param name="idUser">${idUser}</param>
+                <param name="nom">${nom}</param>
+                <param name="prenom">${prenom}</param>
+                <param name="CIN">${CIN}</param>
+                <param name="dateNaissance">${dateNaissance}</param>
+                <param name="dateEmbauche">${dateEmbauche}</param>
+                <param name="niveau">${niveau}</param>
+                <param name="matricule">${matricule}</param>
+                <param name="linkError">${linkError}</param>
+                <param name="messageError">${messageError}</param>
+            </result> 
+            <result name="login" type="redirect">index</result> 
+            <result name="none" type="redirect">accueil</result> 
+        </action>
+        <action name="listeFacturation" class="com.er.erproject.action.FacturationAction" method="listeFactureInit">
+            <result name="success">Archive/page/listeFacture.jsp</result> 
+            <result name="error">Archive/page/listeFacture.jsp</result> 
+            <result name="login" type="redirect">index</result> 
+            <result name="none" type="redirect">accueil</result> 
+        </action>
+        <action name="listeFacturationTs" class="com.er.erproject.action.FacturationAction" method="listeFactureTs">
+            <result name="success">Archive/page/listeFactureTs.jsp</result> 
+            <result name="error">Archive/page/listeFactureTs.jsp</result> 
+            <result name="login" type="redirect">index</result> 
+            <result name="none" type="redirect">accueil</result> 
+        </action>
+    </package>
+   
+
+    
+
+</struts>
