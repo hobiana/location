@@ -71,7 +71,20 @@ public class HibernateDao {
         }
     }
 
-    
+    public List<BaseModel> findAll(BaseModel obj)  throws Exception{
+        Session session = null;
+        try{
+            session = getSessionFactory().openSession();
+            Criteria criteria = session.createCriteria(obj.getClass());
+            criteria.addOrder(Order.asc("id"));
+            return criteria.list();
+        }catch (Exception ex){
+            throw ex;
+        }finally {
+            if(session!=null)
+                session.close();
+        }
+    }
     
 
     public void update(BaseModel model) throws Exception {
