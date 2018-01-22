@@ -14,6 +14,8 @@ public class Users extends BaseModel {
     private String prenom; 
     private String phone; 
     private String adresse; 
+    private String pseudo;
+    private String mdp;
 
     public String getNom() {
         return nom;
@@ -45,6 +47,22 @@ public class Users extends BaseModel {
 
     public void setAdresse(String adresse) {
         this.adresse = adresse;
+    }
+
+    public String getPseudo() {
+        return pseudo;
+    }
+
+    public void setPseudo(String pseudo) {
+        this.pseudo = pseudo;
+    }
+
+    public String getMdp() {
+        return mdp;
+    }
+
+    public void setMdp(String mdp) {
+        this.mdp = mdp;
     }
     
     

@@ -5,8 +5,8 @@
     <!-- Database connection settings -->
     <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
     <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/location</property>
-    <property name="hibernate.connection.username">diary</property>
-    <property name="hibernate.connection.password">diary</property>
+    <property name="hibernate.connection.username">postgres</property>
+    <property name="hibernate.connection.password">itu</property>
     <!-- SQL dialect -->
     <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
     <!-- JDBC connection pool (use the built-in) 
@@ -20,5 +20,13 @@
     <!-- Echo all executed SQL to stdout -->
     <property name="show_sql">true</property>
     <mapping resource="xml/client.hbm.xml"/>
+    <mapping resource="xml/facture.hbm.xml"/>
+    <mapping resource="xml/historiqueuser.hbm.xml"/>
+    <mapping resource="xml/sortie.hbm.xml"/>
+    <mapping resource="xml/sortie.xml"/>
+    <mapping resource="xml/sortievola.hbm.xml"/>
+    <mapping resource="xml/stock.hbm.xml"/>
+    <mapping resource="xml/useracces.hbm.xml"/>
+    <mapping resource="xml/users.hbm.xml"/>
   </session-factory>
 </hibernate-configuration>
