@@ -12,7 +12,7 @@ import com.project.location.evenementiel.util.Test;
  * @author Diary
  */
 public class EntreeVola extends ESArgentModel{
-    @Override 
+    
     public void setVolaM(double volaM) throws Exception {
          Test.doubleNegatif(volaM,"La valeur de l'argent entrant ");
         this.volaM = volaM;

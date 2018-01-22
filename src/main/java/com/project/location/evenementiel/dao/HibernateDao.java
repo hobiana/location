@@ -71,7 +71,6 @@ public class HibernateDao {
         }
     }
 
-    @SuppressWarnings("unchecked")
     public List<BaseModel> findAll(BaseModel obj)  throws Exception{
         Session session = null;
         try{

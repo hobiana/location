@@ -12,7 +12,6 @@ import com.project.location.evenementiel.util.Test;
  * @author Diary
  */
 public class Sortie extends Entree{
-    @Override
     public void setQuantite(double quantite) throws Exception {
         Test.doubleNegatif(quantite, "La quantité de sortie");
         this.quantite = quantite;
