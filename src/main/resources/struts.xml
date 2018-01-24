@@ -9,6 +9,7 @@
     <constant name="struts.multipart.maxSize" value="30000000" />
     
     <package name="action" namespace="/" extends="struts-default">
+        
         <action name="index" class="com.er.erproject.action.IndexAction" method="load">
             <result name="error" type="redirect">accueil</result>
             <result name="success">Archive/page/login.jsp</result>
@@ -617,7 +618,8 @@
         </action>
     </package>
    
-
-    
-
+    <plug-in className="org.apache.struts.tiles.TilesPlugin" >
+        <set-property property="definitions-config" value="/WEB-INF/tiles-def.xml" />
+        <set-property property="moduleAware" value="true" />
+    </plug-in>
 </struts>
