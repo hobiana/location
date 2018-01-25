@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.project.location.evenementiel.model;
+package com.project.location.model;
 
-import com.project.location.evenementiel.util.Test;
+import com.project.location.util.Test;
 
 /**
  *

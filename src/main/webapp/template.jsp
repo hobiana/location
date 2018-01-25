@@ -4,20 +4,23 @@
     Author     : Hobiana
 --%>
 
-<%@page contentType="text/html" pageEncoding="windows-1252"%>
+
 <!DOCTYPE html>
+<%@taglib  prefix="s" uri="/struts-tags"%>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
-        <title><tiles:getAsString name="title" ignore="true" /></title>
-        <tiles:insert attribute="css" />
+        <title><s:property value="titre" /></title>
+        <%@include file="/template/css.jsp" %>
     </head>
     <body>
         <div id="wrapper">
-            <tiles:insert attribute="header" />
+            <%@include file="/template/header.jsp" %>
+            
             <div id="page-wrapper">
-                hello
+                body test
             </div> 
        </div>
     </body>
+    <%@include file="/template/footer.jsp" %>
 </html>

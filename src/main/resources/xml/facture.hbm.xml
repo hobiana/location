@@ -40,16 +40,16 @@ made subject to such option by the copyright holder.
 Contributor(s):
 -->
 <hibernate-mapping>
-  <class name="com.project.location.evenementiel.model.Facture" table="facture">
-      <id name="id" type="long" column="idfacture">
-            <generator class="increment"/>
-        </id>
-        <property name="dateFacture" column="dateFature" type="date"/>
-        <property name="quotient" column="quotient" type="double"/>
-        <property name="TVA" column="tva" type="double"/>
-        <property name="remise" column="remise" type="double"/>
-        <many-to-one name="commande" class="com.project.location.evenementiel.model.Commande" fetch="select">
-            <column name="idcommande" not-null="true" />
-        </many-to-one>
+  <class name="com.project.location.model.Facture" table="facture">
+    <id column="idfacture" name="id" type="long">
+      <generator class="increment"/>
+    </id>
+    <property column="dateFature" name="dateFacture" type="date"/>
+    <property column="quotient" name="quotient" type="double"/>
+    <property column="tva" name="TVA" type="double"/>
+    <property column="remise" name="remise" type="double"/>
+    <many-to-one class="com.project.location.model.Commande" fetch="select" name="commande">
+      <column name="idcommande" not-null="true"/>
+    </many-to-one>
   </class>
 </hibernate-mapping>

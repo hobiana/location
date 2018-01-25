@@ -40,17 +40,17 @@ made subject to such option by the copyright holder.
 Contributor(s):
 -->
 <hibernate-mapping>
-    <class name="com.project.location.evenementiel.model.CommandeStock" table="commandestock">
-        <id name="id" type="long" column="idcs">
-            <generator class="increment"/>
-        </id>
-        <many-to-one name="commande" class="com.project.location.evenementiel.model.Commande" fetch="select">
-            <column name="idcommande" not-null="true" />
-        </many-to-one>
-        <many-to-one name="stock" class="com.project.location.evenementiel.model.Stock" fetch="select">
-            <column name="idstock" not-null="true" />
-        </many-to-one>
-        <property name="quantiteCommande" column="quantitecs" type="double"/>
-        <property name="quantiteRetour" column="quantiteretour" type="double"/>
-    </class>
+  <class name="com.project.location.model.CommandeStock" table="commandestock">
+    <id column="idcs" name="id" type="long">
+      <generator class="increment"/>
+    </id>
+    <many-to-one class="com.project.location.model.Commande" fetch="select" name="commande">
+      <column name="idcommande" not-null="true"/>
+    </many-to-one>
+    <many-to-one class="com.project.location.model.Stock" fetch="select" name="stock">
+      <column name="idstock" not-null="true"/>
+    </many-to-one>
+    <property column="quantitecs" name="quantiteCommande" type="double"/>
+    <property column="quantiteretour" name="quantiteRetour" type="double"/>
+  </class>
 </hibernate-mapping>

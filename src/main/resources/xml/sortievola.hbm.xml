@@ -40,13 +40,13 @@ made subject to such option by the copyright holder.
 Contributor(s):
 -->
 <hibernate-mapping>
-  <class name="com.project.location.evenementiel.model.SortieVola" table="sortievola">
-    <id name="id" type="long" column="idsortivola">
-        <generator class="increment"/>
+  <class name="com.project.location.model.SortieVola" table="sortievola">
+    <id column="idsortivola" name="id" type="long">
+      <generator class="increment"/>
     </id>
-    <property name="volaM" column="volav" type="double"/>
-    <property name="date" column="datevv" type="date"/>
-    <property name="designation" column="designationvv" type="string"/>
-    <property name="reference" column="referencevv" type="string"/>
+    <property column="volav" name="volaM" type="double"/>
+    <property column="datevv" name="date" type="date"/>
+    <property column="designationvv" name="designation" type="string"/>
+    <property column="referencevv" name="reference" type="string"/>
   </class>
 </hibernate-mapping>

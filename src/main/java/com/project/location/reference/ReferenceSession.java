@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.project.location.evenementiel.dao.service;
+package com.project.location.reference;
 
 /**
  *
- * @author Hobiana
+ * @author Diary
  */
-public class ServiceClient {
-    
+public class ReferenceSession {
+    public static final String USER = "USER";
 }

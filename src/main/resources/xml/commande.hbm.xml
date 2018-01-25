@@ -40,18 +40,17 @@ made subject to such option by the copyright holder.
 Contributor(s):
 -->
 <hibernate-mapping>
-    <class name="com.project.location.evenementiel.model.Commande" table="commande">
-        <id name="id" type="long" column="idcommande">
-            <generator class="increment"/>
-        </id>
-        <property name="dateCommande" column="datecommande" type="date"/>
-        <property name="dateDebut" column="datedebut" type="date"/>
-        <property name="dateFin" column="datefin" type="date"/>
-        <property name="annule" column="annule" type="boolean"/>
-        <property name="retour" column="retour" type="boolean"/>
-        <many-to-one name="client" class="com.project.location.evenementiel.model.Client" fetch="select">
-            <column name="idclient" not-null="true" />
-        </many-to-one>
-        
-    </class>
+  <class name="com.project.location.model.Commande" table="commande">
+    <id column="idcommande" name="id" type="long">
+      <generator class="increment"/>
+    </id>
+    <property column="datecommande" name="dateCommande" type="date"/>
+    <property column="datedebut" name="dateDebut" type="date"/>
+    <property column="datefin" name="dateFin" type="date"/>
+    <property column="annule" name="annule" type="boolean"/>
+    <property column="retour" name="retour" type="boolean"/>
+    <many-to-one class="com.project.location.model.Client" fetch="select" name="client">
+      <column name="idclient" not-null="true"/>
+    </many-to-one>
+  </class>
 </hibernate-mapping>

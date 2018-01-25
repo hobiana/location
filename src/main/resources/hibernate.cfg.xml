@@ -23,7 +23,6 @@
     <mapping resource="xml/facture.hbm.xml"/>
     <mapping resource="xml/historiqueuser.hbm.xml"/>
     <mapping resource="xml/sortie.hbm.xml"/>
-    <mapping resource="xml/sortie.xml"/>
     <mapping resource="xml/sortievola.hbm.xml"/>
     <mapping resource="xml/stock.hbm.xml"/>
     <mapping resource="xml/useracces.hbm.xml"/>

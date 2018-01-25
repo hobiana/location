@@ -40,13 +40,13 @@ made subject to such option by the copyright holder.
 Contributor(s):
 -->
 <hibernate-mapping>
-  <class name="com.project.location.evenementiel.model.Stock" table="stock">
-    <id name="id" type="long" column="idstock">
-        <generator class="increment"/>
+  <class name="com.project.location.model.Stock" table="stock">
+    <id column="idstock" name="id" type="long">
+      <generator class="increment"/>
     </id>
-    <property name="designation" column="designation" type="string"/>
-    <property name="prixAchat" column="prixachat" type="double"/>
-    <property name="prixLocation" column="prixlocation" type="double"/>
-    <property name="quantite" column="quantite" type="integer"/>
+    <property column="designation" name="designation" type="string"/>
+    <property column="prixachat" name="prixAchat" type="double"/>
+    <property column="prixlocation" name="prixLocation" type="double"/>
+    <property column="quantite" name="quantite" type="integer"/>
   </class>
 </hibernate-mapping>

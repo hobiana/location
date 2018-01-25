@@ -40,16 +40,15 @@ made subject to such option by the copyright holder.
 Contributor(s):
 -->
 <hibernate-mapping>
-    <class name="com.project.location.evenementiel.model.Client" table="client">
-        <id name="id" type="long" column="idclient">
-            <generator class="increment"/>
-        </id>
-        <property name="nom" column="nom" type="string"/>
-        <property name="prenom" column="prenom" type="string"/>
-        <property name="CIN" column="cin" type="string"/>
-        <property name="adresse" column="adresse" type="string"/>
-        <property name="dateNaissance" column="datenaissance" type="date"/>
-        <property name="blackListe" column="blacklist" type="boolean"/>
-        
-    </class>
+  <class name="com.project.location.model.Client" table="client">
+    <id column="idclient" name="id" type="long">
+      <generator class="increment"/>
+    </id>
+    <property column="nom" name="nom" type="string"/>
+    <property column="prenom" name="prenom" type="string"/>
+    <property column="cin" name="CIN" type="string"/>
+    <property column="adresse" name="adresse" type="string"/>
+    <property column="datenaissance" name="dateNaissance" type="date"/>
+    <property column="blacklist" name="blackListe" type="boolean"/>
+  </class>
 </hibernate-mapping>

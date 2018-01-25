@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.project.location.evenementiel.model;
+package com.project.location.model;
 
 import java.util.Date;
 
@@ -13,7 +13,7 @@ import java.util.Date;
  */
 public class Facture extends BaseModel {
     private Commande commande; 
-    private Date dateFature; 
+    private Date dateFacture; 
     private double quotient; 
     private double TVA; 
     private double remise; 
@@ -27,12 +27,12 @@ public class Facture extends BaseModel {
         this.commande = commande;
     }
 
-    public Date getDateFature() {
-        return dateFature;
+    public Date getDateFacture() {
+        return dateFacture;
     }
 
-    public void setDateFature(Date dateFature) {
-        this.dateFature = dateFature;
+    public void setDateFacture(Date dateFature) {
+        this.dateFacture = dateFature;
     }
 
     public double getQuotient() {

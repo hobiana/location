@@ -1,7 +1,7 @@
-package com.project.location.evenementiel.dao;
+package com.project.location.dao;
 
 
-import com.project.location.evenementiel.model.BaseModel;
+import com.project.location.model.BaseModel;
 import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.Session;

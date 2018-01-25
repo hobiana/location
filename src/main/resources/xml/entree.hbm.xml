@@ -40,14 +40,14 @@ made subject to such option by the copyright holder.
 Contributor(s):
 -->
 <hibernate-mapping>
-    <class name="com.project.location.evenementiel.model.Entree" table="entree">
-        <id name="id" type="long" column="identree">
-            <generator class="increment"/>
-        </id>
-        <many-to-one name="stock" class="com.project.location.evenementiel.model" fetch="select">
-            <column name="idstock" not-null="true" />
-        </many-to-one>
-        <property name="quantite" column="quantite" type="double"/>
-        <property name="date" column="dateentree" type="date"/>
-    </class>
+  <class name="com.project.location.model.Entree" table="entree">
+    <id column="identree" name="id" type="long">
+      <generator class="increment"/>
+    </id>
+    <many-to-one class="com.project.location.model.Stock" fetch="select" name="stock">
+      <column name="idstock" not-null="true"/>
+    </many-to-one>
+    <property column="quantite" name="quantite" type="double"/>
+    <property column="dateentree" name="date" type="date"/>
+  </class>
 </hibernate-mapping>
