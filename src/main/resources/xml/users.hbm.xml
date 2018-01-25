@@ -40,15 +40,15 @@ made subject to such option by the copyright holder.
 Contributor(s):
 -->
 <hibernate-mapping>
-  <class name="com.project.location.evenementiel.model.Users" table="users">
-    <id name="id" type="long" column="idusers">
-        <generator class="increment"/>
+  <class name="com.project.location.model.Users" table="users">
+    <id column="idusers" name="id" type="long">
+      <generator class="increment"/>
     </id>
-    <property name="nom" column="nom" type="string"/>
-    <property name="prennom" column="prenom" type="string"/>
-    <property name="phone" column="phone" type="string"/>
-    <property name="adresse" column="adresse" type="string"/>
-    <property name="pseudo" column="pseudo" type="string"/>
-    <property name="mdp" column="mdp" type="string"/>
+    <property column="nom" name="nom" type="string"/>
+    <property column="prenom" name="prenom" type="string"/>
+    <property column="phone" name="phone" type="string"/>
+    <property column="adresse" name="adresse" type="string"/>
+    <property column="pseudo" name="pseudo" type="string"/>
+    <property column="mdp" name="mdp" type="string"/>
   </class>
 </hibernate-mapping>

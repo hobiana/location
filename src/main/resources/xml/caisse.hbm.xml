@@ -40,11 +40,10 @@ made subject to such option by the copyright holder.
 Contributor(s):
 -->
 <hibernate-mapping>
-    <class name="com.project.location.evenementiel.model.Caisse" table="caisse">
-        <id name="id" type="long" column="idcaisse">
-            <generator class="increment"/>
-        </id>
-        <property name="volaM" column="volam" type="double"/>
-        
-    </class>
+  <class name="com.project.location.model.Caisse" table="caisse">
+    <id column="idcaisse" name="id" type="long">
+      <generator class="increment"/>
+    </id>
+    <property column="volam" name="volaM" type="double"/>
+  </class>
 </hibernate-mapping>

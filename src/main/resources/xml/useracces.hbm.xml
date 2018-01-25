@@ -40,15 +40,15 @@ made subject to such option by the copyright holder.
 Contributor(s):
 -->
 <hibernate-mapping>
-  <class name="com.project.location.evenementiel.model.UsersAcces" table="useracces">
-    <id name="id" type="long" column="idua">
-        <generator class="increment"/>
+  <class name="com.project.location.model.UsersAcces" table="useracces">
+    <id column="idua" name="id" type="long">
+      <generator class="increment"/>
     </id>
-    <many-to-one name="user" class="com.project.location.evenementiel.model.Users" fetch="select">
-        <column name="idusers" not-null="true" />
+    <many-to-one class="com.project.location.model.Users" fetch="select" name="user">
+      <column name="idusers" not-null="true"/>
     </many-to-one>
-    <many-to-one name="user" class="com.project.location.evenementiel.model.Acces" fetch="select">
-        <column name="idacces" not-null="true" />
+    <many-to-one class="com.project.location.model.Acces" fetch="select" name="acces">
+      <column name="idacces" not-null="true"/>
     </many-to-one>
   </class>
 </hibernate-mapping>

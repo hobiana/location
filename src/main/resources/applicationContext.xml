@@ -10,8 +10,13 @@
        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
         
     <!--Action class-->
-    
-    
+    <bean id="clientAction" class="com.project.location.action.ActionClient">
+        <property name="clientService" ref="clientService" />
+    </bean>
+    <!--service class-->
+    <bean id="clientService" class="com.project.location.service.ServiceClient">
+        <property name="hibernateDao" ref="hibernateDao" />
+    </bean>
     <!--hibernate dao-->
     <bean id="hibernateDao" class="com.project.location.dao.HibernateDao">
         <property name="sessionFactory" ref="sessionFactory" />
