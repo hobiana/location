@@ -21,7 +21,7 @@ public class ServiceClient extends BaseService{
         Query query = null;
         try{
             session = hibernateDao.getSessionFactory().openSession();
-            String sql = "from Users u where u.pseudo = :login AND u.password = :password";
+            String sql = "from Users u where u.pseudo = :login AND u.mdp = :password";
             query = session.createQuery(sql);
             query.setParameter("login", matricule);
             String crypt = Cryptage.crypterHashage(password);

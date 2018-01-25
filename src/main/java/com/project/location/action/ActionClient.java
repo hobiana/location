@@ -72,6 +72,7 @@ public class ActionClient extends BaseAction {
         try{
             this.user = this.clientService.login(email, password);
         }catch(Exception e){
+            e.printStackTrace();
             this.linkError = ReferenceErreur.VISIBLE;
             this.messageError = "Veuillez verifier les champs pseudo et mot de passe"; 
             return Action.ERROR;

@@ -23,4 +23,11 @@ public class Cryptage {
         }
         return sb.toString();
     }
+    public static void main(String[] arg){
+        try{
+            System.out.print(Cryptage.crypterHashage("Diary"));
+        }catch(Exception e){
+        
+        }
+    }
 }

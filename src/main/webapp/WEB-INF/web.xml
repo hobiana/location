@@ -21,10 +21,7 @@
         <!--<listener-class>org.apache.struts2.tiles.StrutsTilesListener</listener-class>-->
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
-    <listener>
-        <listener-class>org.apache.struts2.tiles.StrutsTilesListener</listener-class>
-        
-    </listener>
+    
        
     <filter>
         <filter-name>struts2</filter-name>
@@ -53,6 +50,6 @@
     </filter-mapping>
 
     <welcome-file-list>
-        <welcome-file>index</welcome-file>
+        <welcome-file>/index.action</welcome-file>
     </welcome-file-list>
 </web-app>
