@@ -4,6 +4,9 @@
 
 <struts>
     <package name="default" extends="struts-default">	
+        <action name="">
+            <result name="success" type="redirect">index</result>
+        </action>
         <action name="index" class="com.project.location.action.ActionClient" method="load">
             <!--<result name="error" type="redirect">accueil</result>-->
             <result name="success">login.jsp</result>
