@@ -16,6 +16,9 @@ public class Test {
     public static void argmumentTest(String arg, String nomArgument) throws Exception{
         if(arg.compareTo("")==0)throw new Exception(nomArgument+" ne peut pas être vide");
     }
+    public static boolean argmumentNull(String arg){
+        return arg==null||arg.compareTo("")==0;
+    }
     public static void castInt(String arg, String nomArgument) throws Exception{
         try{
             Double.parseDouble(arg);

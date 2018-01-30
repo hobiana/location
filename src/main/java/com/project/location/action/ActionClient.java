@@ -11,6 +11,7 @@ import com.project.location.model.Users;
 import com.project.location.reference.ReferenceErreur;
 import com.project.location.reference.ReferenceSession;
 import com.project.location.service.ServiceClient;
+import com.project.location.util.Test;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -199,6 +200,12 @@ public class ActionClient extends BaseAction {
     public String loadModifier() {
         try {
             client = this.clientService.find(idClient);
+            if(Test.argmumentNull(nom)) this.setNom(client.getNom());
+            if(Test.argmumentNull(prenom)) this.setPrenom(client.getPrenom());
+            if(Test.argmumentNull(cin)) this.setCin(client.getCIN());
+            if(Test.argmumentNull(adresse)) this.setAdresse(client.getAdresse());
+            if(Test.argmumentNull(blacklist)) this.setBlacklist(String.valueOf(client.isBlackListe()));
+            
             return Action.SUCCESS;
         } catch (Exception e) {
             this.linkError = ReferenceErreur.VISIBLE;
