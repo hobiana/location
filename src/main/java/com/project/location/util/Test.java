@@ -13,4 +13,15 @@ public class Test {
     public static void doubleNegatif(double test, String nameDouble) throws Exception{
         if(test<0)throw new Exception(nameDouble+" ne peut pas être inférieure à 0");
     }
+    public static void argmumentTest(String arg, String nomArgument) throws Exception{
+        if(arg.compareTo("")==0)throw new Exception(nomArgument+" ne peut pas être vide");
+    }
+    public static void castInt(String arg, String nomArgument) throws Exception{
+        try{
+            Double.parseDouble(arg);
+        }catch(Exception e){
+            throw new Exception(nomArgument+" ne doit contenir que des chiffres");
+        }
+        
+    }
 }

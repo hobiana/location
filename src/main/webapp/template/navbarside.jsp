@@ -1,4 +1,4 @@
-
+<%@taglib  prefix="s" uri="/struts-tags"%>
 <div class="navbar-default sidebar" role="navigation">
     <div class="sidebar-nav navbar-collapse">
         <ul class="nav" id="side-menu">
@@ -99,6 +99,9 @@
                     </li>
                 </ul>
                 <!-- /.nav-second-level -->
+            </li>
+            <li>
+                <a href="client"><i class="fa fa-files-o fa-fw"></i> Clients</a>
             </li>
         </ul>
     </div>
