@@ -17,6 +17,24 @@ public class BaseAction extends ActionSupport{
     protected String titre; 
     protected String linkError ="none";
     protected String messageError;
+    protected String linkSuccess ="none";
+    protected String messageSuccess;
+
+    public String getLinkSuccess() {
+        return linkSuccess;
+    }
+
+    public void setLinkSuccess(String linkSuccess) {
+        this.linkSuccess = linkSuccess;
+    }
+
+    public String getMessageSuccess() {
+        return messageSuccess;
+    }
+
+    public void setMessageSuccess(String messageSuccess) {
+        this.messageSuccess = messageSuccess;
+    }
 
     public String getLinkError() {
         return linkError;

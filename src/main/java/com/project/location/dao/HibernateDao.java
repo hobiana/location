@@ -71,7 +71,7 @@ public class HibernateDao {
         }
     }
 
-    /*
+    
     public List<BaseModel> findAll(BaseModel obj)  throws Exception{
         Session session = null;
         try{
@@ -85,7 +85,7 @@ public class HibernateDao {
             if(session!=null)
                 session.close();
         }
-    }*/
+    }
     
 
     public void update(BaseModel model) throws Exception {

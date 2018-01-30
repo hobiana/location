@@ -5,6 +5,7 @@
  */
 package com.project.location.model;
 
+import com.project.location.util.Test;
 import java.util.Date;
 
 /**
@@ -15,15 +16,15 @@ public class Client extends BaseModel {
     private String nom; 
     private String prenom; 
     private String CIN; 
-    private String adresse; 
-    private Date dateNaissance;
+    private String adresse;
     private boolean blackListe; 
 
     public String getNom() {
         return nom;
     }
 
-    public void setNom(String nom) {
+    public void setNom(String nom) throws Exception {
+        Test.argmumentTest(nom,"nom");
         this.nom = nom;
     }
 
@@ -31,7 +32,8 @@ public class Client extends BaseModel {
         return prenom;
     }
 
-    public void setPrenom(String prenom) {
+    public void setPrenom(String prenom)throws Exception {
+        Test.argmumentTest(prenom,"prenom");
         this.prenom = prenom;
     }
 
@@ -40,7 +42,8 @@ public class Client extends BaseModel {
     }
 
     public void setCIN(String CIN) throws Exception {
-        if(CIN.length()!=12)throw new Exception("CIN invalide");
+        if(CIN.length()!=12)throw new Exception("inserer les 12 chiffres de la CIN");
+        Test.castInt(CIN,"la CIN");
         this.CIN = CIN;
     }
 
@@ -48,16 +51,9 @@ public class Client extends BaseModel {
         return adresse;
     }
 
-    public void setAdresse(String adresse) {
+    public void setAdresse(String adresse) throws Exception {
+        Test.argmumentTest(adresse,"l'adresse");
         this.adresse = adresse;
-    }
-
-    public Date getDateNaissance() {
-        return dateNaissance;
-    }
-
-    public void setDateNaissance(Date dateNaissance) {
-        this.dateNaissance = dateNaissance;
     }
 
     public boolean isBlackListe() {
@@ -67,6 +63,19 @@ public class Client extends BaseModel {
     public void setBlackListe(boolean blackListe) {
         this.blackListe = blackListe;
     }
+    public void setBlackListe(String blackListe)throws Exception {
+        Test.argmumentTest(blackListe,"blacklist");
+        if(blackListe.compareTo("true")==0){
+            this.blackListe = true;
+        }else{
+            this.blackListe = false;
+        }
+        
+    }
     
+    public Client(){}
+    public Client(long id){
+        this.setId(id);
+    }
     
 }

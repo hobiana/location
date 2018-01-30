@@ -15,10 +15,45 @@
             <result name="success" >template.jsp</result>
             <result name="error" type="chain">
                 <param name="actionName">index</param>
-                
                 <param name="linkError">${linkError}</param>
                 <param name="messageError">${messageError}</param>
             </result> 
+        </action>
+        
+        <action name="client" method="listclient" class="com.project.location.action.ActionClient">
+            <result name="success">client.jsp</result>
+            <result name="error">index.jsp</result>
+        </action>
+        
+        <action name="saveclient" method="saveClient" class="com.project.location.action.ActionClient">
+            <result name="success" type="redirectAction">
+                <param name="actionName">client</param>
+                <param name="linkSuccess">${linkSuccess}</param>
+                <param name="messageSuccess">${messageSuccess}</param>
+            </result>
+           <result name="error" type="redirectAction">
+                <param name="actionName">client</param>
+                <param name="linkError">${linkError}</param>
+                <param name="messageError">${messageError}</param>
+            </result> 
+        </action>
+        
+        <action name="modifclient" method="loadModifier" class="com.project.location.action.ActionClient">
+            <result name="success">modifClient.jsp</result>
+            <result name="error" type="redirect">client</result>
+        </action>
+        
+        <action name="updateclient" method="modifierModifier" class="com.project.location.action.ActionClient">
+            <result name="success" type="redirectAction">
+                <param name="actionName">client</param>
+                <param name="linkSuccess">${linkSuccess}</param>
+                <param name="messageSuccess">${messageSuccess}</param>
+            </result>
+           <result name="error" type="redirectAction">
+                <param name="actionName">client</param>
+                <param name="linkError">${linkError}</param>
+                <param name="messageError">${messageError}</param>
+            </result>
         </action>
     </package>
 </struts>
