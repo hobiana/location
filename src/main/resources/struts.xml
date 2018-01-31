@@ -62,5 +62,25 @@
                 
             </result>
         </action>
+         <action name="indexUsers" method="index" class="com.project.location.action.ActionUsers">
+            <result name="success">usersListe.jsp</result>
+            <result name="error">index.jsp</result>
+        </action>
+        <action name="saveUser" method="saveUsers" class="com.project.location.action.ActionUsers">
+            <result name="success" type="redirectAction">
+                <param name="actionName">indexUsers</param>
+                <param name="linkSuccess">${linkSuccess}</param>
+                <param name="messageSuccess">${messageSuccess}</param>
+            </result>
+           <result name="error" type="redirectAction">
+                <param name="actionName">indexUsers</param>
+                <param name="linkError">${linkError}</param>
+                <param name="messageError">${messageError}</param>
+            </result> 
+        </action>
+        <action name="modifierUser" method="loadModifier" class="com.project.location.action.ActionUsers">
+            <result name="success">modifierUser.jsp</result>
+            <result name="error" type="redirect">indexUsers</result>
+        </action>
     </package>
 </struts>

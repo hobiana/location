@@ -13,8 +13,6 @@ import com.project.location.reference.ReferenceSession;
 import com.project.location.service.ServiceClient;
 import com.project.location.util.Test;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.http.HttpSession;
 import org.apache.struts2.ServletActionContext;
 

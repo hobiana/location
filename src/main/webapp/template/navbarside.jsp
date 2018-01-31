@@ -103,6 +103,9 @@
             <li>
                 <a href="client"><i class="fa fa-files-o fa-fw"></i> Clients</a>
             </li>
+            <li>
+                <a href="indexUsers"><i class="fa fa-files-o fa-fw"></i> Gestion d'utilisateur</a>
+            </li>
         </ul>
     </div>
     <!-- /.sidebar-collapse -->
