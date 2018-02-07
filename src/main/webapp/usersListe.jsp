@@ -69,7 +69,7 @@
                                         class="btn btn-default" 
                                         style="margin-bottom:15px"
                                         href="#ajoutClient" data-toggle="modal">
-                                        Ajouter un nouveau utilisateur
+                                        Ajouter un utilisateur
                                     </a>
                                     <%@include file="/template/Success.jsp" %>
                                     <%@include file="/template/Erreur.jsp" %>

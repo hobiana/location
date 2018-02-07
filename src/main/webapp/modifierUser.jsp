@@ -34,7 +34,7 @@
                             <%@include file="/template/Erreur.jsp" %>
                             <!-- /.panel-heading -->
                             <div class="panel-body">
-                                <form action="updateUsers">
+                                <form action="updateUser">
                                     <div class="form-group">
                                         <label>Nom</label>
                                         <input name="nom" value="<s:property value="getNom()" />"class="form-control" placeholder="Nom">
@@ -63,7 +63,7 @@
                                         <label>Confirmer</label>
                                         <input name="confirmation" type="password" class="form-control" placeholder="Confirmation mot de passe">
                                     </div>
-                                    <input name="idUsers" type="hidden" value="<s:property value="utilisateur.id"/>"/>
+                                    <input name="idUsers" type="hidden" value="<s:property value="getIdUsers()"/>"/>
                                     <button type="submit" class="btn btn-default">Modifier</button>
                                 </form>
                             </div>

@@ -147,13 +147,18 @@ public class ActionUsers extends BaseAction {
             temp.setNom(nom);
             temp.setPrenom(prenom);
             temp.setPhone(phone);
+            temp.setAdresse(adresse);
             if(!Test.argmumentNull(mdp)){
                 if(mdp.compareTo(this.confirmation)!=0) throw new Exception("les mots de passe sont différents");
-                temp.setMdp(mdp);
+                temp.setMdp(Cryptage.crypterHashage(mdp));
             }
-            this.serviceUsers.update(user);
+            this.serviceUsers.update(temp);
+            this.linkSuccess = ReferenceErreur.VISIBLE;
+            this.messageSuccess = "L'utilisateur " + nom + " a été mise à jour avec succès";
+
             return Action.SUCCESS;
         }catch(Exception e){
+            e.printStackTrace();
              this.linkError = ReferenceErreur.VISIBLE; 
             this.messageError = e.getMessage();
             return Action.ERROR;

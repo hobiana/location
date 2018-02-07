@@ -70,7 +70,7 @@
                                         class="btn btn-default" 
                                         style="margin-bottom:15px"
                                         href="#ajoutClient" data-toggle="modal">
-                                        Ajouter un nouveau client
+                                        Ajouter un client
                                     </a>
                                     <%@include file="/template/Success.jsp" %>
                                     <%@include file="/template/Erreur.jsp" %>

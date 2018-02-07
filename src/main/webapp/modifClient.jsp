@@ -54,7 +54,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label class="checkbox-inline">
-                                            <input name="blacklist" type="checkbox" value="true" <s:if test="isBlackListe()==true">checked</s:if>> Blacklist
+                                            <input name="blacklist" type="checkbox" value="true" <s:if test="getBlacklist().equals('true')">checked</s:if>> Blacklist
                                         </label>
                                         </div>
                                         <input name="idClient" type="hidden" value="<s:property value="client.id"/>"/>

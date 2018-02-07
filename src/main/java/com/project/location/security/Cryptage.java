@@ -25,7 +25,7 @@ public class Cryptage {
     }
     public static void main(String[] arg){
         try{
-            System.out.print(Cryptage.crypterHashage("hobs"));
+            System.out.print(Cryptage.crypterHashage("Diary"));
         }catch(Exception e){
         
         }

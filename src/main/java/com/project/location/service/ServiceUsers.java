@@ -80,7 +80,7 @@ public class ServiceUsers extends BaseService{
             session = hibernateDao.getSessionFactory().openSession();
             String sql = "from Users u where u.pseudo = :pseudo";
             query = session.createQuery(sql);
-            query.setParameter("login", pseudo);
+            query.setParameter("pseudo", pseudo);
             List<Users> list = query.list();
             if(list.size()>0)return true;
             return false;  
