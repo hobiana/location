@@ -13,8 +13,14 @@
     <bean id="clientAction" class="com.project.location.action.ActionClient">
         <property name="clientService" ref="clientService" />
     </bean>
-    <!--service class-->
+    <bean id="usersAction" class="com.project.location.action.ActionUsers">
+        <property name="serviceUsers" ref="serviceUsers" />
+    </bean>
+    <!--service class-->   
     <bean id="clientService" class="com.project.location.service.ServiceClient">
+        <property name="hibernateDao" ref="hibernateDao" />
+    </bean>
+    <bean id="serviceUsers" class="com.project.location.service.ServiceUsers">
         <property name="hibernateDao" ref="hibernateDao" />
     </bean>
     <!--hibernate dao-->

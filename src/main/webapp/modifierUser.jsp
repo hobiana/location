@@ -1,9 +1,8 @@
 <%-- 
-    Document   : essai
-    Created on : 24 janv. 2018, 21:24:27
-    Author     : Hobiana
+    Document   : modifierUser
+    Created on : 31 janv. 2018, 01:46:04
+    Author     : Diary
 --%>
-
 
 <!DOCTYPE html>
 <%@taglib  prefix="s" uri="/struts-tags"%>
@@ -21,7 +20,7 @@
             <div id="page-wrapper">
                 <div class="row">
                     <div class="col-lg-12">
-                        <h1 class="page-header">Clients</h1>
+                        <h1 class="page-header">Utilisateur</h1>
                     </div>
                     <!-- /.col-lg-12 -->
                 </div>
@@ -30,34 +29,41 @@
                     <div class="col-lg-12">
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                Modifier un client
+                                Modifier un utilisateur
                             </div>
-                             <%@include file="/template/Erreur.jsp" %>
+                            <%@include file="/template/Erreur.jsp" %>
                             <!-- /.panel-heading -->
                             <div class="panel-body">
-                                <form action="updateclient">
+                                <form action="updateUser">
                                     <div class="form-group">
                                         <label>Nom</label>
-                                        <input name="nom" class="form-control" placeholder="Nom" value="<s:property value="getNom()" />">
+                                        <input name="nom" value="<s:property value="getNom()" />"class="form-control" placeholder="Nom">
                                     </div>
                                     <div class="form-group">
                                         <label>Pr&eacute;nom</label>
-                                        <input name="prenom" class="form-control" placeholder="Prenom" value="<s:property value="getPrenom()" />">
+                                        <input name="prenom" value="<s:property value="getPrenom()" />" class="form-control" placeholder="Prenom">
                                     </div>
                                     <div class="form-group">
-                                        <label>CIN</label>
-                                        <input name="cin" class="form-control" placeholder="CIN" type="string" value="<s:property value="getCin()" />">
+                                        <label>Num&eacute;ro de t&eacute;l&eacute;phone</label>
+                                        <input name="phone" value="<s:property value="getPhone()" />" class="form-control" placeholder="Numéro de téléphone" type="string">
                                     </div>
                                     <div class="form-group">
                                         <label>Adresse</label>
-                                        <input name="adresse" class="form-control" placeholder="Adresse" value="<s:property value="getAdresse()" />">
+                                        <input name="adresse" value="<s:property value="getAdresse()" />" class="form-control" placeholder="Adresse">
                                     </div>
                                     <div class="form-group">
-                                        <label class="checkbox-inline">
-                                            <input name="blacklist" type="checkbox" value="true" <s:if test="getBlacklist().equals('true')">checked</s:if>> Blacklist
-                                        </label>
-                                        </div>
-                                        <input name="idClient" type="hidden" value="<s:property value="client.id"/>"/>
+                                        <label>Pseudo</label>
+                                        <input name="pseudo" value="<s:property value="getPseudo()" />" class="form-control" placeholder="Pseudo">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Mot de passe</label>
+                                        <input name="mdp" type="password" class="form-control" placeholder="Mot de passe">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Confirmer</label>
+                                        <input name="confirmation" type="password" class="form-control" placeholder="Confirmation mot de passe">
+                                    </div>
+                                    <input name="idUsers" type="hidden" value="<s:property value="getIdUsers()"/>"/>
                                     <button type="submit" class="btn btn-default">Modifier</button>
                                 </form>
                             </div>

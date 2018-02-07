@@ -64,6 +64,10 @@ public class Users extends BaseModel {
     public void setMdp(String mdp) {
         this.mdp = mdp;
     }
+    public Users(){}
+    public Users(long id){
+        this.setId(id);
+    }
     
     
 }

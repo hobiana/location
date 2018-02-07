@@ -62,5 +62,44 @@
                 
             </result>
         </action>
+         <action name="indexUsers" method="index" class="com.project.location.action.ActionUsers">
+            <result name="success">usersListe.jsp</result>
+            <result name="error">index.jsp</result>
+        </action>
+        <action name="saveUser" method="saveUsers" class="com.project.location.action.ActionUsers">
+            <result name="success" type="redirectAction">
+                <param name="actionName">indexUsers</param>
+                <param name="linkSuccess">${linkSuccess}</param>
+                <param name="messageSuccess">${messageSuccess}</param>
+            </result>
+           <result name="error" type="redirectAction">
+                <param name="actionName">indexUsers</param>
+                <param name="linkError">${linkError}</param>
+                <param name="messageError">${messageError}</param>
+            </result> 
+        </action>
+        <action name="modifierUser" method="loadModifier" class="com.project.location.action.ActionUsers">
+            <result name="success">modifierUser.jsp</result>
+            <result name="error" type="redirect">indexUsers</result>
+        </action>
+        <action name="updateUser" method="updateUsers" class="com.project.location.action.ActionUsers">
+            <result name="success" type="redirectAction">
+                <param name="actionName">indexUsers</param>
+                <param name="linkSuccess">${linkSuccess}</param>
+                <param name="messageSuccess">${messageSuccess}</param>
+            </result>
+           <result name="error" type="redirectAction">
+                <param name="actionName">modifierUser</param>
+                <param name="linkError">${linkError}</param>
+                <param name="messageError">${messageError}</param>
+                <param name="nom">${nom}</param>
+                <param name="prenom">${prenom}</param>
+                <param name="phone">${phone}</param>
+                <param name="adresse">${adresse}</param>
+                <param name="idUsers">${idUsers}</param>
+                <param name="pseudo">${pseudo}</param>
+                
+            </result>
+        </action>
     </package>
 </struts>
