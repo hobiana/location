@@ -27,4 +27,11 @@ public class Test {
         }
         
     }
+    public static boolean testNull(Object object){
+        return object==null;
+    } 
+    public static Object[] instance(int taille){
+        Object[] reponse = new Object[taille]; 
+        return reponse;
+    }
 }

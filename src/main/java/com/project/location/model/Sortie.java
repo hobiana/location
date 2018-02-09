@@ -12,8 +12,17 @@ import com.project.location.util.Test;
  * @author Diary
  */
 public class Sortie extends Entree{
-    public void setQuantite(double quantite) throws Exception {
+    @Override
+    public void setQuantite(int quantite) throws Exception {
         Test.doubleNegatif(quantite, "La quantité de sortie");
         this.quantite = quantite;
     }
+
+    public Sortie() {
+    }
+
+    public Sortie(long id) {
+        super.setId(id);
+    }
+    
 }

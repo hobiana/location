@@ -20,7 +20,24 @@
     <bean id="clientService" class="com.project.location.service.ServiceClient">
         <property name="hibernateDao" ref="hibernateDao" />
     </bean>
+    <bean id="serviceEntree" class="com.project.location.service.ServiceEntree">
+        <property name="hibernateDao" ref="hibernateDao" />
+        <property name="serviceStock" ref="serviceStock" />
+        <property name="serviceUtil" ref="serviceUtil" />
+    </bean>
+    <bean id="serviceSortie" class="com.project.location.service.ServiceSortie">     
+        <property name="hibernateDao" ref="hibernateDao" />
+        <property name="serviceStock" ref="serviceStock" />
+        <property name="serviceUtil" ref="serviceUtil" />
+    </bean>
+    <bean id="serviceStock" class="com.project.location.service.ServiceStock">
+        <property name="hibernateDao" ref="hibernateDao" />
+        <property name="serviceUtil" ref="serviceUtil" />
+    </bean>
     <bean id="serviceUsers" class="com.project.location.service.ServiceUsers">
+        <property name="hibernateDao" ref="hibernateDao" />
+    </bean>
+    <bean id="serviceUtil" class="com.project.location.service.ServiceUtil">
         <property name="hibernateDao" ref="hibernateDao" />
     </bean>
     <!--hibernate dao-->

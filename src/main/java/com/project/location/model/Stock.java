@@ -14,6 +14,10 @@ public class Stock extends BaseModel {
     private double prixLocation; 
     private int quantite; 
 
+    public Stock() {
+        
+    }
+
     public String getDesignation() {
         return designation;
     }
@@ -46,8 +50,12 @@ public class Stock extends BaseModel {
     }
 
     public void setQuantite(int quantite) throws Exception {
-        if(quantite<1)throw new Exception("la quantite du stock ne peut pas être inférieure à 0");
+        if(quantite<0)throw new Exception("la quantite du stock ne peut pas être inférieure à 0");
         this.quantite = quantite;
+    }
+
+    public Stock(long id) {
+        super.setId(id);;
     }
     
 }
