@@ -7,10 +7,12 @@
         <action name="">
             <result name="success" type="redirect">index</result>
         </action>
+        
         <action name="index" class="com.project.location.action.ActionClient" method="load">
             <!--<result name="error" type="redirect">accueil</result>-->
             <result name="success">login.jsp</result>
         </action>
+        
         <action name="login" method="login" class="com.project.location.action.ActionClient">
             <result name="success" >template.jsp</result>
             <result name="error" type="chain">
@@ -62,10 +64,12 @@
                 
             </result>
         </action>
+        
          <action name="indexUsers" method="index" class="com.project.location.action.ActionUsers">
             <result name="success">usersListe.jsp</result>
             <result name="error">index.jsp</result>
         </action>
+        
         <action name="saveUser" method="saveUsers" class="com.project.location.action.ActionUsers">
             <result name="success" type="redirectAction">
                 <param name="actionName">indexUsers</param>
@@ -78,10 +82,12 @@
                 <param name="messageError">${messageError}</param>
             </result> 
         </action>
+        
         <action name="modifierUser" method="loadModifier" class="com.project.location.action.ActionUsers">
             <result name="success">modifierUser.jsp</result>
             <result name="error" type="redirect">indexUsers</result>
         </action>
+        
         <action name="updateUser" method="updateUsers" class="com.project.location.action.ActionUsers">
             <result name="success" type="redirectAction">
                 <param name="actionName">indexUsers</param>
@@ -98,8 +104,42 @@
                 <param name="adresse">${adresse}</param>
                 <param name="idUsers">${idUsers}</param>
                 <param name="pseudo">${pseudo}</param>
-                
             </result>
+        </action>
+        
+        <action name="stock" method="load" class="com.project.location.action.ActionStock">
+           <result name="success">stock.jsp</result>
+           <result name="error">index.js</result>
+        </action>
+        
+        <action name="inStock" method="inStock" class="com.project.location.action.ActionStock">
+           <result name="success">stock_add_del.jsp</result>
+           <result name="error">index.js</result>
+        </action>
+        
+        <action name="outStock" method="outStock" class="com.project.location.action.ActionStock">
+           <result name="success">stock_add_del.jsp</result>
+           <result name="error">index.js</result>
+        </action>
+        
+        <action name="updateStock" method="updateStock" class="com.project.location.action.ActionStock">
+           <result name="success">stock_update.jsp</result>
+           <result name="error">index.js</result>
+        </action>
+        
+        <action name="listInStock" method="listInStock" class="com.project.location.action.ActionStock">
+           <result name="success">stock_in.jsp</result>
+           <result name="error">index.js</result>
+        </action>
+        
+        <action name="listOutStock" method="listOutStock" class="com.project.location.action.ActionStock">
+           <result name="success">stock_out.jsp</result>
+           <result name="error">index.js</result>
+        </action>
+        
+        <action name="commande" method="commande" class="com.project.location.action.ActionCommande">
+           <result name="success">commande.jsp</result>
+           <result name="error">index.js</result>
         </action>
     </package>
 </struts>

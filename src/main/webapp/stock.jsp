@@ -21,7 +21,7 @@
             <div id="page-wrapper">
                 <div class="row">
                     <div class="col-lg-12">
-                        <h1 class="page-header">Clients</h1>
+                        <h1 class="page-header">Stocks</h1>
                     </div>
                     <!-- /.col-lg-12 -->
                 </div>
@@ -36,22 +36,36 @@
                             <div class="panel-body">
                                 <form role="form">
                                     <div class="form-group">
-                                        <label>Nom</label>
-                                        <input class="form-control" placeholder="Nom">
+                                        <label>Désignation</label>
+                                        <input name="designation" class="form-control" placeholder="Désignation">
                                     </div>
                                     <div class="form-group">
-                                        <label>Pr&eacute;nom</label>
-                                        <input class="form-control" placeholder="Prenom">
+                                        <div class="col-md-12">
+                                            <label>Prix de Location </label>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="col-md-6">
+                                                <input name="prixAchatMin" class="form-control" min="0" placeholder="Prix de Location Min" type="number">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <input name="prixAchatMax" class="form-control" min="0" placeholder="Prix de Location Max" type="number">
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="form-group">
-                                        <label>CIN</label>
-                                        <input class="form-control" placeholder="CIN" type="number">
+                                        <div class="col-md-12">
+                                            <label>Quantités</label>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="col-md-6">
+                                                <input name="quantiteMin" class="form-control" min="0" placeholder="Quantité Min" type="number">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <input name="quantiteMax" class="form-control" min="0" placeholder="Quantité Max" type="number">
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="form-group">
-                                        <label>Adresse</label>
-                                        <input class="form-control" placeholder="Adresse">
-                                    </div>
-                                    <button type="submit" class="btn btn-default">Rechercher</button>
+                                    <button style="margin-top: 15px;" type="submit" class="btn btn-default">Rechercher</button>
                                 </form>
                             </div>
                             <!-- /.panel-body -->
@@ -60,7 +74,7 @@
 
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                <span>Liste des clients</span>
+                                <span>Liste des stocks</span>
                             </div>
                             <!-- /.panel-heading -->
                             <div class="panel-body">
@@ -70,7 +84,7 @@
                                         class="btn btn-default" 
                                         style="margin-bottom:15px"
                                         href="#ajoutClient" data-toggle="modal">
-                                        Ajouter un client
+                                        Ajouter le stock
                                     </a>
                                     <%@include file="/template/Success.jsp" %>
                                     <%@include file="/template/Erreur.jsp" %>
@@ -78,27 +92,27 @@
                                         <div class="modal-dialog modal-md">
                                             <!-- Modal content-->
                                             <div class="modal-content">
-                                                <form method="POST" action="saveclient">
+                                                <form method="POST">
                                                     <div class="modal-header backg-brw">
                                                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                                                         <h4 class="modal-title">Ajouter un client</h4>
                                                     </div>
                                                     <div class="modal-body">
                                                         <div class="form-group">
-                                                            <label>Nom</label>
-                                                            <input name="nom" class="form-control" placeholder="Nom">
+                                                            <label>Désignation</label>
+                                                            <input name="designation" class="form-control" placeholder="Désignation">
                                                         </div>
                                                         <div class="form-group">
-                                                            <label>Pr&eacute;nom</label>
-                                                            <input name="prenom" class="form-control" placeholder="Prenom">
+                                                            <label>Prix d'Achat</label>
+                                                            <input name="prixAchat" class="form-control" placeholder="Prix d'Achat" type="number">
                                                         </div>
                                                         <div class="form-group">
-                                                            <label>CIN</label>
-                                                            <input name="cin" class="form-control" placeholder="CIN" type="string">
+                                                            <label>Prix de Location</label>
+                                                            <input name="prixLocation" class="form-control" placeholder="Prix de Location" type="number">
                                                         </div>
                                                         <div class="form-group">
-                                                            <label>Adresse</label>
-                                                            <input name="adresse" class="form-control" placeholder="Adresse">
+                                                            <label>Quantit&eacute;</label>
+                                                            <input name="quantite" class="form-control" placeholder="Adresse" type="number">
                                                         </div>
                                                     </div>
                                                     <div class="modal-footer">
@@ -110,30 +124,43 @@
                                         </div>
                                     </div>
                                     <tr>
-                                        <th>Nom</th>
-                                        <th>Prenom</th>
-                                        <th>CIN</th>
-                                        <th>adresse</th>
-                                        <th>Blacklist / Whitelist</th>
-                                        <th>Commande</th>
+                                        <th>R&eacute;f.</th>
+                                        <th>D&eacute;signation</th>
+                                        <th>Prix de Location (Ariary)</th>
+                                        <th>Quantités</th>
+                                        <th>Entrée</th>
+                                        <th>Sortie</th>
                                         <th>Modifier</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                        <s:iterator value="listeClient" status="client">
-                                            <tr class="odd gradeX">
-                                                <td> <s:property value="nom"  /> </td> 
-                                                <td><s:property value="prenom"  /></td> 
-                                                <td><s:property value="CIN"  /></td>
-                                                <td><s:property value="adresse"  /></td>
-                                                <td class="center">
-                                                    <s:if test="blackListe==true"><button type="button" class="btn btn-sm btn-danger btn-circle center-block"><i class="fa fa-times"></i> <span style="display: none">blacklist</span></button></s:if>
-                                                    <s:else><button type="button" class="btn btn-sm btn-success btn-circle center-block"><i class="fa fa-check"></i> <span style="display: none">whitelist</span></button></s:else>
-                                                </td>
-                                                <td><a class="btn btn-circle btn-default center-block" href="commande?idClient=1"><i class="fa fa-shopping-cart"></i></a></td>
-                                                <td><a type="button" class="btn btn-default center-block" href="modifclient?idClient=<s:property value="id"  />"><i class="fa fa-edit"></i></a></td>
-                                            </tr>
-                                        </s:iterator>
+                                        <tr class="odd gradeX">
+                                            <td> REF0001 </td>
+                                            <td> Assiette ronde </td> 
+                                            <td><span class="pull-right">50 000</span></td>
+                                            <td><span class="pull-right">100</span></td>
+                                            <td class="center">
+                                                <a type="button" 
+                                                   class="btn btn-success btn-circle center-block"
+                                                   href="inStock?idStock=1">
+                                                    <i class="fa fa-sign-in"></i>
+                                                </a>
+                                            </td>
+                                            <td class="center">
+                                                <a type="button" 
+                                                   class="btn btn-warning btn-circle center-block"
+                                                   href="outStock?idStock=1">
+                                                    <i class="fa fa-sign-out"></i>
+                                                </a>
+                                            </td>
+                                            <td>
+                                                <a type="button" 
+                                                   class="btn btn-default center-block" 
+                                                   href="updateStock?idStock=1">
+                                                    <i class="fa fa-edit"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
