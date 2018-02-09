@@ -47,7 +47,7 @@ Contributor(s):
     <many-to-one class="com.project.location.model.Stock" fetch="select" name="stock">
       <column name="idstock" not-null="true"/>
     </many-to-one>
-    <property column="quantite" name="quantite" type="double"/>
+    <property column="quantite" name="quantite" type="int"/>
     <property column="dateentree" name="date" type="date"/>
   </class>
 </hibernate-mapping>

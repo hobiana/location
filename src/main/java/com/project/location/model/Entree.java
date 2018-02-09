@@ -14,7 +14,7 @@ import java.util.Date;
  */
 public class Entree extends BaseModel {
     private Stock stock; 
-    protected double quantite; 
+    protected int quantite; 
     private Date date; 
 
     public Stock getStock() {
@@ -25,11 +25,11 @@ public class Entree extends BaseModel {
         this.stock = stock;
     }
 
-    public double getQuantite() {
+    public int getQuantite() {
         return quantite;
     }
 
-    public void setQuantite(double quantite) throws Exception {
+    public void setQuantite(int quantite) throws Exception {
         Test.doubleNegatif(quantite, "La quantité d'entrée");
         this.quantite = quantite;
     }
@@ -41,6 +41,14 @@ public class Entree extends BaseModel {
     public void setDate(Date date) {
         this.date = date;
     }
+
+    public Entree(long id) {
+        super.setId(id);
+    }
+
+    public Entree() {
+    }
+    
     
     
 }
