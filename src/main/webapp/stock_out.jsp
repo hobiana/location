@@ -41,19 +41,6 @@
                                     </div>
                                     <div class="form-group">
                                         <div class="col-md-12">
-                                            <label>Prix de Location </label>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="col-md-6">
-                                                <input name="prixLocationMin" class="form-control" placeholder="Prix de location Min" type="number" min="0">
-                                            </div>
-                                            <div class="col-md-6">
-                                                <input name="prixLocationMax" class="form-control" placeholder="Prix de location Max" type="number" min="0">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <div class="col-md-12">
                                             <label>Quantités</label>
                                         </div>
                                         <div class="col-md-12">
@@ -98,7 +85,6 @@
                                         <tr>
                                             <th>R&eacute;f.</th>
                                             <th>D&eacute;signation</th>
-                                            <th>Prix d'Achat (Ariary)</th>
                                             <th>Quantités</th>
                                             <th>Date</th>
                                         </tr>
@@ -106,8 +92,7 @@
                                     <tbody>
                                         <tr class="odd gradeX">
                                             <td> REF0001 </td>
-                                            <td> Assiette ronde </td> 
-                                            <td><span class="pull-right">50 000</span></td>
+                                            <td> Assiette ronde </td>
                                             <td><span class="pull-right">100</span></td>
                                             <td><span class="pull-right">2017-01-01</span></td>
                                         </tr>
