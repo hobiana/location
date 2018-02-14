@@ -10,7 +10,6 @@ package com.project.location.model;
  */
 public class Stock extends BaseModel {
     private String designation; 
-    private double prixAchat; 
     private double prixLocation; 
     private int quantite; 
 
@@ -26,16 +25,7 @@ public class Stock extends BaseModel {
         if(designation.compareTo("")==0)throw new Exception("Vueillez inserer une désignation");
         this.designation = designation;
     }
-
-    public double getPrixAchat() {
-        return prixAchat;
-    }
-
-    public void setPrixAchat(double prixAchat) throws Exception {
-        if(prixAchat<0)throw new Exception("le prix d'achat ne peut pas être inférieure à 0");
-        this.prixAchat = prixAchat;
-    }
-
+    
     public double getPrixLocation() {
         return prixLocation;
     }

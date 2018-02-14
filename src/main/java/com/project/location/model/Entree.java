@@ -16,7 +16,17 @@ public class Entree extends BaseModel {
     private Stock stock; 
     protected int quantite; 
     private Date date; 
+    private double prixAchat;
 
+    public double getPrixAchat() {
+        return prixAchat;
+    }
+
+    public void setPrixAchat(double prixAchat) {
+        this.prixAchat = prixAchat;
+    }
+
+    
     public Stock getStock() {
         return stock;
     }
