@@ -49,6 +49,7 @@ Contributor(s):
     <property column="datefin" name="dateFin" type="date"/>
     <property column="annule" name="annule" type="boolean"/>
     <property column="retour" name="retour" type="boolean"/>
+    <property column="recu" name="recu" type="boolean"/>
     <many-to-one class="com.project.location.model.Client" fetch="select" name="client">
       <column name="idclient" not-null="true"/>
     </many-to-one>

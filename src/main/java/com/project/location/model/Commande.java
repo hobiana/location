@@ -17,9 +17,17 @@ public class Commande extends BaseModel {
     private Date dateFin; 
     private boolean annule; 
     private boolean retour;
+    private boolean recu;
     private Client client;
 
-    
+    public boolean isRecu() {
+        return recu;
+    }
+
+    public void setRecu(boolean recu) {
+        this.recu = recu;
+    }
+  
     public Date getDateCommande() {
         return dateCommande;
     }
