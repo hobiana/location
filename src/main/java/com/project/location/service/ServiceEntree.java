@@ -12,6 +12,8 @@ import com.project.location.util.Test;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import org.hibernate.Query;
+import org.hibernate.Session;
 
 /**
  *
@@ -57,12 +59,56 @@ public class ServiceEntree extends BaseService{
     }
     public List<Entree> find()throws Exception{
         List<Entree> reponse= null; 
+        Session session = null;
         try{
             reponse = (List<Entree>)(Object) this.hibernateDao.findAll(new Entree());
+            session = this.hibernateDao.getSessionFactory().openSession();
+            int size = reponse.size();
+            for(int i=0;i<size;i++){
+                Entree temp = reponse.get(i);
+                this.findStock(temp, session);
+            }
+            
             return reponse; 
         }catch(Exception e){
             e.printStackTrace();
             throw new Exception("Impossible d'extraire tout les entrées cause : "+e.getMessage());
+        }finally{
+            if(session!=null) session.close();
+        }
+    }
+    public void findStock(Entree entree)throws Exception{
+        Session session = null; 
+        Stock stock = null;
+        Query query;
+        try{
+            session = this.hibernateDao.getSessionFactory().openSession();
+            String sql = "select stock from Entree entree join entree.stock stock where entree.id = :id";    
+            query = session.createQuery(sql);
+            query.setParameter("id",entree.getId()); 
+            List<Stock> stocks = query.list();
+            if(!stocks.isEmpty()){
+               entree.setStock(stocks.get(0));
+            }
+        }catch(Exception e){
+            throw new Exception("impossible d'extraire le stock de l'offre");
+        }finally{
+            if(session!=null)session.close();
+        }
+    }
+    public void findStock(Entree entree, Session session)throws Exception{
+        Stock stock = null;
+        Query query;
+        try{
+            String sql = "select stock from Entree entree join entree.stock stock where entree.id = :id";    
+            query = session.createQuery(sql);
+            query.setParameter("id",entree.getId()); 
+            List<Stock> stocks = query.list();
+            if(!stocks.isEmpty()){
+                entree.setStock(stocks.get(0));
+            }
+        }catch(Exception e){
+            throw new Exception("impossible d'extraire le stock de l'offre");
         }
     }
     public Entree find(long id)throws Exception{
