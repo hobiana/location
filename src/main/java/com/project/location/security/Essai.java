@@ -7,6 +7,7 @@ package com.project.location.security;
 
 import com.project.location.dao.HibernateDao;
 import com.project.location.model.Client;
+import com.project.location.util.NumberTest;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -17,12 +18,5 @@ import java.util.logging.Logger;
  */
 public class Essai {
     public static void main(String[] args){
-        try {
-            HibernateDao dao = new HibernateDao();
-            List<Client> clients = (List<Client>)(Object) dao.findAll(new Client());
-            System.out.println(clients);
-        } catch (Exception ex) {
-            Logger.getLogger(Essai.class.getName()).log(Level.SEVERE, null, ex);
-        }
     }
 }

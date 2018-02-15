@@ -5,6 +5,7 @@
  */
 package com.project.location.model;
 
+import com.project.location.util.NumberTest;
 import com.project.location.util.Test;
 import java.util.Date;
 
@@ -17,7 +18,15 @@ public class Entree extends BaseModel {
     protected int quantite; 
     private Date date; 
     private double prixAchat;
-
+    
+    public String prixAchat(){
+        return NumberTest.toMoney(prixAchat);
+    }
+    
+    public String quantite(){
+        return NumberTest.toMoney(quantite);
+    }
+    
     public double getPrixAchat() {
         return prixAchat;
     }

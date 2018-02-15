@@ -5,6 +5,8 @@
  */
 package com.project.location.model;
 
+import com.project.location.util.NumberTest;
+
 /**
  *
  * @author Diary
@@ -15,6 +17,12 @@ public class CommandeStock extends BaseModel {
     private double quantiteCommande; 
     private double quantiteRetour; 
 
+    public String quantiteCommande(){
+        return NumberTest.toMoney(quantiteCommande);
+    }
+    public String quantiteRetour(){
+        return NumberTest.toMoney(quantiteRetour);
+    }
     public Stock getStock() {
         return stock;
     }

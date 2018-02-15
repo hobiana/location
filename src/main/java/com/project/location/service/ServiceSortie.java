@@ -78,6 +78,7 @@ public class ServiceSortie extends BaseService{
         Object[] des = Test.instance(2);
             des[0] = "stock.designation";
             des[1] = designation;
+            if(Test.argmumentNull(designation))des=null;
         Object[] quantite =Test.instance(3) ;
             quantite[0] = "quantite";
         if(quantiteMin<quantiteMax){

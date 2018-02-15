@@ -4,6 +4,9 @@
  * and open the template in the editor.
  */
 package com.project.location.model;
+
+import com.project.location.util.NumberTest;
+
 /**
  *
  * @author Diary
@@ -16,7 +19,13 @@ public class Stock extends BaseModel {
     public Stock() {
         
     }
-
+    public String quantite(){
+        return NumberTest.toMoney(quantite);
+    }
+    public String getPL(){
+        return NumberTest.toMoney(prixLocation);
+    }
+    
     public String getDesignation() {
         return designation;
     }

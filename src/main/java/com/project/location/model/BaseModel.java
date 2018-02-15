@@ -5,17 +5,35 @@
  */
 package com.project.location.model;
 
+import com.project.location.util.NumberTest;
+
 /**
  *
  * @author diary
  */
 public class BaseModel {
-    private long id;
-   
-    public BaseModel() {
+    protected long id;
+    protected String reference;
+
+    protected String getReference() {
+        return reference;
     }
 
+    protected void setReference(String reference) {
+        this.reference = reference;
+    }
     
+    
+    public String getRef(){
+        return this.getReference()+NumberTest.toRef(id);
+    }
+    public long getId(String reference) throws Exception{
+        return (long) NumberTest.referenceToNumber(reference);
+    }
+
+    public BaseModel() {
+    }
+  
     public BaseModel(long id) {
         this.id = id;
     }
