@@ -5,6 +5,7 @@
  */
 package com.project.location.model;
 
+import com.project.location.reference.Reference;
 import com.project.location.util.NumberTest;
 import com.project.location.util.Test;
 import java.util.Date;
@@ -62,10 +63,12 @@ public class Entree extends BaseModel {
     }
 
     public Entree(long id) {
+        super.setReference(Reference.ENTREE);
         super.setId(id);
     }
 
     public Entree() {
+        super.setReference(Reference.ENTREE);
     }
     
     
