@@ -34,7 +34,7 @@
                             </div>
                             <!-- /.panel-heading -->
                             <div class="panel-body">
-                                <form role="form">
+                                <form role="form" action="stock">
                                     <div class="form-group">
                                         <label>Désignation</label>
                                         <input name="designation" class="form-control" placeholder="Désignation">
@@ -45,10 +45,10 @@
                                         </div>
                                         <div class="col-md-12">
                                             <div class="col-md-6">
-                                                <input name="prixAchatMin" class="form-control" min="0" placeholder="Prix de Location Min" type="number">
+                                                <input name="prixLocationMin" class="form-control" min="0" placeholder="Prix de Location Min" type="number">
                                             </div>
                                             <div class="col-md-6">
-                                                <input name="prixAchatMax" class="form-control" min="0" placeholder="Prix de Location Max" type="number">
+                                                <input name="prixLocationMax" class="form-control" min="0" placeholder="Prix de Location Max" type="number">
                                             </div>
                                         </div>
                                     </div>
@@ -134,33 +134,35 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                        <tr class="odd gradeX">
-                                            <td> REF0001 </td>
-                                            <td> Assiette ronde </td> 
-                                            <td><span class="pull-right">50 000</span></td>
-                                            <td><span class="pull-right">100</span></td>
-                                            <td class="center">
-                                                <a type="button" 
-                                                   class="btn btn-success btn-circle center-block"
-                                                   href="inStock?idStock=1">
-                                                    <i class="fa fa-sign-in"></i>
-                                                </a>
-                                            </td>
-                                            <td class="center">
-                                                <a type="button" 
-                                                   class="btn btn-warning btn-circle center-block"
-                                                   href="outStock?idStock=1">
-                                                    <i class="fa fa-sign-out"></i>
-                                                </a>
-                                            </td>
-                                            <td>
-                                                <a type="button" 
-                                                   class="btn btn-default center-block" 
-                                                   href="updateStock?idStock=1">
-                                                    <i class="fa fa-edit"></i>
-                                                </a>
-                                            </td>
-                                        </tr>
+                                        <s:iterator value="listeStock">
+                                            <tr class="odd gradeX">
+                                                <td> REF<s:property value="id"  /> </td>
+                                                <td> <s:property value="designation"  /> </td> 
+                                                <td><span class="pull-right"><s:property value="prixLocation"  /></span></td>
+                                                <td><span class="pull-right"><s:property value="quantite"  /></span></td>
+                                                <td class="center">
+                                                    <a type="button" 
+                                                       class="btn btn-success btn-circle center-block"
+                                                       href="inStock?idStock=<s:property value="id"  />">
+                                                        <i class="fa fa-sign-in"></i>
+                                                    </a>
+                                                </td>
+                                                <td class="center">
+                                                    <a type="button" 
+                                                       class="btn btn-warning btn-circle center-block"
+                                                       href="outStock?idStock=<s:property value="id"  />">
+                                                        <i class="fa fa-sign-out"></i>
+                                                    </a>
+                                                </td>
+                                                <td>
+                                                    <a type="button" 
+                                                       class="btn btn-default center-block" 
+                                                       href="updateStock?idStock=<s:property value="id"  />">
+                                                        <i class="fa fa-edit"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        </s:iterator>
                                     </tbody>
                                 </table>
                             </div>

@@ -45,7 +45,7 @@ Contributor(s):
       <generator class="increment"/>
     </id>
     <property column="designation" name="designation" type="string"/>
-    <property column="prixlocation" name="prixLocation" type="double"/>
+    <property column="prixlocation" name="prixLocation" type="integer"/>
     <property column="quantite" name="quantite" type="integer"/>
   </class>
 </hibernate-mapping>

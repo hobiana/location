@@ -39,10 +39,11 @@ public class ServiceStock extends BaseService{
     
     
     public List<Stock> find(String designation,int quantiteMin, int quantiteMax, int locationMin, int locationMax ) throws Exception{
-        List<Object[]> arg = new ArrayList<>(); 
+        List<Object[]> arg = new ArrayList<>();
         Object[] des = Test.instance(2);
             des[0] = "designation";
             des[1] = designation;
+        if(Test.argmumentNull(designation)) des=null;
         Object[] quantite =Test.instance(3) ;
             quantite[0] = "quantite";
         if(quantiteMin<quantiteMax){

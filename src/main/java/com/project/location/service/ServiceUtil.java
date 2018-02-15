@@ -21,6 +21,7 @@ public class ServiceUtil extends BaseService{
         List<BaseModel> reponse = null; 
         Session session = null;
         try{
+            session = this.hibernateDao.getSessionFactory().openSession();
             Criteria criteria = session.createCriteria(classe,"object");
             for(int i=0;i<arg.size();i++){
                 Object[] temp = arg.get(i);
@@ -41,6 +42,8 @@ public class ServiceUtil extends BaseService{
         }catch(Exception e){
             e.printStackTrace();
             throw new Exception("Impossible d'extraire la recherche cause "+e.getMessage());
-        } 
+        }finally{
+            if(session!=null) session.close();
+        }
     }
 }
