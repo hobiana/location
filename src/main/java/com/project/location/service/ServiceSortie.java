@@ -40,7 +40,9 @@ public class ServiceSortie extends BaseService{
         try{
             this.hibernateDao.save(sortie);           
             Stock stock = this.ServiceStock.find(sortie.getStock().getId());
-            stock.setQuantite(stock.getQuantite()-sortie.getQuantite());
+            int value = stock.getQuantite()-sortie.getQuantite();
+            if(value<0)throw new Exception("stock insuffisant pour cette sortie");
+            stock.setQuantite(value);
             try{
                 this.ServiceStock.update(stock);
             }catch(Exception e){
@@ -49,7 +51,7 @@ public class ServiceSortie extends BaseService{
             }          
         }catch(Exception e){
             e.printStackTrace();
-            throw new Exception("Impossible d'inserer l'entree dans la BDD cause "+e.getMessage());
+            throw new Exception("Impossible de faire cette sortie cause : "+e.getMessage());
         }
     }
     public Sortie find(long id)throws Exception{
