@@ -5,6 +5,7 @@
  */
 package com.project.location.model;
 
+import com.project.location.util.NumberTest;
 import java.util.Date;
 
 /**
@@ -18,6 +19,13 @@ public class Facture extends BaseModel {
     private double TVA; 
     private double remise; 
 
+    public String remise(){
+        return NumberTest.toMoney(remise);
+    }
+    public String quotient(){
+        return NumberTest.toMoney(quotient);
+    }
+    
     public Commande getCommande() {
         return commande;
     }

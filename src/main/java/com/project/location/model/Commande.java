@@ -5,6 +5,7 @@
  */
 package com.project.location.model;
 
+import com.project.location.reference.Reference;
 import java.util.Date;
 
 /**
@@ -27,7 +28,7 @@ public class Commande extends BaseModel {
     public void setRecu(boolean recu) {
         this.recu = recu;
     }
-  
+    
     public Date getDateCommande() {
         return dateCommande;
     }
@@ -75,6 +76,8 @@ public class Commande extends BaseModel {
     public void setRetour(boolean retour) {
         this.retour = retour;
     }
-    
-    
+
+    public Commande() {
+        this.setReference(Reference.COMMANDE);    
+    }
 }
