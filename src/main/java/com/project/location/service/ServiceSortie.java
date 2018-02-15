@@ -137,7 +137,7 @@ public class ServiceSortie extends BaseService{
         if(!Test.testNull(date))arg.add(date);
         List<Sortie> reponse = null;
         try{
-            reponse = (List<Sortie>)(Object) this.serviceUtil.find(arg, Stock.class);
+            reponse = (List<Sortie>)(Object) this.serviceUtil.find(arg, Sortie.class);
             return reponse;
         }catch(Exception e){
             e.printStackTrace();
@@ -210,7 +210,7 @@ public class ServiceSortie extends BaseService{
         if(!Test.testNull(date))arg.add(date);
         List<Sortie> reponse = null;
         try{
-            reponse = (List<Sortie>)(Object) this.serviceUtil.find(arg, Stock.class);
+            reponse = (List<Sortie>)(Object) this.serviceUtil.find(arg, Sortie.class);
             return reponse;
         }catch(Exception e){
             e.printStackTrace();
