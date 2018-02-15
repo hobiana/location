@@ -6,6 +6,7 @@
 package com.project.location.model;
 
 import com.project.location.reference.Reference;
+import com.project.location.util.DateUtil;
 import com.project.location.util.NumberTest;
 import com.project.location.util.Test;
 import java.util.Date;
@@ -20,6 +21,9 @@ public class Entree extends BaseModel {
     private Date date; 
     private double prixAchat;
     
+    public String getDateString() throws Exception{
+        return DateUtil.convert(date);
+    }
     public String prixAchat(){
         return NumberTest.toMoney(prixAchat);
     }

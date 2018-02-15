@@ -130,7 +130,7 @@ public class ServiceEntree extends BaseService{
         }
         
         Object[] pa =Test.instance(3) ;
-            pa[0] = "stock.prixAchat";
+            pa[0] = "prixAchat";
         if(paMin<paMax){
             pa[1] = paMin;
             pa[2] = paMax;          
@@ -139,17 +139,17 @@ public class ServiceEntree extends BaseService{
             pa[2] = paMin;    
         }else if(paMin==0&&paMax>0){
             pa = Test.instance(2);
-            pa[0] = "prixLocation";
+            pa[0] = "prixAchat";
             pa[1] = paMax;
         }else if(paMax==0&&paMin>0){
             pa = Test.instance(2);
-            pa[0] = "prixLocation";
+            pa[0] = "prixAchat";
             pa[1] = paMin;
         }else if(paMax==0&&paMin==0){
             pa = null;
         }else{
             pa = Test.instance(2);
-            pa[0] = "prixLocation";
+            pa[0] = "prixAchat";
             pa[1] = paMin;
         }     
         if(!Test.testNull(des))arg.add(des);
@@ -224,7 +224,7 @@ public class ServiceEntree extends BaseService{
         }
         
         Object[] pa =Test.instance(3) ;
-            pa[0] = "stock.prixAchat";
+            pa[0] = "prixAchat";
         if(paMin<paMax){
             pa[1] = paMin;
             pa[2] = paMax;          
@@ -233,17 +233,17 @@ public class ServiceEntree extends BaseService{
             pa[2] = paMin;    
         }else if(paMin==0&&paMax>0){
             pa = Test.instance(2);
-            pa[0] = "prixLocation";
+            pa[0] = "prixAchat";
             pa[1] = paMax;
         }else if(paMax==0&&paMin>0){
             pa = Test.instance(2);
-            pa[0] = "prixLocation";
+            pa[0] = "prixAchat";
             pa[1] = paMin;
         }else if(paMax==0&&paMin==0){
             pa = null;
         }else{
             pa = Test.instance(2);
-            pa[0] = "prixLocation";
+            pa[0] = "prixAchat";
             pa[1] = paMin;
         }     
         if(!Test.testNull(des))arg.add(des);
@@ -252,7 +252,7 @@ public class ServiceEntree extends BaseService{
         if(!Test.testNull(date))arg.add(date);
         List<Entree> reponse = null;
         try{
-            reponse = (List<Entree>)(Object) this.serviceUtil.find(arg, Stock.class);
+            reponse = (List<Entree>)(Object) this.serviceUtil.find(arg, Entree.class);
             return reponse;
         }catch(Exception e){
             e.printStackTrace();
