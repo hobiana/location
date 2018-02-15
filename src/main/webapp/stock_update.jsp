@@ -21,7 +21,7 @@
             <div id="page-wrapper">
                 <div class="row">
                     <div class="col-lg-12">
-                        <h1 class="page-header">Modification du stock REF0001</h1>
+                        <h1 class="page-header">Modification du stock <s:property value="refStock" /></h1>
                     </div>
                     <!-- /.col-lg-12 -->
                 </div>
@@ -30,7 +30,7 @@
                     <div class="col-lg-12">
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                Modification du stock REF001
+                                Modification du stock > <s:property value="stock.designation" />
                             </div>
                             <%@include file="/template/Erreur.jsp" %>
                             <!-- /.panel-heading -->
@@ -45,7 +45,7 @@
                                         <input name="quantite" type="number" min="2000" class="form-control" placeholder="Prix de Location" value="">
                                     </div>
                                     <input name="idStock" type="hidden" value=""/>
-                                    <button type="submit" class="btn btn-default">Ajouter</button>
+                                    <button type="submit" class="btn btn-default">Modifier</button>
                                 </form>
                             </div>
                             <!-- /.panel-body -->
