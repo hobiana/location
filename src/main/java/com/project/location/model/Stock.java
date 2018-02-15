@@ -5,6 +5,7 @@
  */
 package com.project.location.model;
 
+import com.project.location.reference.Reference;
 import com.project.location.util.NumberTest;
 
 /**
@@ -17,7 +18,7 @@ public class Stock extends BaseModel {
     private int quantite; 
 
     public Stock() {
-        
+        this.reference = Reference.STOCK;
     }
     public String quantite(){
         return NumberTest.toMoney(quantite);
