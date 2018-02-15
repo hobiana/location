@@ -7,6 +7,7 @@ package com.project.location.service;
 
 import com.project.location.model.Sortie;
 import com.project.location.model.Stock;
+import com.project.location.util.DateUtil;
 import com.project.location.util.Test;
 import java.util.ArrayList;
 import java.util.Date;
@@ -111,6 +112,79 @@ public class ServiceSortie extends BaseService{
             date[1] = dateMin;
             date[2] = dateMax;
         }else if(dateMax.before(dateMin)){            
+            date[1] = dateMax;  
+            date[2] = dateMin;    
+        }else if(dateMin==null&&dateMax!=null){
+            date = Test.instance(2);
+            date[0] = "date";
+            date[1] = dateMax;
+        }else if(dateMax==null&&dateMin!=null){
+            date = Test.instance(2);
+            date[0] = "date";
+            date[1] = dateMin;
+        }else if(dateMax==null&&dateMin==null){
+            date = null;
+        }else{
+            date = Test.instance(2);
+            date[0] = "date";
+            date[1] = dateMin;
+        }
+        
+       
+        if(!Test.testNull(des))arg.add(des);
+        if(!Test.testNull(quantite))arg.add(quantite);
+      
+        if(!Test.testNull(date))arg.add(date);
+        List<Sortie> reponse = null;
+        try{
+            reponse = (List<Sortie>)(Object) this.serviceUtil.find(arg, Stock.class);
+            return reponse;
+        }catch(Exception e){
+            e.printStackTrace();
+            throw new Exception("Impossible d'extraire la recherche");
+        }
+    }
+    
+    public List<Sortie> find(String designation, int quantiteMin, int quantiteMax, String dateMinS, String dateMaxS) throws Exception{
+        List<Object[]> arg = new ArrayList<>(); 
+        Object[] des = Test.instance(2);
+            des[0] = "stock.designation";
+            des[1] = designation;
+            if(Test.argmumentNull(designation))des=null;
+        Object[] quantite =Test.instance(3) ;
+            quantite[0] = "quantite";
+        if(quantiteMin<quantiteMax){
+            quantite[1] = quantiteMin;
+            quantite[2] = quantiteMax;          
+        }else if(quantiteMax<quantiteMin){            
+            quantite[1] = quantiteMax;  
+            quantite[2] = quantiteMin;    
+        }else if(quantiteMin==0&&quantiteMax>0){
+            quantite = Test.instance(2);
+            quantite[0] = "quantite";
+            quantite[1] = quantiteMax;
+        }else if(quantiteMax==0&&quantiteMin>0){
+            quantite = Test.instance(2);
+            quantite[0] = "quantite";
+            quantite[1] = quantiteMin;
+        }else if(quantiteMax==0&&quantiteMin==0){
+            quantite = null;
+        }else{
+            quantite = Test.instance(2);
+            quantite[0] = "quantite";
+            quantite[1] = quantiteMin;
+        }
+//        date init 
+        Object[] date = Test.instance(3); 
+        Date dateMin = null;
+        Date dateMax = null;
+        if(!Test.argmumentNull(dateMinS)) dateMin = DateUtil.convert(dateMinS);
+        if(!Test.argmumentNull(dateMaxS)) dateMax = DateUtil.convert(dateMaxS);
+        date[0] = "date";
+        if(dateMax!=null&&dateMin!=null&&dateMin.before(dateMax)){
+            date[1] = dateMin;
+            date[2] = dateMax;
+        }else if(dateMax!=null&&dateMin!=null&&dateMax.before(dateMin)){            
             date[1] = dateMax;  
             date[2] = dateMin;    
         }else if(dateMin==null&&dateMax!=null){

@@ -7,6 +7,7 @@ package com.project.location.service;
 
 import com.project.location.model.Entree;
 import com.project.location.model.Stock;
+import com.project.location.util.DateUtil;
 import com.project.location.util.Test;
 import java.util.ArrayList;
 import java.util.Date;
@@ -121,6 +122,100 @@ public class ServiceEntree extends BaseService{
             date[0] = "date";
             date[1] = dateMin;
         }else if(dateMax==null&&dateMin==null){
+            date = null;
+        }else{
+            date = Test.instance(2);
+            date[0] = "date";
+            date[1] = dateMin;
+        }
+        
+        Object[] pa =Test.instance(3) ;
+            pa[0] = "stock.prixAchat";
+        if(paMin<paMax){
+            pa[1] = paMin;
+            pa[2] = paMax;          
+        }else if(paMax<paMin){            
+            pa[1] = paMax;  
+            pa[2] = paMin;    
+        }else if(paMin==0&&paMax>0){
+            pa = Test.instance(2);
+            pa[0] = "prixLocation";
+            pa[1] = paMax;
+        }else if(paMax==0&&paMin>0){
+            pa = Test.instance(2);
+            pa[0] = "prixLocation";
+            pa[1] = paMin;
+        }else if(paMax==0&&paMin==0){
+            pa = null;
+        }else{
+            pa = Test.instance(2);
+            pa[0] = "prixLocation";
+            pa[1] = paMin;
+        }     
+        if(!Test.testNull(des))arg.add(des);
+        if(!Test.testNull(quantite))arg.add(quantite);
+        if(!Test.testNull(pa))arg.add(pa);
+        if(!Test.testNull(date))arg.add(date);
+        List<Entree> reponse = null;
+        try{
+            reponse = (List<Entree>)(Object) this.serviceUtil.find(arg, Stock.class);
+            return reponse;
+        }catch(Exception e){
+            e.printStackTrace();
+            throw new Exception("Impossible d'extraire la recherche");
+        }
+    }
+    public List<Entree> find(String designation, int paMin, int paMax, int quantiteMin, int quantiteMax, String dateMin, String dateMax) throws Exception{
+        List<Object[]> arg = new ArrayList<>(); 
+        Object[] des = Test.instance(2);
+            des[0] = "stock.designation";
+            des[1] = designation;
+        if(Test.argmumentNull(designation))des=null;
+        Object[] quantite =Test.instance(3) ;
+            quantite[0] = "quantite";
+        if(quantiteMin<quantiteMax){
+            quantite[1] = quantiteMin;
+            quantite[2] = quantiteMax;          
+        }else if(quantiteMax<quantiteMin){            
+            quantite[1] = quantiteMax;  
+            quantite[2] = quantiteMin;    
+        }else if(quantiteMin==0&&quantiteMax>0){
+            quantite = Test.instance(2);
+            quantite[0] = "quantite";
+            quantite[1] = quantiteMax;
+        }else if(quantiteMax==0&&quantiteMin>0){
+            quantite = Test.instance(2);
+            quantite[0] = "quantite";
+            quantite[1] = quantiteMin;
+        }else if(quantiteMax==0&&quantiteMin==0){
+            quantite = null;
+        }else{
+            quantite = Test.instance(2);
+            quantite[0] = "quantite";
+            quantite[1] = quantiteMin;
+        }
+//        date init 
+        Object[] date = Test.instance(3); 
+        date[0] = "date";
+        Date dateMinD = null;
+        Date dateMaxD = null;
+        if(!Test.argmumentNull(dateMin)) dateMinD = DateUtil.convert(dateMin);
+        if(!Test.argmumentNull(dateMax)) dateMaxD = DateUtil.convert(dateMax);
+        if(dateMaxD!=null&&dateMinD!=null&&dateMinD.before(dateMaxD)){
+            date[1] = dateMinD;
+            date[2] = dateMaxD;
+        }else if(dateMaxD!=null&&dateMinD!=null&&dateMaxD.before(dateMinD)){            
+            date[1] = dateMaxD;  
+            date[2] = dateMinD;    
+        }else if(dateMinD==null&&dateMaxD!=null){
+            date = Test.instance(2);
+            date[0] = "date";
+            date[1] = dateMaxD;
+        }else if(dateMaxD==null&&dateMinD!=null){
+            date = Test.instance(2);
+            date[0] = "date";
+            date[1] = dateMinD;
+        }else if(dateMaxD==null&&dateMinD==null){
             date = null;
         }else{
             date = Test.instance(2);

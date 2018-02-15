@@ -5,6 +5,7 @@
  */
 package com.project.location.model;
 
+import com.project.location.reference.Reference;
 import com.project.location.util.Test;
 
 /**
@@ -19,10 +20,12 @@ public class Sortie extends Entree{
     }
 
     public Sortie() {
+        super.setReference(Reference.SORTIE);
     }
 
     public Sortie(long id) {
         super.setId(id);
+        super.setReference(Reference.SORTIE);
     }
     
 }
