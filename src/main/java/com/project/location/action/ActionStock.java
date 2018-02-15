@@ -6,8 +6,12 @@
 package com.project.location.action;
 
 import com.opensymphony.xwork2.Action;
+import com.project.location.model.Entree;
 import com.project.location.model.Stock;
+import com.project.location.service.ServiceEntree;
 import com.project.location.service.ServiceStock;
+import com.project.location.util.DateUtil;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -16,6 +20,7 @@ import java.util.List;
  */
 public class ActionStock extends BaseAction {
     private ServiceStock serviceStock;
+    private ServiceEntree serviceEntree;
     
     private int idStock;
     
@@ -28,8 +33,13 @@ public class ActionStock extends BaseAction {
     private int quantiteMax;
     private int prixLocationMin;
     private int prixLocationMax;
+    private int prixAchatMin;
+    private int prixAchatMax;
     
     private List<Stock> listeStock;
+    private List<Entree> listeEntree;
+    private String dateMin;
+    private String dateMax;
     private Stock stock;
     
     private String title_page;
@@ -38,6 +48,38 @@ public class ActionStock extends BaseAction {
     private String action;
 
     // getters setters
+
+    public List<Entree> getListeEntree() {
+        return listeEntree;
+    }
+
+    public void setListeEntree(List<Entree> listeEntree) {
+        this.listeEntree = listeEntree;
+    }
+
+    public int getPrixAchatMin() {
+        return prixAchatMin;
+    }
+
+    public void setPrixAchatMin(int prixAchatMin) {
+        this.prixAchatMin = prixAchatMin;
+    }
+
+    public int getPrixAchatMax() {
+        return prixAchatMax;
+    }
+
+    public void setPrixAchatMax(int prixAchatMax) {
+        this.prixAchatMax = prixAchatMax;
+    }
+    
+    public ServiceEntree getServiceEntree() {
+        return serviceEntree;
+    }
+
+    public void setServiceEntree(ServiceEntree serviceEntree) {
+        this.serviceEntree = serviceEntree;
+    }
 
     public int getPrixLocationMin() {
         return prixLocationMin;
@@ -57,6 +99,22 @@ public class ActionStock extends BaseAction {
     
     public int getQuantiteMin() {
         return quantiteMin;
+    }
+
+    public String getDateMin() {
+        return dateMin;
+    }
+
+    public void setDateMin(String dateMin) {
+        this.dateMin = dateMin;
+    }
+
+    public String getDateMax() {
+        return dateMax;
+    }
+
+    public void setDateMax(String dateMax) {
+        this.dateMax = dateMax;
     }
 
     public void setQuantiteMin(int quantiteMin) {
@@ -177,10 +235,9 @@ public class ActionStock extends BaseAction {
     }
     
     public String inStock() throws Exception {
-        this.titre="Entrée de Stock";
-        this.refStock="REF"+this.idStock;
-        this.title_page="Ajout du stock "+this.refStock;
+        this.titre="Entrée de Stock";        
         this.stock= serviceStock.find(idStock);
+        this.title_page="Ajout du stock "+stock.getRef();
         this.title_panel="Ajout du stock > "+this.stock.getDesignation();
         this.action="";// ex addStock
         return Action.SUCCESS;
@@ -188,9 +245,8 @@ public class ActionStock extends BaseAction {
     
     public String outStock() throws Exception {
         this.titre="Sortie de Stock";
-        this.refStock="REF"+this.idStock;
-        this.title_page="Sortie du stock "+this.refStock;
         this.stock= serviceStock.find(idStock);
+        this.title_page="Sortie du stock "+stock.getRef();
         this.title_panel="Sortie du stock > "+this.stock.getDesignation();
         this.action="";// ex addStock
         return Action.SUCCESS;
@@ -198,13 +254,15 @@ public class ActionStock extends BaseAction {
     
     public String updateStock() throws Exception {
         this.titre="Modification de Stock";
-        this.refStock="REF"+this.idStock;
+        this.stock= serviceStock.find(idStock);
+        this.refStock=stock.getRef();
         this.stock= serviceStock.find(idStock);
         return Action.SUCCESS;
     }
     
     public String listInStock() throws Exception {
         this.titre="Liste entrée de Stock";
+        listeEntree = serviceEntree.find(designation, prixAchatMin, prixAchatMax, quantiteMin, quantiteMax, dateMin, dateMax);
         return Action.SUCCESS;
     }
     

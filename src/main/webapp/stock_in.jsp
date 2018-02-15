@@ -41,7 +41,7 @@
                                     </div>
                                     <div class="form-group">
                                         <div class="col-md-12">
-                                            <label>Prix d'Achat </label>
+                                            <label>Prix d'Achat Min / Max</label>
                                         </div>
                                         <div class="col-md-12">
                                             <div class="col-md-6">
@@ -54,7 +54,7 @@
                                     </div>
                                     <div class="form-group">
                                         <div class="col-md-12">
-                                            <label>Quantités</label>
+                                            <label>Quantités Min / Max</label>
                                         </div>
                                         <div class="col-md-12">
                                             <div class="col-md-6">
@@ -67,7 +67,7 @@
                                     </div>
                                     <div class="form-group">
                                         <div class="col-md-12">
-                                            <label>Dates</label>
+                                            <label>Dates  Min / Max</label>
                                         </div>
                                         <div class="col-md-12">
                                             <div class="col-md-6">
@@ -104,13 +104,15 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr class="odd gradeX">
-                                            <td> REF0001 </td>
-                                            <td> Assiette ronde </td> 
-                                            <td><span class="pull-right">50 000</span></td>
-                                            <td><span class="pull-right">100</span></td>
-                                            <td><span class="pull-right">2017-01-01</span></td>
-                                        </tr>
+                                        <s:iterator value="listeEntree">
+                                            <tr class="odd gradeX">
+                                                <td> <s:property value="getRef()"  /> </td>
+                                                <td> <s:property value="designation"  /> </td> 
+                                                <td><span class="pull-right"><s:property value="prixAchat"  /></span></td>
+                                                <td><span class="pull-right"><s:property value="quantite"  /></span></td>
+                                                <td><span class="pull-right"><s:property value="getDate"  /></span></td>
+                                            </tr>
+                                        </s:iterator>
                                     </tbody>
                                 </table>
                             </div>

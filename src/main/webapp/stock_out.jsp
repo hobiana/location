@@ -41,7 +41,7 @@
                                     </div>
                                     <div class="form-group">
                                         <div class="col-md-12">
-                                            <label>Quantités</label>
+                                            <label>Quantités  Min / Max</label>
                                         </div>
                                         <div class="col-md-12">
                                             <div class="col-md-6">
@@ -54,7 +54,7 @@
                                     </div>
                                     <div class="form-group">
                                         <div class="col-md-12">
-                                            <label>Dates</label>
+                                            <label>Dates  Min / Max</label>
                                         </div>
                                         <div class="col-md-12">
                                             <div class="col-md-6">

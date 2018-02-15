@@ -55,7 +55,8 @@ public class Stock extends BaseModel {
     }
 
     public Stock(long id) {
-        super.setId(id);;
+        super.setId(id);
+        super.reference = Reference.STOCK;
     }
     
 }
