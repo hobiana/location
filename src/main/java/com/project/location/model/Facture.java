@@ -72,5 +72,9 @@ public class Facture extends BaseModel {
     public Facture(){
         this.reference = Reference.FACTURE;
     }
+    public Facture(long id){
+        super.id = id;
+        super.reference = Reference.FACTURE;
+    }
     
 }

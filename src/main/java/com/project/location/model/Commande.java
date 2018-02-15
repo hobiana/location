@@ -78,6 +78,10 @@ public class Commande extends BaseModel {
     }
 
     public Commande() {
-        this.setReference(Reference.COMMANDE);    
+        super.setReference(Reference.COMMANDE);    
+    }
+    public Commande(long id){
+        super.setId(id);
+        super.setReference(Reference.COMMANDE);    
     }
 }
