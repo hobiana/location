@@ -12,7 +12,7 @@ import com.project.location.util.Test;
  *
  * @author Diary
  */
-public class Sortie extends Entree{
+public class Sortie extends ESStockModel{
     @Override
     public void setQuantite(int quantite) throws Exception {
         Test.doubleNegatif(quantite, "La quantité de sortie");

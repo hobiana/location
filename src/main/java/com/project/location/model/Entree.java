@@ -15,23 +15,15 @@ import java.util.Date;
  *
  * @author Diary
  */
-public class Entree extends BaseModel {
-    private Stock stock; 
-    protected int quantite; 
-    private Date date; 
+public class Entree extends ESStockModel {
+    
     private double prixAchat;
     
-    public String getDateString() throws Exception{
-        return DateUtil.convert(date);
-    }
+    
     public String prixAchat(){
         return NumberTest.toMoney(prixAchat);
     }
-    
-    public String quantite(){
-        return NumberTest.toMoney(quantite);
-    }
-    
+  
     public double getPrixAchat() {
         return prixAchat;
     }
@@ -39,31 +31,10 @@ public class Entree extends BaseModel {
     public void setPrixAchat(double prixAchat) {
         this.prixAchat = prixAchat;
     }
-
-    
-    public Stock getStock() {
-        return stock;
-    }
-
-    public void setStock(Stock stock) {
-        this.stock = stock;
-    }
-
-    public int getQuantite() {
-        return quantite;
-    }
-
+    @Override
     public void setQuantite(int quantite) throws Exception {
         Test.doubleNegatif(quantite, "La quantité d'entrée");
         this.quantite = quantite;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
     }
 
     public Entree(long id) {
