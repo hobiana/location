@@ -57,24 +57,30 @@ public class ServiceEntree extends BaseService{
             throw new Exception("Impossible d'inserer l'entree dans la BDD cause "+e.getMessage());
         }
     }
-    public List<Entree> find()throws Exception{
-        List<Entree> reponse= null; 
-        Session session = null;
+    public void instanceStock(List<Entree> entree) throws Exception{
+        Session session = null; 
         try{
-            reponse = (List<Entree>)(Object) this.hibernateDao.findAll(new Entree());
-            session = this.hibernateDao.getSessionFactory().openSession();
-            int size = reponse.size();
+            session = this.hibernateDao.getSessionFactory().openSession(); 
+            int size = entree.size(); 
             for(int i=0;i<size;i++){
-                Entree temp = reponse.get(i);
+                Entree temp = entree.get(i); 
                 this.findStock(temp, session);
             }
-            
+        }catch(Exception e){
+            throw new Exception("impossible d'extraire les stocks");
+        }finally{
+            if(session!=null)session.close();
+        }
+    }
+    public List<Entree> find()throws Exception{
+        List<Entree> reponse= null; 
+        try{
+            reponse = (List<Entree>)(Object) this.hibernateDao.findAll(new Entree());
+            if(!reponse.isEmpty()) this.instanceStock(reponse);
             return reponse; 
         }catch(Exception e){
             e.printStackTrace();
             throw new Exception("Impossible d'extraire tout les entrées cause : "+e.getMessage());
-        }finally{
-            if(session!=null) session.close();
         }
     }
     public void findStock(Entree entree)throws Exception{
@@ -115,6 +121,7 @@ public class ServiceEntree extends BaseService{
         Entree entree = new Entree(id); 
         try{
             this.hibernateDao.findById(entree);
+            this.findStock(entree);
             return entree; 
         }catch(Exception e){
             e.printStackTrace();
@@ -205,6 +212,7 @@ public class ServiceEntree extends BaseService{
         List<Entree> reponse = null;
         try{
             reponse = (List<Entree>)(Object) this.serviceUtil.find(arg, Stock.class);
+            if(!reponse.isEmpty()) this.instanceStock(reponse);
             return reponse;
         }catch(Exception e){
             e.printStackTrace();
@@ -299,6 +307,7 @@ public class ServiceEntree extends BaseService{
         List<Entree> reponse = null;
         try{
             reponse = (List<Entree>)(Object) this.serviceUtil.find(arg, Entree.class);
+            if(!reponse.isEmpty()) this.instanceStock(reponse);
             return reponse;
         }catch(Exception e){
             e.printStackTrace();

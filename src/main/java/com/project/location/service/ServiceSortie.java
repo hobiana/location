@@ -12,6 +12,8 @@ import com.project.location.util.Test;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import org.hibernate.Query;
+import org.hibernate.Session;
 
 /**
  *
@@ -55,26 +57,79 @@ public class ServiceSortie extends BaseService{
             throw new Exception("Impossible de faire cette sortie cause : "+e.getMessage());
         }
     }
+    public void instanceStock(List<Sortie> sorties) throws Exception{
+        Session session = null; 
+        try{
+            session = this.hibernateDao.getSessionFactory().openSession(); 
+            int size = sorties.size(); 
+            for(int i=0;i<size;i++){
+                Sortie temp = sorties.get(i); 
+                this.findStock(temp, session);
+            }
+        }catch(Exception e){
+            throw new Exception("impossible d'extraire les stocks");
+        }finally{
+            if(session!=null)session.close();
+        }
+    }
     public Sortie find(long id)throws Exception{
         Sortie sortie = new Sortie(id);
         try{
             this.hibernateDao.findById(sortie);
+            this.findStock(sortie);
             return sortie;
         }catch(Exception e){
             e.printStackTrace();
             throw new Exception("Impossible d'extraire la sortie id : "+id+" cause : "+e.getMessage());
         }
     }
+    
     public List<Sortie> find()throws Exception{
         List<Sortie> reponse = null; 
         try{
             reponse = (List<Sortie>)(Object) this.hibernateDao.findAll(new Sortie());
+            if(!reponse.isEmpty())
+                this.instanceStock(reponse);
             return reponse;
         }catch(Exception e){
             e.printStackTrace();
             throw new Exception("Impossible d'extraire les sortie du stock cause "+e.getMessage());
         }
         
+    }
+    public void findStock(Sortie sortie)throws Exception{
+        Session session = null; 
+        Stock stock = null;
+        Query query;
+        try{
+            session = this.hibernateDao.getSessionFactory().openSession();
+            String sql = "select stock from Sortie sortie join sortie.stock stock where sortie.id = :id";    
+            query = session.createQuery(sql);
+            query.setParameter("id",sortie.getId()); 
+            List<Stock> stocks = query.list();
+            if(!stocks.isEmpty()){
+               sortie.setStock(stocks.get(0));
+            }
+        }catch(Exception e){
+            throw new Exception("impossible d'extraire le stock de la sortie");
+        }finally{
+            if(session!=null)session.close();
+        }
+    }
+    public void findStock(Sortie sortie, Session session)throws Exception{
+        Stock stock = null;
+        Query query;
+        try{
+            String sql = "select stock from Sortie sortie join sortie.stock stock where sortie.id = :id";  
+            query = session.createQuery(sql);
+            query.setParameter("id",sortie.getId()); 
+            List<Stock> stocks = query.list();
+            if(!stocks.isEmpty()){
+                sortie.setStock(stocks.get(0));
+            }
+        }catch(Exception e){
+            throw new Exception("impossible d'extraire le stock de l'entrée");
+        }
     }
     public List<Sortie> find(String designation, int quantiteMin, int quantiteMax, Date dateMin, Date dateMax) throws Exception{
         List<Object[]> arg = new ArrayList<>(); 
@@ -211,6 +266,7 @@ public class ServiceSortie extends BaseService{
         List<Sortie> reponse = null;
         try{
             reponse = (List<Sortie>)(Object) this.serviceUtil.find(arg, Sortie.class);
+            if(!reponse.isEmpty())this.instanceStock(reponse);
             return reponse;
         }catch(Exception e){
             e.printStackTrace();
