@@ -41,10 +41,10 @@ public class ServiceSortie extends BaseService{
     
     public void insert(Sortie sortie)throws Exception{
         try{
-            this.hibernateDao.save(sortie);           
             Stock stock = this.ServiceStock.find(sortie.getStock().getId());
             int value = stock.getQuantite()-sortie.getQuantite();
             if(value<0)throw new Exception("stock insuffisant pour cette sortie");
+            this.hibernateDao.save(sortie);           
             stock.setQuantite(value);
             try{
                 this.ServiceStock.update(stock);

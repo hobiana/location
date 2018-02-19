@@ -14,7 +14,7 @@ import com.project.location.util.NumberTest;
  */
 public class Stock extends BaseModel {
     private String designation; 
-    private double prixLocation; 
+    private int prixLocation; 
     private int quantite; 
 
     public Stock() {
@@ -36,11 +36,11 @@ public class Stock extends BaseModel {
         this.designation = designation;
     }
     
-    public double getPrixLocation() {
+    public int getPrixLocation() {
         return prixLocation;
     }
 
-    public void setPrixLocation(double prixLocation) throws Exception {
+    public void setPrixLocation(int prixLocation) throws Exception {
         if(prixLocation<0)throw new Exception("le prix du location ne peut pas être inférieure à 0");
         this.prixLocation = prixLocation;
     }

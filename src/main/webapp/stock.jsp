@@ -92,7 +92,7 @@
                                         <div class="modal-dialog modal-md">
                                             <!-- Modal content-->
                                             <div class="modal-content">
-                                                <form method="POST">
+                                                <form method="POST" action="newStock">
                                                     <div class="modal-header backg-brw">
                                                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                                                         <h4 class="modal-title">Ajouter un client</h4>
@@ -112,7 +112,7 @@
                                                         </div>
                                                         <div class="form-group">
                                                             <label>Quantit&eacute;</label>
-                                                            <input name="quantite" class="form-control" placeholder="Adresse" type="number">
+                                                            <input name="quantite" class="form-control" placeholder="Quantité" type="number">
                                                         </div>
                                                     </div>
                                                     <div class="modal-footer">
@@ -157,7 +157,7 @@
                                                 <td>
                                                     <a type="button" 
                                                        class="btn btn-default center-block" 
-                                                       href="updateStock?idStock=<s:property value="id"  />">
+                                                       href="toupdateStock?idStock=<s:property value="id"  />">
                                                         <i class="fa fa-edit"></i>
                                                     </a>
                                                 </td>

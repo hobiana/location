@@ -37,7 +37,7 @@
                                 <form role="form">
                                     <div class="form-group">
                                         <label>Désignation</label>
-                                        <input name="designation" class="form-control" placeholder="Désignation">
+                                        <input name="designation" class="form-control" placeholder="Désignation" value="<s:property value="getDesignation()"/>">
                                     </div>
                                     <div class="form-group">
                                         <div class="col-md-12">
@@ -45,10 +45,10 @@
                                         </div>
                                         <div class="col-md-12">
                                             <div class="col-md-6">
-                                                <input name="prixAchatMin" class="form-control" placeholder="Prix d'Achat Min" type="number" min="0">
+                                                <input name="prixAchatMin" class="form-control" placeholder="Prix d'Achat Min" type="number" min="0" value="<s:property value="prixAchatMin"/>">
                                             </div>
                                             <div class="col-md-6">
-                                                <input name="prixAchatMax" class="form-control" placeholder="Prix d'Achat Max" type="number" min="0">
+                                                <input name="prixAchatMax" class="form-control" placeholder="Prix d'Achat Max" type="number" min="0" value="<s:property value="prixAchatMax"/>">
                                             </div>
                                         </div>
                                     </div>
@@ -58,10 +58,10 @@
                                         </div>
                                         <div class="col-md-12">
                                             <div class="col-md-6">
-                                                <input name="quantiteMin" class="form-control" placeholder="Quantité Min" type="number" min="0">
+                                                <input name="quantiteMin" class="form-control" placeholder="Quantité Min" type="number" min="0" value="<s:property value="quantiteMin"/>">
                                             </div>
                                             <div class="col-md-6">
-                                                <input name="quantiteMax" class="form-control" placeholder="Quantité Max" type="number" min="0">
+                                                <input name="quantiteMax" class="form-control" placeholder="Quantité Max" type="number" min="0" value="<s:property value="quantiteMax"/>">
                                             </div>
                                         </div>
                                     </div>
@@ -71,10 +71,10 @@
                                         </div>
                                         <div class="col-md-12">
                                             <div class="col-md-6">
-                                                <input name="dateMin" class="form-control" placeholder="Date Min" type="date">
+                                                <input name="dateMin" class="form-control" placeholder="Date Min" type="date" value="<s:property value="dateMin"/>">
                                             </div>
                                             <div class="col-md-6">
-                                                <input name="dateMax" class="form-control" placeholder="Date Max" type="date">
+                                                <input name="dateMax" class="form-control" placeholder="Date Max" type="date" value="<s:property value="dateMax"/>">
                                             </div>
                                         </div>
                                     </div>
@@ -107,10 +107,10 @@
                                         <s:iterator value="listeEntree">
                                             <tr class="odd gradeX">
                                                 <td> <s:property value="getRef()"  /> </td>
-                                                <td> <s:property value="designation"  /> </td> 
-                                                <td><span class="pull-right"><s:property value="prixAchat"  /></span></td>
-                                                <td><span class="pull-right"><s:property value="quantite"  /></span></td>
-                                                <td><span class="pull-right"><s:property value="getDate"  /></span></td>
+                                                <td> <s:property value="stock.designation"  /> </td> 
+                                                <td><span class="pull-right"><s:property value="prixAchat()"  /></span></td>
+                                                <td><span class="pull-right"><s:property value="quantite()"  /></span></td>
+                                                <td><span class="pull-right"><s:property value="getDateString()"  /></span></td>
                                             </tr>
                                         </s:iterator>
                                     </tbody>

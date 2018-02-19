@@ -40,7 +40,13 @@
                                         <label>Quantités</label>
                                         <input name="quantite" type="number" min="1" class="form-control" placeholder="Quantités" value="">
                                     </div>
-                                    <input name="idStock" type="hidden" value=""/>
+                                    <s:if test="action.equals('ajoutStock')">
+                                        <div class="form-group">
+                                            <label>Prix d'Achat (Ariary)</label>
+                                            <input name="prixAchat" type="number" min="0" class="form-control" placeholder="Prix d'Achat">
+                                        </div>
+                                    </s:if>
+                                    <input name="idStock" type="hidden" value="<s:property value="idStock" />"/>
                                     <button type="submit" class="btn btn-default">Ajouter</button>
                                 </form>
                             </div>

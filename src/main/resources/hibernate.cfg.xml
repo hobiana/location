@@ -33,5 +33,6 @@
     <mapping resource="xml/commandestock.hbm.xml"/>
     <mapping resource="xml/entree.hbm.xml"/>
     <mapping resource="xml/entreevola.hbm.xml"/>
+    <mapping resource="xml/historiquePrixStock.hbm.xml"/>
   </session-factory>
 </hibernate-configuration>

@@ -35,16 +35,16 @@
                             <%@include file="/template/Erreur.jsp" %>
                             <!-- /.panel-heading -->
                             <div class="panel-body">
-                                <form action="updateclient">
+                                <form action="modifStock">
                                     <div class="form-group">
                                         <label>Désignation</label>
-                                        <input name="designation" class="form-control" placeholder="Désignation" value="">
+                                        <input name="designation" class="form-control" placeholder="Désignation" value="<s:property value="stock.designation" />">
                                     </div>
                                     <div class="form-group">
-                                        <label>Prix de Location</label>
-                                        <input name="quantite" type="number" min="2000" class="form-control" placeholder="Prix de Location" value="">
+                                        <label>Prix de Location (Ariary)</label>
+                                        <input name="prixLocation" type="number" min="2000" class="form-control" placeholder="Prix de Location" value="<s:property value="stock.prixLocation" />">
                                     </div>
-                                    <input name="idStock" type="hidden" value=""/>
+                                    <input name="idStock" type="hidden" value="<s:property value="stock.id" />"/>
                                     <button type="submit" class="btn btn-default">Modifier</button>
                                 </form>
                             </div>

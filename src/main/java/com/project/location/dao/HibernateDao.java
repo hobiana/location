@@ -42,7 +42,7 @@ public class HibernateDao {
                 session.close();
         }
     }
-    public void save(BaseModel obj,Session session) throws Exception{
+    public static void save(BaseModel obj,Session session) throws Exception{
         try{        
             session.save(obj);
         }catch (Exception ex){         

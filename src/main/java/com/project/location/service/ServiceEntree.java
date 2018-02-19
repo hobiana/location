@@ -49,6 +49,7 @@ public class ServiceEntree extends BaseService{
             try{
                 this.ServiceStock.update(stock);
             }catch(Exception e){
+                e.printStackTrace();
                 this.hibernateDao.delete(entree);
                 throw e;
             }                    

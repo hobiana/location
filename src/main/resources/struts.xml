@@ -117,13 +117,33 @@
            <result name="error">index.js</result>
         </action>
         
+        <action name="ajoutStock" method="ajoutStock" class="com.project.location.action.ActionStock">
+           <result name="success" type="redirectAction">stock</result>
+           <result name="error">index.js</result>
+        </action>
+        
+        <action name="newStock" method="newStock" class="com.project.location.action.ActionStock">
+           <result name="success" type="redirectAction">stock</result>
+           <result name="error">index.js</result>
+        </action>
+        
         <action name="outStock" method="outStock" class="com.project.location.action.ActionStock">
            <result name="success">stock_add_del.jsp</result>
            <result name="error">index.js</result>
         </action>
         
-        <action name="updateStock" method="updateStock" class="com.project.location.action.ActionStock">
+        <action name="sortieStock" method="sortieStock" class="com.project.location.action.ActionStock">
+           <result name="success" type="redirectAction">stock</result>
+           <result name="error">index.js</result>
+        </action>
+        
+        <action name="toupdateStock" method="toupdateStock" class="com.project.location.action.ActionStock">
            <result name="success">stock_update.jsp</result>
+           <result name="error">index.js</result>
+        </action>
+        
+        <action name="modifStock" method="modifStock" class="com.project.location.action.ActionStock">
+           <result name="success" type="redirectAction">stock</result>
            <result name="error">index.js</result>
         </action>
         

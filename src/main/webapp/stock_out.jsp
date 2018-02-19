@@ -37,7 +37,7 @@
                                 <form role="form">
                                     <div class="form-group">
                                         <label>Désignation</label>
-                                        <input name="designation" class="form-control" placeholder="Désignation">
+                                        <input name="designation" class="form-control" placeholder="Désignation" value="<s:property value="getDesignation()"/>">
                                     </div>
                                     <div class="form-group">
                                         <div class="col-md-12">
@@ -45,10 +45,10 @@
                                         </div>
                                         <div class="col-md-12">
                                             <div class="col-md-6">
-                                                <input name="quantiteMin" class="form-control" placeholder="Quantité Min" type="number" min="0">
+                                                <input name="quantiteMin" class="form-control" placeholder="Quantité Min" type="number" min="0" value="<s:property value="quantiteMin"/>">
                                             </div>
                                             <div class="col-md-6">
-                                                <input name="quantiteMax" class="form-control" placeholder="Quantité Max" type="number" min="0">
+                                                <input name="quantiteMax" class="form-control" placeholder="Quantité Max" type="number" min="0" value="<s:property value="quantiteMax"/>">
                                             </div>
                                         </div>
                                     </div>
@@ -58,10 +58,10 @@
                                         </div>
                                         <div class="col-md-12">
                                             <div class="col-md-6">
-                                                <input name="dateMin" class="form-control" placeholder="Date Min" type="date">
+                                                <input name="dateMin" class="form-control" placeholder="Date Min" type="date" value="<s:property value="dateMin"/>">
                                             </div>
                                             <div class="col-md-6">
-                                                <input name="dateMax" class="form-control" placeholder="Date Max" type="date">
+                                                <input name="dateMax" class="form-control" placeholder="Date Max" type="date" value="<s:property value="dateMax"/>">
                                             </div>
                                         </div>
                                     </div>
@@ -90,12 +90,14 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr class="odd gradeX">
-                                            <td> REF0001 </td>
-                                            <td> Assiette ronde </td>
-                                            <td><span class="pull-right">100</span></td>
-                                            <td><span class="pull-right">2017-01-01</span></td>
-                                        </tr>
+                                        <s:iterator value="listeSortie">
+                                            <tr class="odd gradeX">
+                                                <td> <s:property value="getRef()"  /> </td>
+                                                <td> <s:property value="stock.designation"  />
+                                                <td><span class="pull-right"><s:property value="quantite"  /></span></td>
+                                                <td><span class="pull-right"><s:property value="getDateString()"  /></span></td>
+                                            </tr>
+                                        </s:iterator>
                                     </tbody>
                                 </table>
                             </div>
