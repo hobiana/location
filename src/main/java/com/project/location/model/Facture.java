@@ -5,6 +5,8 @@
  */
 package com.project.location.model;
 
+import com.project.location.reference.Reference;
+import com.project.location.util.NumberTest;
 import java.util.Date;
 
 /**
@@ -18,6 +20,13 @@ public class Facture extends BaseModel {
     private double TVA; 
     private double remise; 
 
+    public String remise(){
+        return NumberTest.toMoney(remise);
+    }
+    public String quotient(){
+        return NumberTest.toMoney(quotient);
+    }
+    
     public Commande getCommande() {
         return commande;
     }
@@ -60,6 +69,12 @@ public class Facture extends BaseModel {
         if(remise>100|remise<0) throw new Exception("remise invalide, veuillez vérifier que la remise ne dépasse les 100% ou ne soit pas inférieure à 0%");
         this.remise = remise;
     }
-    
+    public Facture(){
+        this.reference = Reference.FACTURE;
+    }
+    public Facture(long id){
+        super.id = id;
+        super.reference = Reference.FACTURE;
+    }
     
 }

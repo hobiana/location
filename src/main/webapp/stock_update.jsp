@@ -21,7 +21,7 @@
             <div id="page-wrapper">
                 <div class="row">
                     <div class="col-lg-12">
-                        <h1 class="page-header">Modification du stock REF0001</h1>
+                        <h1 class="page-header">Modification du stock <s:property value="refStock" /></h1>
                     </div>
                     <!-- /.col-lg-12 -->
                 </div>
@@ -30,22 +30,22 @@
                     <div class="col-lg-12">
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                Modification du stock REF001
+                                Modification du stock > <s:property value="stock.designation" />
                             </div>
                             <%@include file="/template/Erreur.jsp" %>
                             <!-- /.panel-heading -->
                             <div class="panel-body">
-                                <form action="updateclient">
+                                <form action="modifStock">
                                     <div class="form-group">
                                         <label>Désignation</label>
-                                        <input name="designation" class="form-control" placeholder="Désignation" value="">
+                                        <input name="designation" class="form-control" placeholder="Désignation" value="<s:property value="stock.designation" />">
                                     </div>
                                     <div class="form-group">
-                                        <label>Prix de Location</label>
-                                        <input name="quantite" type="number" min="2000" class="form-control" placeholder="Prix de Location" value="">
+                                        <label>Prix de Location (Ariary)</label>
+                                        <input name="prixLocation" type="number" min="2000" class="form-control" placeholder="Prix de Location" value="<s:property value="stock.prixLocation" />">
                                     </div>
-                                    <input name="idStock" type="hidden" value=""/>
-                                    <button type="submit" class="btn btn-default">Ajouter</button>
+                                    <input name="idStock" type="hidden" value="<s:property value="stock.id" />"/>
+                                    <button type="submit" class="btn btn-default">Modifier</button>
                                 </form>
                             </div>
                             <!-- /.panel-body -->

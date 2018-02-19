@@ -57,6 +57,12 @@
             <groupId>org.apache.struts</groupId>
             <artifactId>struts2-core</artifactId>
             <version>${org.strutsframework-version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>javassist</groupId>
+                    <artifactId>javassist</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
  
         <dependency>
@@ -93,7 +99,6 @@
             <version>1.7.12</version>
         </dependency>
         <!--tiles end-->
-        
     </dependencies>
 
     <build>

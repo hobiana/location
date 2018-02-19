@@ -5,13 +5,14 @@
  */
 package com.project.location.model;
 
+import com.project.location.reference.Reference;
 import com.project.location.util.Test;
 
 /**
  *
  * @author Diary
  */
-public class Sortie extends Entree{
+public class Sortie extends ESStockModel{
     @Override
     public void setQuantite(int quantite) throws Exception {
         Test.doubleNegatif(quantite, "La quantité de sortie");
@@ -19,10 +20,12 @@ public class Sortie extends Entree{
     }
 
     public Sortie() {
+        super.setReference(Reference.SORTIE);
     }
 
     public Sortie(long id) {
         super.setId(id);
+        super.setReference(Reference.SORTIE);
     }
     
 }

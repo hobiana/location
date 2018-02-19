@@ -4,19 +4,29 @@
  * and open the template in the editor.
  */
 package com.project.location.model;
+
+import com.project.location.reference.Reference;
+import com.project.location.util.NumberTest;
+
 /**
  *
  * @author Diary
  */
 public class Stock extends BaseModel {
     private String designation; 
-    private double prixLocation; 
+    private int prixLocation; 
     private int quantite; 
 
     public Stock() {
-        
+        this.reference = Reference.STOCK;
     }
-
+    public String quantite(){
+        return NumberTest.toMoney(quantite);
+    }
+    public String getPL(){
+        return NumberTest.toMoney(prixLocation);
+    }
+    
     public String getDesignation() {
         return designation;
     }
@@ -26,11 +36,11 @@ public class Stock extends BaseModel {
         this.designation = designation;
     }
     
-    public double getPrixLocation() {
+    public int getPrixLocation() {
         return prixLocation;
     }
 
-    public void setPrixLocation(double prixLocation) throws Exception {
+    public void setPrixLocation(int prixLocation) throws Exception {
         if(prixLocation<0)throw new Exception("le prix du location ne peut pas être inférieure à 0");
         this.prixLocation = prixLocation;
     }
@@ -45,7 +55,8 @@ public class Stock extends BaseModel {
     }
 
     public Stock(long id) {
-        super.setId(id);;
+        super.setId(id);
+        super.reference = Reference.STOCK;
     }
     
 }

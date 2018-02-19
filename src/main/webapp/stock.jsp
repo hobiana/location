@@ -34,34 +34,34 @@
                             </div>
                             <!-- /.panel-heading -->
                             <div class="panel-body">
-                                <form role="form">
+                                <form role="form" action="stock">
                                     <div class="form-group">
                                         <label>Désignation</label>
-                                        <input name="designation" class="form-control" placeholder="Désignation">
+                                        <input name="designation" class="form-control" placeholder="Désignation" value="<s:property value="getDesignation()"/>">
                                     </div>
                                     <div class="form-group">
                                         <div class="col-md-12">
-                                            <label>Prix de Location </label>
+                                            <label>Prix de Location Min / Max</label>
                                         </div>
                                         <div class="col-md-12">
                                             <div class="col-md-6">
-                                                <input name="prixAchatMin" class="form-control" min="0" placeholder="Prix de Location Min" type="number">
+                                                <input name="prixLocationMin" class="form-control" min="0" placeholder="Prix de Location Min" type="number"value="<s:property value="prixLocationMin"/>">
                                             </div>
                                             <div class="col-md-6">
-                                                <input name="prixAchatMax" class="form-control" min="0" placeholder="Prix de Location Max" type="number">
+                                                <input name="prixLocationMax" class="form-control" min="0" placeholder="Prix de Location Max" type="number" value="<s:property value="prixLocationMax"/>">
                                             </div>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <div class="col-md-12">
-                                            <label>Quantités</label>
+                                            <label>Quantités Min / Max</label>
                                         </div>
                                         <div class="col-md-12">
                                             <div class="col-md-6">
-                                                <input name="quantiteMin" class="form-control" min="0" placeholder="Quantité Min" type="number">
+                                                <input name="quantiteMin" class="form-control" min="0" placeholder="Quantité Min" type="number" value="<s:property value="quantiteMin"/>">
                                             </div>
                                             <div class="col-md-6">
-                                                <input name="quantiteMax" class="form-control" min="0" placeholder="Quantité Max" type="number">
+                                                <input name="quantiteMax" class="form-control" min="0" placeholder="Quantité Max" type="number" value="<s:property value="quantiteMax"/>">
                                             </div>
                                         </div>
                                     </div>
@@ -92,7 +92,7 @@
                                         <div class="modal-dialog modal-md">
                                             <!-- Modal content-->
                                             <div class="modal-content">
-                                                <form method="POST">
+                                                <form method="POST" action="newStock">
                                                     <div class="modal-header backg-brw">
                                                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                                                         <h4 class="modal-title">Ajouter un client</h4>
@@ -112,7 +112,7 @@
                                                         </div>
                                                         <div class="form-group">
                                                             <label>Quantit&eacute;</label>
-                                                            <input name="quantite" class="form-control" placeholder="Adresse" type="number">
+                                                            <input name="quantite" class="form-control" placeholder="Quantité" type="number">
                                                         </div>
                                                     </div>
                                                     <div class="modal-footer">
@@ -134,33 +134,35 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                        <tr class="odd gradeX">
-                                            <td> REF0001 </td>
-                                            <td> Assiette ronde </td> 
-                                            <td><span class="pull-right">50 000</span></td>
-                                            <td><span class="pull-right">100</span></td>
-                                            <td class="center">
-                                                <a type="button" 
-                                                   class="btn btn-success btn-circle center-block"
-                                                   href="inStock?idStock=1">
-                                                    <i class="fa fa-sign-in"></i>
-                                                </a>
-                                            </td>
-                                            <td class="center">
-                                                <a type="button" 
-                                                   class="btn btn-warning btn-circle center-block"
-                                                   href="outStock?idStock=1">
-                                                    <i class="fa fa-sign-out"></i>
-                                                </a>
-                                            </td>
-                                            <td>
-                                                <a type="button" 
-                                                   class="btn btn-default center-block" 
-                                                   href="updateStock?idStock=1">
-                                                    <i class="fa fa-edit"></i>
-                                                </a>
-                                            </td>
-                                        </tr>
+                                        <s:iterator value="listeStock">
+                                            <tr class="odd gradeX">
+                                                <td> <s:property value="getRef()"  /> </td>
+                                                <td> <s:property value="designation"  /> </td> 
+                                                <td><span class="pull-right"><s:property value="getPL()"  /></span></td>
+                                                <td><span class="pull-right"><s:property value="quantite()"  /></span></td>
+                                                <td class="center">
+                                                    <a type="button" 
+                                                       class="btn btn-success btn-circle center-block"
+                                                       href="inStock?idStock=<s:property value="id"  />">
+                                                        <i class="fa fa-sign-in"></i>
+                                                    </a>
+                                                </td>
+                                                <td class="center">
+                                                    <a type="button" 
+                                                       class="btn btn-warning btn-circle center-block"
+                                                       href="outStock?idStock=<s:property value="id"  />">
+                                                        <i class="fa fa-sign-out"></i>
+                                                    </a>
+                                                </td>
+                                                <td>
+                                                    <a type="button" 
+                                                       class="btn btn-default center-block" 
+                                                       href="toupdateStock?idStock=<s:property value="id"  />">
+                                                        <i class="fa fa-edit"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        </s:iterator>
                                     </tbody>
                                 </table>
                             </div>

@@ -16,6 +16,9 @@
     <bean id="usersAction" class="com.project.location.action.ActionUsers">
         <property name="serviceUsers" ref="serviceUsers" />
     </bean>
+    <bean id="stockAction" class="com.project.location.action.ActionStock">
+        <property name="serviceStock" ref="serviceStock" />
+    </bean>
     <!--service class-->   
     <bean id="clientService" class="com.project.location.service.ServiceClient">
         <property name="hibernateDao" ref="hibernateDao" />
@@ -24,6 +27,9 @@
         <property name="hibernateDao" ref="hibernateDao" />
         <property name="serviceStock" ref="serviceStock" />
         <property name="serviceUtil" ref="serviceUtil" />
+    </bean>
+    <bean id="serviceHistoriquePrixStock" class="com.project.location.service.ServiceHistoriquePrixStock">
+        <property name="hibernateDao" ref="hibernateDao" />
     </bean>
     <bean id="serviceSortie" class="com.project.location.service.ServiceSortie">     
         <property name="hibernateDao" ref="hibernateDao" />
