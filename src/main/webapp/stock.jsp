@@ -41,7 +41,7 @@
                                     </div>
                                     <div class="form-group">
                                         <div class="col-md-12">
-                                            <label>Prix de Location Min / Max</label>
+                                            <label>Prix de Location unitaire Min / Max</label>
                                         </div>
                                         <div class="col-md-12">
                                             <div class="col-md-6">
@@ -103,11 +103,11 @@
                                                             <input name="designation" class="form-control" placeholder="Désignation">
                                                         </div>
                                                         <div class="form-group">
-                                                            <label>Prix d'Achat</label>
+                                                            <label>Prix d'Achat unitaire</label>
                                                             <input name="prixAchat" class="form-control" placeholder="Prix d'Achat" type="number">
                                                         </div>
                                                         <div class="form-group">
-                                                            <label>Prix de Location</label>
+                                                            <label>Prix de Location unitaire</label>
                                                             <input name="prixLocation" class="form-control" placeholder="Prix de Location" type="number">
                                                         </div>
                                                         <div class="form-group">
@@ -126,8 +126,8 @@
                                     <tr>
                                         <th>R&eacute;f.</th>
                                         <th>D&eacute;signation</th>
-                                        <th>Prix de Location (Ariary)</th>
-                                        <th>Quantités</th>
+                                        <th>Location (Ariary/unite)</th>
+                                        <th>Qte</th>
                                         <th>Entrée</th>
                                         <th>Sortie</th>
                                         <th>Modifier</th>

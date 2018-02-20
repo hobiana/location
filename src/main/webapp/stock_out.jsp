@@ -85,7 +85,7 @@
                                         <tr>
                                             <th>R&eacute;f.</th>
                                             <th>D&eacute;signation</th>
-                                            <th>Quantités</th>
+                                            <th>Qte</th>
                                             <th>Date</th>
                                         </tr>
                                     </thead>

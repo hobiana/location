@@ -42,7 +42,7 @@
                                     </div>
                                     <s:if test="action.equals('ajoutStock')">
                                         <div class="form-group">
-                                            <label>Prix d'Achat (Ariary)</label>
+                                            <label>Prix d'Achat unitaire (Ariary)</label>
                                             <input name="prixAchat" type="number" min="0" class="form-control" placeholder="Prix d'Achat">
                                         </div>
                                     </s:if>
