@@ -34,7 +34,7 @@
                             </div>
                             <!-- /.panel-heading -->
                             <div class="panel-body">
-                                <form role="form">
+                                <form role="form" action="listInStock">
                                     <div class="form-group">
                                         <label>Désignation</label>
                                         <input name="designation" class="form-control" placeholder="Désignation" value="<s:property value="getDesignation()"/>">

@@ -6,6 +6,7 @@
 package com.project.location.service;
 
 import com.project.location.model.BaseModel;
+import freemarker.template.utility.StringUtil;
 import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -28,7 +29,15 @@ public class ServiceUtil extends BaseService{
                 if(temp.length==2){
                     Object object = temp[1];
                     if(object.getClass()==String.class){
-                        criteria.add(Restrictions.ilike("object."+(String)temp[0], "%"+(String)temp[1]+"%"));
+                        String tempS = (String)temp[0];
+                        if(tempS.contains(".")){
+                            String[] tabSplit = StringUtil.split(tempS, '.');
+                            String alias = tabSplit[0];
+                            criteria.createAlias("object."+tabSplit[0], alias);
+                            criteria.add(Restrictions.ilike(alias+"."+tabSplit[1], "%"+(String)temp[1]+"%"));
+                        }else{
+                            criteria.add(Restrictions.ilike("object."+(String)temp[0], "%"+(String)temp[1]+"%"));
+                        }
                     }else{
                          criteria.add(Restrictions.eq("object."+(String)temp[0],temp[1]));                
                     }
