@@ -41,7 +41,7 @@
                                         <input name="designation" class="form-control" placeholder="Désignation" value="<s:property value="stock.designation" />">
                                     </div>
                                     <div class="form-group">
-                                        <label>Prix de Location (Ariary)</label>
+                                        <label>Prix de Location unitaire (Ariary)</label>
                                         <input name="prixLocation" type="number" min="2000" class="form-control" placeholder="Prix de Location" value="<s:property value="stock.prixLocation" />">
                                     </div>
                                     <input name="idStock" type="hidden" value="<s:property value="stock.id" />"/>

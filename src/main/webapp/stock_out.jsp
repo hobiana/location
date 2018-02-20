@@ -34,7 +34,7 @@
                             </div>
                             <!-- /.panel-heading -->
                             <div class="panel-body">
-                                <form role="form">
+                                <form action="listOutStock">
                                     <div class="form-group">
                                         <label>Désignation</label>
                                         <input name="designation" class="form-control" placeholder="Désignation" value="<s:property value="getDesignation()"/>">
@@ -85,7 +85,7 @@
                                         <tr>
                                             <th>R&eacute;f.</th>
                                             <th>D&eacute;signation</th>
-                                            <th>Quantités</th>
+                                            <th>Qte</th>
                                             <th>Date</th>
                                         </tr>
                                     </thead>

@@ -34,14 +34,14 @@
                             </div>
                             <!-- /.panel-heading -->
                             <div class="panel-body">
-                                <form role="form">
+                                <form role="form" action="listInStock">
                                     <div class="form-group">
                                         <label>Désignation</label>
                                         <input name="designation" class="form-control" placeholder="Désignation" value="<s:property value="getDesignation()"/>">
                                     </div>
                                     <div class="form-group">
                                         <div class="col-md-12">
-                                            <label>Prix d'Achat Min / Max</label>
+                                            <label>Prix d'Achat unitaire Min / Max</label>
                                         </div>
                                         <div class="col-md-12">
                                             <div class="col-md-6">
@@ -99,7 +99,7 @@
                                             <th>R&eacute;f.</th>
                                             <th>D&eacute;signation</th>
                                             <th>Prix d'Achat (Ariary)</th>
-                                            <th>Quantités</th>
+                                            <th>Qte</th>
                                             <th>Date</th>
                                         </tr>
                                     </thead>

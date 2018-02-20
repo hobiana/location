@@ -161,5 +161,55 @@
            <result name="success">commande.jsp</result>
            <result name="error">index.js</result>
         </action>
+        
+        <action name="addCommande" method="addCommande" class="com.project.location.action.ActionCommande">
+           <result name="success" type="redirectAction">
+               <param name="actionName">commande</param>
+               <param name="idClient">${idClient}</param>
+                <param name="dateDebut">${dateDebut}</param>
+                <param name="dateFin">${dateFin}</param>
+           </result>
+           <result name="error">index.js</result>
+        </action>
+        
+        <action name="deleteCommande" method="deleteCommande" class="com.project.location.action.ActionCommande">
+           <result name="success" type="redirectAction">
+               <param name="actionName">commande</param>
+               <param name="idClient">${idClient}</param>
+                <param name="dateDebut">${dateDebut}</param>
+                <param name="dateFin">${dateFin}</param>
+           </result>
+           <result name="error">index.js</result>
+        </action>
+        
+        <action name="modifCommande" method="modifCommande" class="com.project.location.action.ActionCommande">
+           <result name="success" type="redirectAction">
+               <param name="actionName">commande</param>
+               <param name="idClient">${idClient}</param>
+                <param name="dateDebut">${dateDebut}</param>
+                <param name="dateFin">${dateFin}</param>
+           </result>
+           <result name="error">index.js</result>
+        </action>
+        
+        <action name="verifierCommande" method="verifCommande" class="com.project.location.action.ActionCommande">
+           <result name="success" type="redirectAction">
+               <param name="actionName">commande</param>
+               <param name="idClient">${idClient}</param>
+                <param name="dateDebut">${dateDebut}</param>
+                <param name="dateFin">${dateFin}</param>
+           </result>
+           <result name="error">index.js</result>
+        </action>
+        
+        <action name="validerCommande" method="validerCommande" class="com.project.location.action.ActionCommande">
+           <result name="success" type="redirectAction">client</result>
+           <result name="error" type="redirectAction">
+               <param name="actionName">commande</param>
+               <param name="idClient">${idClient}</param>
+                <param name="dateDebut">${dateDebut}</param>
+                <param name="dateFin">${dateFin}</param>
+           </result>
+        </action>
     </package>
 </struts>
