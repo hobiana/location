@@ -15,8 +15,18 @@ public class CommandeStock extends BaseModel {
     private Stock stock; 
     private Commande commande; 
     private double quantiteCommande; 
-    private double quantiteRetour; 
+    private double quantiteRetour;
+    private String description;
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    
     public String quantiteCommande(){
         return NumberTest.toMoney(quantiteCommande);
     }
