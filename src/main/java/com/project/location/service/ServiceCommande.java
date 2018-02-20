@@ -13,6 +13,7 @@ import com.project.location.model.Stock;
 import com.project.location.reference.ReferenceSession;
 import com.project.location.util.DateUtil;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import javax.servlet.http.HttpSession;
@@ -150,28 +151,45 @@ public class ServiceCommande extends BaseService{
     }
     
     public boolean checkDispo(Date debut, Date fin, CommandeStock commande) throws Exception{
-        return this.dispo(commande.getStock().getId(), (int)commande.getQuantiteCommande(), debut, fin)>0;
+        return this.dispo(commande.getStock().getId(), (int)commande.getQuantiteCommande(), debut, fin)>=0;
     }
     
     public boolean checkDispo(Date debut, Date fin, CommandeStock commande, Session session) throws Exception{
         return this.dispo(commande.getStock().getId(), (int)commande.getQuantiteCommande(), debut, fin, session)>0;
     }
     
-    public void addCommand(long idStock, int quantite) throws Exception{
+    public void addCommand(long idStock, int quantite, Date debut, Date fin) throws Exception{
         HttpSession session = ServletActionContext.getRequest().getSession();
         List<CommandeStock> commandes = (List<CommandeStock>)(Object)session.getAttribute(ReferenceSession.COMMANDE);
         if(commandes==null){
             commandes = new ArrayList();
         }
+        int size = commandes.size();
         Stock stock =  this.serviceStock.find(idStock);        
         CommandeStock commandeStock = new CommandeStock(); 
         commandeStock.setQuantiteCommande(quantite);
         commandeStock.setStock(stock);
         commandeStock.setQuantiteRetour(0);
         commandeStock.setDescription("");
-        commandes.add(commandeStock);  
+        boolean test = false;
+        for(int i=0;i<size;i++){
+            CommandeStock temp = commandes.get(i);
+            if(temp.getStock().getId()==idStock){
+                test=true; 
+                temp.setQuantiteCommande(temp.getQuantiteCommande()+quantite);
+            }
+        }
+        if(!test)commandes.add(commandeStock);  
         session.removeAttribute(ReferenceSession.COMMANDE);
         session.setAttribute(ReferenceSession.COMMANDE, commandes);
+        this.checkAll(debut, fin);
+    }
+    
+    public void addCommand(long idStock, int quantite, String debut, String fin) throws Exception{
+        Date debutD = DateUtil.convert(debut);
+        Date finD = DateUtil.convert(fin); 
+        
+        this.addCommand(idStock, quantite, debutD, finD);
     }
     
     public List<CommandeStock> getCommande(){
@@ -203,7 +221,7 @@ public class ServiceCommande extends BaseService{
         session.setAttribute(ReferenceSession.COMMANDE, commandes);  
     }
     
-    public void modifierCommand(long idCommande, int quantite){
+    public void modifierCommand(long idCommande, int quantite, Date debut, Date fin) throws Exception{
         HttpSession session = ServletActionContext.getRequest().getSession();
         List<CommandeStock> commandes = (List<CommandeStock>)(Object)session.getAttribute(ReferenceSession.COMMANDE);
         int size = commandes.size();
@@ -214,6 +232,13 @@ public class ServiceCommande extends BaseService{
         }
         session.removeAttribute(ReferenceSession.COMMANDE);
         session.setAttribute(ReferenceSession.COMMANDE, commandes);
+        this.checkAll(debut, fin);
+    }
+    
+    public void modifierCommand(long idCommande, int quantite, String debut, String fin) throws Exception{
+        Date debutD = DateUtil.convert(debut); 
+        Date finD = DateUtil.convert(fin); 
+        this.modifierCommand(idCommande, quantite, debutD, finD);
     }
     
     public void save(CommandeStock commandeStock)throws Exception{
@@ -258,7 +283,10 @@ public class ServiceCommande extends BaseService{
             for(int i=0;i<size;i++){
                 CommandeStock temp = commande.get(i);
                 boolean test = this.checkDispo(debut, fin, temp); 
-                if(!test) temp.setDescription("stock insuffisant");              
+                if(!test) temp.setDescription("stock insuffisant");      
+                else{
+                    temp.setDescription("");
+                }
             }
             this.setCommande(commande);
         }catch(Exception e){
@@ -286,6 +314,7 @@ public class ServiceCommande extends BaseService{
         commande.setDateDebut(debut);
         commande.setDateFin(fin);
         commande.setClient(client);
+        commande.setDateCommande(Calendar.getInstance().getTime());
        
         List<CommandeStock> commandes = this.getCommande();
         int size = commandes.size();

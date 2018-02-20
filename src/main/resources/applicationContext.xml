@@ -19,6 +19,10 @@
     <bean id="stockAction" class="com.project.location.action.ActionStock">
         <property name="serviceStock" ref="serviceStock" />
     </bean>
+    <bean id="commandeAction" class="com.project.location.action.ActionCommande">
+        <property name="serviceStock" ref="serviceStock" />
+        <property name="serviceCommande" ref="serviceCommande" />
+    </bean>
     <!--service class-->   
     <bean id="clientService" class="com.project.location.service.ServiceClient">
         <property name="hibernateDao" ref="hibernateDao" />
