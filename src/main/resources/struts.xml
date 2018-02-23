@@ -162,54 +162,69 @@
            <result name="error">index.js</result>
         </action>
         
-        <action name="addCommande" method="addCommande" class="com.project.location.action.ActionCommande">
+        <action name="addCommande" method="addSessionCommande" class="com.project.location.action.ActionCommande">
            <result name="success" type="redirectAction">
                <param name="actionName">commande</param>
                <param name="idClient">${idClient}</param>
                 <param name="dateDebut">${dateDebut}</param>
                 <param name="dateFin">${dateFin}</param>
+                <param name="action">${action}</param>
            </result>
            <result name="error">index.js</result>
         </action>
         
-        <action name="deleteCommande" method="deleteCommande" class="com.project.location.action.ActionCommande">
+        <action name="deleteCommande" method="deleteSessionCommande" class="com.project.location.action.ActionCommande">
            <result name="success" type="redirectAction">
                <param name="actionName">commande</param>
                <param name="idClient">${idClient}</param>
                 <param name="dateDebut">${dateDebut}</param>
                 <param name="dateFin">${dateFin}</param>
+                <param name="action">${action}</param>
            </result>
            <result name="error">index.js</result>
         </action>
         
-        <action name="modifCommande" method="modifCommande" class="com.project.location.action.ActionCommande">
+        <action name="modifCommande" method="modifSessionCommande" class="com.project.location.action.ActionCommande">
            <result name="success" type="redirectAction">
                <param name="actionName">commande</param>
                <param name="idClient">${idClient}</param>
                 <param name="dateDebut">${dateDebut}</param>
                 <param name="dateFin">${dateFin}</param>
+                <param name="action">${action}</param>
            </result>
            <result name="error">index.js</result>
         </action>
         
-        <action name="verifierCommande" method="verifCommande" class="com.project.location.action.ActionCommande">
+        <action name="verifierCommande" method="verifSessionCommande" class="com.project.location.action.ActionCommande">
            <result name="success" type="redirectAction">
                <param name="actionName">commande</param>
                <param name="idClient">${idClient}</param>
                 <param name="dateDebut">${dateDebut}</param>
                 <param name="dateFin">${dateFin}</param>
+                <param name="action">${action}</param>
            </result>
            <result name="error">index.js</result>
         </action>
         
-        <action name="validerCommande" method="validerCommande" class="com.project.location.action.ActionCommande">
+        <action name="validerCommande" method="validerSessionCommande" class="com.project.location.action.ActionCommande">
            <result name="success" type="redirectAction">client</result>
            <result name="error" type="redirectAction">
                <param name="actionName">commande</param>
                <param name="idClient">${idClient}</param>
                 <param name="dateDebut">${dateDebut}</param>
                 <param name="dateFin">${dateFin}</param>
+                <param name="action">${action}</param>
            </result>
+        </action>
+        
+        <action name="listcommande" method="listCommande" class="com.project.location.action.ActionCommande">
+           <result name="success">liste_commande.jsp</result>
+           <result name="error">index.jsp</result>
+        </action>
+        
+        <action name="fichecommande" method="ficheCommande" class="com.project.location.action.ActionCommande">
+           <result name="success">fiche_commande.jsp</result>
+           <result name="error">index.jsp</result>
         </action>
     </package>
 </struts>

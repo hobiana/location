@@ -21,7 +21,7 @@
             <div id="page-wrapper">
                 <div class="row">
                     <div class="col-lg-12">
-                        <h1 class="page-header">Nouvelle Commande</h1>
+                        <h1 class="page-header">Commande</h1>
                     </div>
                     <!-- /.col-lg-12 -->
                 </div>
@@ -57,6 +57,7 @@
                                                 </div>
                                             </div>
                                             <input name="idClient" type="hidden" value="<s:property value="idClient"/>" />
+                                            <input name="action" type="hidden" value="<s:property value="action"/>" />
                                             <button style="margin-top: 10px;margin-right: 15px" type="submit" class="btn btn-warning pull-right">Vérifier la commande selon les dates</button>
                                         </form>
                                     </div>
@@ -141,7 +142,7 @@
                 var dateD = document.getElementById("dateDebut").value;
                 var dateF = document.getElementById("dateFin").value;
                 if (dateD != "" && dateF != "") {
-                    window.location.replace("modifCommande?idClient=<s:property value="idClient"/>&dateDebut=" + dateD + "&dateFin=" + dateF + "&quantite=" + document.getElementById("qte" + this.getAttribute('id')).value + "&idCommandeStock=" + document.getElementById(this.getAttribute('id')).value)
+                    window.location.replace("modifCommande?idClient=<s:property value="idClient"/>&dateDebut=" + dateD + "&dateFin=" + dateF + "&quantite=" + document.getElementById("qte" + this.getAttribute('id')).value + "&idCommandeStock=" + document.getElementById(this.getAttribute('id')).value + "&action=<s:property value="action"/>")
                 }
             });
             
@@ -151,7 +152,7 @@
                 var dateF = document.getElementById("dateFin").value;
                 var id = this.getAttribute('id');
                 if (dateD != "" && dateF != "") {
-                    window.location.replace("addCommande?idClient=<s:property value="idClient"/>&dateDebut=" + dateD + "&dateFin=" + dateF + "&quantite=" + document.getElementById("addQte" + id).value + "&idStock=" + id)
+                    window.location.replace("addCommande?idClient=<s:property value="idClient"/>&dateDebut=" + dateD + "&dateFin=" + dateF + "&quantite=" + document.getElementById("addQte" + id).value + "&idStock=" + id + "&action=<s:property value="action"/>")
                 }
             });
             
@@ -162,7 +163,7 @@
                 var id = this.getAttribute('id');
                 var idCommandeStock=id.substring(3, id.length);
                 if (dateD != "" && dateF != "") {
-                    window.location.replace("deleteCommande?idClient=<s:property value="idClient"/>&dateDebut=" + dateD + "&dateFin=" + dateF + "&idCommandeStock=" + idCommandeStock)
+                    window.location.replace("deleteCommande?idClient=<s:property value="idClient"/>&dateDebut=" + dateD + "&dateFin=" + dateF + "&idCommandeStock=" + idCommandeStock + "&action=<s:property value="action"/>")
                 }
             });
             
@@ -170,7 +171,7 @@
                 var dateD = document.getElementById("dateDebut").value;
                 var dateF = document.getElementById("dateFin").value;
                 if (dateD != "" && dateF != "") {
-                    window.location.replace("validerCommande?idClient=<s:property value="idClient"/>&dateDebut=" + dateD + "&dateFin=" + dateF)
+                    window.location.replace("validerCommande?idClient=<s:property value="idClient"/>&dateDebut=" + dateD + "&dateFin=" + dateF + "&action=<s:property value="action"/>")
                 }
             });
             

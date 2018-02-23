@@ -6,6 +6,7 @@
 package com.project.location.action;
 
 import com.opensymphony.xwork2.Action;
+import com.project.location.model.Commande;
 import com.project.location.model.CommandeStock;
 import com.project.location.model.Stock;
 import com.project.location.service.ServiceCommande;
@@ -21,20 +22,40 @@ import java.util.List;
  *
  * @author Hobiana
  */
-public class ActionCommande extends BaseAction{
+public class ActionCommande extends BaseAction {
+
     private List<Stock> listeStock;
     private List<CommandeStock> listeCommandeStock;
     private ServiceStock serviceStock;
     private ServiceCommande serviceCommande;
-    
+
     private int idCommandeStock;
     private int idStock;
     private int idClient;
     private int quantite;
-    
+
     private String dateDebut;
     private String dateFin;
+    private String action;
+
+    private List<Commande> listeCommande;
     // getter setter
+
+    public String getAction() {
+        return action;
+    }
+
+    public void setAction(String action) {
+        this.action = action;
+    }
+
+    public List<Commande> getListeCommande() {
+        return listeCommande;
+    }
+
+    public void setListeCommande(List<Commande> listeCommande) {
+        this.listeCommande = listeCommande;
+    }
 
     public int getIdClient() {
         return idClient;
@@ -115,49 +136,69 @@ public class ActionCommande extends BaseAction{
     public void setServiceCommande(ServiceCommande serviceCommande) {
         this.serviceCommande = serviceCommande;
     }
-    
-    
+
     // getter setters
     public String commande() throws Exception {
-        this.titre="Commande";
+        this.titre = "Commande";
         listeStock = serviceStock.find();
-        if(Test.argmumentNull(dateDebut)) dateDebut=DateUtil.convert(Calendar.getInstance().getTime());
-        if(Test.argmumentNull(dateFin)){
+        if (Test.argmumentNull(dateDebut)) {
+            dateDebut = DateUtil.convert(Calendar.getInstance().getTime());
+        }
+        if (Test.argmumentNull(dateFin)) {
             Date d = new Date();
             Calendar c = Calendar.getInstance();
             c.setTime(d);
             c.add(Calendar.DATE, 1);
-            d=c.getTime();
-            dateFin=DateUtil.convert(d);
+            d = c.getTime();
+            dateFin = DateUtil.convert(d);
         }
         listeCommandeStock = serviceCommande.getCommande();
         return Action.SUCCESS;
     }
-    
-    public String addCommande() throws Exception {
-        serviceCommande.addCommand(idStock, quantite,dateDebut,dateFin);
+
+    public String addSessionCommande() throws Exception {
+        serviceCommande.addCommand(idStock, quantite, dateDebut, dateFin);
         return Action.SUCCESS;
     }
-    
-    public String deleteCommande() throws Exception {
+
+    public String deleteSessionCommande() throws Exception {
         serviceCommande.deleteCommand(idCommandeStock);
         return Action.SUCCESS;
     }
-    
-    public String modifCommande() throws Exception {
-        serviceCommande.modifierCommand(idCommandeStock, quantite,dateDebut,dateFin);
+
+    public String modifSessionCommande() throws Exception {
+        serviceCommande.modifierCommand(idCommandeStock, quantite, dateDebut, dateFin);
         return Action.SUCCESS;
     }
-    
-    public String verifCommande() throws Exception {
+
+    public String verifSessionCommande() throws Exception {
         serviceCommande.checkAll(dateDebut, dateFin);
         return Action.SUCCESS;
     }
-    
-    public String validerCommande() throws Exception {
-        if (serviceCommande.saveCommande(idClient, dateDebut, dateFin)){
-            return Action.SUCCESS;
+
+    public String validerSessionCommande() throws Exception {
+        if (action.equals("save")) {
+            if (serviceCommande.saveCommande(idClient, dateDebut, dateFin)) {
+                return Action.SUCCESS;
+            }
+        }
+        else if(!action.equals("save")){
+            // ito fonction update ito ilay ataon la
+            /*
+            if (serviceCommande.updateCommande(idClient, dateDebut, dateFin)) {
+                return Action.SUCCESS;
+            }*/
         }
         return Action.ERROR;
+    }
+
+    public String listCommande() throws Exception {
+        this.titre = "Liste Commande";
+        return Action.SUCCESS;
+    }
+
+    public String ficheCommande() throws Exception {
+        this.titre = "Fiche Commande";
+        return Action.SUCCESS;
     }
 }
