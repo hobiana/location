@@ -30,6 +30,7 @@
     <bean id="serviceCommande" class="com.project.location.service.ServiceCommande">
         <property name="hibernateDao" ref="hibernateDao" />
         <property name="serviceStock" ref="serviceStock" />
+        <property name="serviceUtil" ref="serviceUtil" />
     </bean>
     <bean id="serviceEntree" class="com.project.location.service.ServiceEntree">
         <property name="hibernateDao" ref="hibernateDao" />

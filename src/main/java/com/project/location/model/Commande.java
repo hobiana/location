@@ -6,6 +6,7 @@
 package com.project.location.model;
 
 import com.project.location.reference.Reference;
+import com.project.location.util.DateUtil;
 import java.util.Date;
 
 /**
@@ -48,7 +49,17 @@ public class Commande extends BaseModel {
     public Date getDateDebut() {
         return dateDebut;
     }
-
+    public String dateDebut() throws Exception{
+        return DateUtil.convert(dateDebut);
+    }
+    public String dateFin() throws Exception{
+        return DateUtil.convert(dateFin);
+    }
+    
+    public String dateCommande() throws Exception{
+        return DateUtil.convert(dateCommande);
+    }
+    
     public void setDateDebut(Date dateDebut) {
         this.dateDebut = dateDebut;
     }

@@ -13,6 +13,7 @@
         <title><s:property value="titre" /></title>
         <%@include file="/template/css.jsp" %>
         <link href="vendor/datatables/css/dataTables.bootstrap.min.css" rel="stylesheet">
+        <link href="js/bootstrap-toggle.min.css" rel="stylesheet">
     </head>
     <body>
         <div id="wrapper">
@@ -34,24 +35,71 @@
                             </div>
                             <!-- /.panel-heading -->
                             <div class="panel-body">
-                                <form role="form" action="stock">
+                                <form role="form" action="listcommande">
                                     <div class="form-group">
                                         <label>Client</label>
-                                        <input name="client" class="form-control" placeholder="Client" value="">
+                                        <input name="client" class="form-control" placeholder="Client" value="<s:property value="getClient()"/>">
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        
+                                        <div class="col-md-12">
+                                            <label>Date d'enregistrement du commande Début / Fin </label>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="col-md-6">
+                                                <input name="dateDebut" class="form-control"min="0" placeholder="Date Min" type="date" value="<s:property value="dateDebut"/>">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <input name="dateFin" class="form-control"  placeholder="Date Max" type="date" value="<s:property value="dateFin"/>">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        
+                                        <div class="col-md-12">
+                                            <label>Date du commande Début / Fin </label>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="col-md-6">
+                                                <input name="dateDebutCommande" class="form-control"min="0" placeholder="Date Min" type="date" value="<s:property value="dateDebutCommande"/>">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <input name="dateFinCommande" class="form-control"  placeholder="Date Max" type="date" value="<s:property value="dateFinCommande"/>">
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="form-group">
                                         <div class="col-md-12">
-                                            <label>Date Début / Fin</label>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="col-md-6">
-                                                <input name="dateDebut" class="form-control"min="0" placeholder="Date Min" type="date"value="">
+                                            <div class="col-md-4">
+                                                <div class="col-md-12">
+                                                    <label>Re&ccedil;u par le client : </label>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <input type="checkbox" name="recu" data-toggle="toggle" data-on="Oui" data-off="Non" <s:if test="recu!=null">checked</s:if>>
+                                                </div>
                                             </div>
-                                            <div class="col-md-6">
-                                                <input name="dateFin" class="form-control"  placeholder="Date Max" type="date" value="">
+                                            <div class="col-md-4">
+                                                <div class="col-md-12">
+                                                    <label>Retour : </label>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <input type="checkbox" name="retour" data-toggle="toggle" data-on="Oui" data-off="Non" <s:if test="retour!=null">checked</s:if>>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="col-md-12">
+                                                    <label>Commande annuler : </label>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <input type="checkbox" name="annule" data-toggle="toggle" data-on="Oui" data-off="Non" <s:if test="annule!=null">checked</s:if>>
+                                                </div>
                                             </div>
                                         </div>
+                                        
                                     </div>
+                                    
+                                             
                                     <button style="margin-top: 15px;" type="submit" class="btn btn-default">Rechercher</button>
                                 </form>
                             </div>
@@ -72,22 +120,26 @@
                                     <tr>
                                         <th>R&eacute;f.</th>
                                         <th>Client</th>
-                                        <th>Date début</th>
-                                        <th>Date Fin</th>
+                                        <th>Début de commande</th>
+                                        <th>Fin de commande</th>
+                                        <th>Date d'enre. du com.</th>
                                         <th>Fiche</th>
                                         <th>Modif.</th>
                                     </tr>
                                     </thead>
+                                    <s:iterator value="listeCommande">
                                     <tbody>
                                         <tr class="odd gradeX">
-                                            <td> CMD0001 </td>
-                                            <td> RAKOTO </td> 
-                                            <td><span class="pull-right">2017-01-01</span></td>
-                                            <td><span class="pull-right">2017-01-01</span></td>
+                                            <td> <s:property value="getRef()"/> </td>
+                                            <td> <s:property value="getClient().getNom()" /></td> 
+                                            <td><span class="pull-right"><s:property value="dateDebut()"/></span></td>
+                                            <td><span class="pull-right"><s:property value="dateFin()"/></span></td>
+                                            <td><span class="pull-right"><s:property value="dateCommande()"/></span></td>
                                             <td><a type="button" class="btn btn-default center-block" href="fichecommande"><i class="fa fa-file-text-o"></i></a></td>
                                             <td><a type="button" class="btn btn-default center-block" href="commande?idClient=1&action=modif"><i class="fa fa-edit"></i></a></td>
                                         </tr>
                                     </tbody>
+                                    </s:iterator>
                                 </table>
                             </div>
                             <!-- /.panel-body -->
@@ -102,11 +154,15 @@
     <%@include file="/template/footer.jsp" %>
     <script src="vendor/datatables/js/jquery.dataTables.min.js"></script>
     <script src="vendor/datatables/js/dataTables.bootstrap.min.js"></script>
+    <script src="js/bootstrap-toggle.min.js"></script>
+
     <script>
         $(document).ready(function () {
             $('#dataTables-example').DataTable({
                 responsive: true
             });
         });
+        
+        
     </script>
 </html>
