@@ -59,6 +59,15 @@ public class ServiceCommande extends BaseService{
             throw new Exception("impossible d'extraire la commande");
         }
     }
+    public Commande find(long idCommande, Session session)throws Exception{
+        try{
+            Commande commande = new Commande(idCommande); 
+            HibernateDao.findById(commande,session);
+            return commande;
+        }catch(Exception e){
+            throw new Exception("impossible d'extraire la commande");
+        }
+    }
     private  Stock findStock(CommandeStock commande, Session session) throws Exception{
         Query query = null; 
         try{
@@ -548,7 +557,84 @@ public class ServiceCommande extends BaseService{
         Date finD = DateUtil.convert(fin);
         this.checkAll(debutD, finD);
     }
-    
+    public void deleteCommandeStock(long idCommande, Session session) throws Exception{
+        try{
+            String sql = "SELECT commandeStock FROM  CommandeStock commandeStock join commandeStock.commande commande where commande.id = :id "; 
+            Query query = session.createQuery(sql); 
+            query.setParameter("id", idCommande); 
+            List<CommandeStock> commande =  query.list(); 
+            int size = commande.size(); 
+            for(int i=0;i<size;i++){
+                CommandeStock temp = commande.get(i);
+                HibernateDao.delete(temp, session);
+            }
+        }catch(Exception e){
+            throw e; 
+        }
+    }
+    public boolean updateCommande(Date debut, Date  fin)throws Exception{
+        boolean reponse; 
+        Session session = null; 
+        Transaction tr = null; 
+       HttpSession sessionServelet = ServletActionContext.getRequest().getSession();
+        List<CommandeStock> commandeStocks = this.getCommande(); 
+        int size = commandeStocks.size(); 
+        long idCommande =(long) sessionServelet.getAttribute(ReferenceSession.IDCOMMANDE);
+        if(idCommande<1)throw new Exception("la commande n'a pas été initialisé");
+        try{
+            session = this.hibernateDao.getSessionFactory().openSession(); 
+            tr = session.beginTransaction(); 
+            Commande commande = this.find(idCommande,session);
+            commande.setDateDebut(debut);
+            commande.setDateFin(fin);
+            HibernateDao.update(commande, session);
+            for(int i=0;i<size;i++){
+                CommandeStock temp = commandeStocks.get(i); 
+                temp.setCommande(commande);
+            }
+            this.deleteCommandeStock(idCommande, session);
+            reponse = this.saveCommande(commandeStocks, session); 
+            if(reponse)tr.commit();
+            else tr.rollback();
+            return reponse;
+        }catch(Exception e){
+            if(tr!=null) tr.rollback();
+            e.printStackTrace();
+            throw e; 
+        }finally{
+            if(session!=null)session.close();
+        }
+    }
+    public boolean saveCommande(List<CommandeStock> commandeStock, Session session)throws Exception{
+        boolean reponse = true; 
+        try{
+           int size = commandeStock.size();
+           Date debut = null; 
+           Date fin = null; 
+           if(size>0){
+               debut = commandeStock.get(0).getCommande().getDateDebut();
+               fin = commandeStock.get(0).getCommande().getDateFin();
+           }
+            for(int i=0;i<size;i++){
+                CommandeStock temp = commandeStock.get(i); 
+                boolean disponible = this.checkDispo(debut, fin , temp); 
+                if(disponible==false){
+                    reponse = false;
+                    temp.setDescription("stock insuffisant");
+                }
+                    
+                HibernateDao.save(temp, session);
+                
+            }
+            if(reponse==true){
+                this.clearSession();
+            }     
+        }catch(Exception e){
+            e.printStackTrace();
+            reponse = false;
+        }
+        return reponse;
+    }
     public boolean saveCommande(long idClient, Date debut, Date fin) throws Exception{
         boolean reponse = true;
         Commande commande = new Commande(); 
@@ -606,5 +692,16 @@ public class ServiceCommande extends BaseService{
     public void clearSession(){
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute(ReferenceSession.COMMANDE);
+    }
+
+    public boolean updateCommande(String dateDebut, String dateFin) throws Exception {
+        Date debut; 
+        Date fin; 
+        if(Test.argmumentNull(dateDebut)|| Test.argmumentNull(dateFin)){
+           throw new Exception("l'une des dates est vide");
+        }
+        debut = DateUtil.convert(dateDebut); 
+        fin = DateUtil.convert(dateFin);
+        return this.updateCommande(debut, fin);
     }
 }

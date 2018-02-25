@@ -9,6 +9,7 @@ import com.opensymphony.xwork2.Action;
 import com.project.location.model.Commande;
 import com.project.location.model.CommandeStock;
 import com.project.location.model.Stock;
+import com.project.location.reference.ReferenceSession;
 import com.project.location.service.ServiceCommande;
 import com.project.location.service.ServiceStock;
 import com.project.location.util.DateUtil;
@@ -16,6 +17,8 @@ import com.project.location.util.Test;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import javax.servlet.http.HttpSession;
+import org.apache.struts2.ServletActionContext;
 import org.hibernate.Session;
 
 /**
@@ -226,7 +229,13 @@ public class ActionCommande extends BaseAction {
                 dateFin = DateUtil.convert(d);
             }
         }else{
-            Commande commande = this.serviceCommande.find(idCommande);
+            HttpSession session = ServletActionContext.getRequest().getSession();          
+            long idCommandeSession =0;
+            if(session.getAttribute(ReferenceSession.IDCOMMANDE)!=null) idCommandeSession = (long) session.getAttribute(ReferenceSession.IDCOMMANDE);
+            if(idCommandeSession==0) idCommandeSession = this.idCommande;
+            Commande commande = this.serviceCommande.find(idCommandeSession);
+            this.idCommande = 0; 
+            session.setAttribute(ReferenceSession.IDCOMMANDE,idCommandeSession);
             dateDebut = DateUtil.convert(commande.getDateDebut()); 
             dateFin = DateUtil.convert(commande.getDateFin());
             this.serviceCommande.setCommande(this.serviceCommande.fin(commande));
@@ -264,10 +273,10 @@ public class ActionCommande extends BaseAction {
         }
         else if(!action.equals("save")){
             // ito fonction update ito ilay ataon la
-            /*
-            if (serviceCommande.updateCommande(idClient, dateDebut, dateFin)) {
+           
+            if (serviceCommande.updateCommande(dateDebut, dateFin)) {
                 return Action.SUCCESS;
-            }*/
+            }
         }
         return Action.ERROR;
     }

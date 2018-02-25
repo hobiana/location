@@ -12,4 +12,5 @@ package com.project.location.reference;
 public class ReferenceSession {
     public static final String USER = "USER";
     public static final String COMMANDE = "CMD";
+    public static final String IDCOMMANDE = "IDCMD";
 }
