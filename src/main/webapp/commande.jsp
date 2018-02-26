@@ -42,7 +42,7 @@
                                         <form action="verifierCommande">
                                             <div class="form-group">
                                                 <div class="col-md-12">
-                                                    <label>Dates de début de la commande</label>
+                                                    <label>Dates de début de la location</label>
                                                 </div>
                                                 <div class="col-md-12">
                                                     <input id="dateDebut" name="dateDebut" class="form-control" placeholder="Date Min" type="date" value="<s:property value="dateDebut"/>">
@@ -50,7 +50,7 @@
                                             </div>
                                             <div class="form-group">
                                                 <div class="col-md-12">
-                                                    <label>Dates de fin de la commande</label>
+                                                    <label>Dates de fin de la location</label>
                                                 </div>
                                                 <div class="col-md-12">
                                                     <input id="dateFin" name="dateFin" class="form-control" placeholder="Date Max" type="date" value="<s:property value="dateFin"/>">

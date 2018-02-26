@@ -52,5 +52,7 @@ Contributor(s):
     </many-to-one>
     <property column="quantitecs" name="quantiteCommande" type="double"/>
     <property column="quantiteretour" name="quantiteRetour" type="double"/>
+    <property column="prixlocation" name="prixLocation" type="integer"/>
+    <property column="prixcasse" name="prixCasse" type="integer"/>
   </class>
 </hibernate-mapping>

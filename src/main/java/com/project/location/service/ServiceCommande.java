@@ -303,6 +303,61 @@ public class ServiceCommande extends BaseService{
             if(session!=null)session.close();
         }
     }
+    public List<Commande> getCommande(String client, Date dateAcquisition, Date dateRetour, Date debut, Date fin, Date dateCommandeD, Date dateCommandeF, boolean recu, boolean retour, boolean annule, boolean paye)throws Exception{
+        Session session = null;
+        List<Commande> reponse = null;
+        try{
+            session = this.hibernateDao.getSessionFactory().openSession();
+            Criteria criteria = session.createCriteria(Commande.class,"commande");
+            if(!Test.argmumentNull(client)){
+                criteria.createAlias("commande.client", "client"); 
+                criteria.add(Restrictions.ilike("client.nom","%"+client+"%"));
+            }
+            if(debut!=null&&fin!=null){
+                Criterion rest1 = Restrictions.and(Restrictions.le("commande.dateDebut", debut), 
+                            Restrictions.ge("commande.dateFin",debut));
+                Criterion rest2 = Restrictions.and(Restrictions.le("commande.dateDebut", fin), 
+                            Restrictions.ge("commande.dateFin",fin));
+
+                criteria.add(Restrictions.or(rest1, rest2));
+            }else if(debut!=null&&fin==null){
+                criteria.add(Restrictions.eq("commande.dateDebut",debut)); 
+                
+            }else if(debut==null&&fin!=null){
+                criteria.add(Restrictions.eq("commande.dateFin", fin));
+            }
+            
+            if(dateAcquisition!=null&&dateRetour!=null){
+                Criterion rest1 = Restrictions.and(Restrictions.le("commande.datedateAcquisition", dateAcquisition), 
+                            Restrictions.ge("commande.datedateRetour",dateAcquisition));
+                Criterion rest2 = Restrictions.and(Restrictions.le("commande.datedateAcquisition", dateRetour), 
+                            Restrictions.ge("commande.datedateRetour",dateRetour));
+
+                criteria.add(Restrictions.or(rest1, rest2));
+            }else if(dateAcquisition!=null&&dateRetour==null){
+                criteria.add(Restrictions.eq("commande.datedateAcquisition",dateAcquisition)); 
+                
+            }else if(dateAcquisition==null&&dateRetour!=null){
+                criteria.add(Restrictions.eq("commande.datedateRetour", dateRetour));
+            }
+            
+            if(dateCommandeD!=null&&dateCommandeF!=null){
+                criteria.add(Restrictions.between("commande.dateCommande", dateCommandeD,dateCommandeF));
+            }
+            criteria.add(Restrictions.eq("commande.retour", retour));
+            criteria.add(Restrictions.eq("commande.annule", annule));
+            criteria.add(Restrictions.eq("commande.recu", recu));
+            criteria.add(Restrictions.eq("commande.paye", paye));
+            
+            reponse = criteria.list();
+            this.populateClient(reponse, session);
+            return reponse;
+        }catch(Exception e){
+            throw new Exception("impossible d'extraire la liste des commandes");
+        }finally{
+            if(session!=null)session.close();
+        }
+    }
     
     public List<Commande> getCommande(String client, String debut, String fin, String dateCommandeD, String dateCommandeF, boolean recu, boolean retour, boolean annule)throws Exception{
        Date debutDate = null; 
@@ -316,6 +371,24 @@ public class ServiceCommande extends BaseService{
        if(!Test.argmumentNull(dateCommandeF)) dateCommandeFDate = DateUtil.convert(dateCommandeF); 
        
        return this.getCommande(client, debutDate, finDate, dateCommandeDDate, dateCommandeFDate, recu, retour, annule);
+    }
+    
+    public List<Commande> getCommande(String client,String dateAcquisition, String dateRetour, String debut, String fin, String dateCommandeD, String dateCommandeF, boolean recu, boolean retour, boolean annule, boolean paye)throws Exception{
+       Date debutDate = null; 
+       Date finDate = null; 
+       Date dateCommandeDDate = null; 
+       Date dateCommandeFDate = null; 
+       Date dateAcqui = null; 
+       Date dateRet = null ; 
+       
+       if(!Test.argmumentNull(debut)) debutDate = DateUtil.convert(debut); 
+       if(!Test.argmumentNull(fin)) finDate = DateUtil.convert(fin); 
+       if(!Test.argmumentNull(dateCommandeD)) dateCommandeDDate = DateUtil.convert(dateCommandeD); 
+       if(!Test.argmumentNull(dateCommandeF)) dateCommandeFDate = DateUtil.convert(dateCommandeF); 
+       if(!Test.argmumentNull(dateAcquisition)) dateAcqui = DateUtil.convert(dateAcquisition); 
+       if(!Test.argmumentNull(dateRetour)) dateRet = DateUtil.convert(dateRetour); 
+       
+       return this.getCommande(client,dateAcqui,dateRet, debutDate, finDate, dateCommandeDDate, dateCommandeFDate, recu, retour, annule,paye);
     }
     
     public int getStockRestant(long idStock, Date debut, Date fin)throws Exception{
@@ -411,7 +484,13 @@ public class ServiceCommande extends BaseService{
     public boolean checkDispo(Date debut, Date fin, CommandeStock commande, Session session) throws Exception{
         return this.dispo(commande.getStock().getId(), (int)commande.getQuantiteCommande(), debut, fin, session)>0;
     }
-    
+    public int getTotal() throws Exception{
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        List<CommandeStock> commandes = (List<CommandeStock>)(Object)session.getAttribute(ReferenceSession.COMMANDE);
+        int size = commandes.size(); 
+        if(size==0)return 0;  
+        return commandes.get(0).getCommande().getTotal(commandes);
+    }
     public void addCommand(long idStock, int quantite, Date debut, Date fin) throws Exception{
         HttpSession session = ServletActionContext.getRequest().getSession();
         List<CommandeStock> commandes = (List<CommandeStock>)(Object)session.getAttribute(ReferenceSession.COMMANDE);
@@ -425,6 +504,8 @@ public class ServiceCommande extends BaseService{
         commandeStock.setStock(stock);
         commandeStock.setQuantiteRetour(0);
         commandeStock.setDescription("");
+        commandeStock.setPrixCasse(stock.getPrixCasse());
+        commandeStock.setPrixLocation(stock.getPrixLocation());
         boolean test = false;
         for(int i=0;i<size;i++){
             CommandeStock temp = commandes.get(i);

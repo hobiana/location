@@ -17,6 +17,26 @@ public class CommandeStock extends BaseModel {
     private double quantiteCommande; 
     private double quantiteRetour;
     private String description;
+    private int prixLocation; 
+    private int prixCasse;
+
+    public int getPrixLocation() {
+        return prixLocation;
+    }
+
+    public void setPrixLocation(int prixLocation) {
+        this.prixLocation = prixLocation;
+    }
+
+    public int getPrixCasse() {
+        return prixCasse;
+    }
+
+    public void setPrixCasse(int prixCasse) {
+        this.prixCasse = prixCasse;
+    }
+    
+    
 
     public String getDescription() {
         return description;
