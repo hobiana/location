@@ -25,7 +25,16 @@ public class Commande extends BaseModel {
     private boolean recu;
     private boolean paye; 
     private Client client;
+    private List<CommandeStock> commandeStock;
 
+    public List<CommandeStock> getCommandeStock() {
+        return commandeStock;
+    }
+
+    public void setCommandeStock(List<CommandeStock> commandeStock) {
+        this.commandeStock = commandeStock;
+    }
+    
     public Date getDateAcquisition() {
         return dateAcquisition;
     }

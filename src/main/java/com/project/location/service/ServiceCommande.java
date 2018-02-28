@@ -46,10 +46,28 @@ public class ServiceCommande extends BaseService{
     public ServiceStock getServiceStock() {
         return serviceStock;
     }
-
+    
+    public Commande findCommande(long id) throws Exception{
+        Commande commande = new Commande(id); 
+        Session session = null; 
+        try{
+            session = this.hibernateDao.getSessionFactory().openSession(); 
+            HibernateDao.findById(commande, session);
+            this.findClient(commande, session);
+            commande.setCommandeStock(this.find(commande, session));       
+            return commande;
+        }catch(Exception e){
+            e.printStackTrace();
+            throw new Exception("erreur d'extractrion de la commande "+commande.getRef());
+        }finally{
+            if(session!=null)session.close();
+        } 
+    }
+    
     public void setServiceStock(ServiceStock serviceStock) {
         this.serviceStock = serviceStock;
     }
+    
     public Commande find(long idCommande)throws Exception{
         try{
             Commande commande = new Commande(idCommande); 
@@ -91,7 +109,7 @@ public class ServiceCommande extends BaseService{
             throw e; 
         }
     }
-    public List<CommandeStock> fin(Commande commande) throws Exception{
+    public List<CommandeStock> find(Commande commande) throws Exception{
         Session session = null ; 
         Query query = null;
         List<CommandeStock> reponse = null; 
@@ -109,6 +127,22 @@ public class ServiceCommande extends BaseService{
             throw new Exception("Impossible d'extraire les détails de la commande "+commande.getRef());
         }finally{
             if(session!=null) session.close();
+        }
+    }
+    public List<CommandeStock> find(Commande commande,Session session) throws Exception{
+        Query query = null;
+        List<CommandeStock> reponse = null; 
+        try{
+            String sql = "SELECT commandeStock FROM CommandeStock commandeStock join commandeStock.commande commande WHERE commande.id = :id"; 
+            query = session.createQuery(sql); 
+            query.setParameter("id", commande.getId()); 
+            
+            reponse =  query.list();
+            this.initStock(reponse, session);
+            return reponse;
+        }catch(Exception e){
+            e.printStackTrace();
+            throw new Exception("Impossible d'extraire les détails de la commande "+commande.getRef());
         }
     }
     public void instanceCommande(List<Commande> commande) throws Exception{
@@ -191,8 +225,12 @@ public class ServiceCommande extends BaseService{
             String sql = "SELECT client FROM Commande commande join commande.client client where commande.id = :id ";
             Query query = session.createQuery(sql); 
             query.setParameter("id", commande.getId()); 
-            
-            return (Client)query.list().get(0);
+            Client reponse=null; 
+            if(!query.list().isEmpty()){
+                reponse= (Client) query.list().get(0);
+                commande.setClient(reponse);
+            }
+            return reponse;
         }catch(Exception e){
             throw new Exception("impossible de retouver le client");
         }
@@ -393,41 +431,13 @@ public class ServiceCommande extends BaseService{
     
     public int getStockRestant(long idStock, Date debut, Date fin)throws Exception{
         Session session = null;
-        List<CommandeStock> listeStock = null; 
-        Stock stock = null;
         try{
-            session = this.hibernateDao.getSessionFactory().openSession();
-            stock = new Stock(idStock);
-            HibernateDao.findById(stock, session);
-            Criteria criteria = session.createCriteria(CommandeStock.class,"commandeStock");
-            criteria.createAlias("commandeStock.commande","commande");
-            criteria.createAlias("commandeStock.stock","stock");
-            
-            criteria.add(Restrictions.eq("stock.id", idStock));
-            Criterion rest1 = Restrictions.and(Restrictions.le("commande.dateDebut", debut), 
-                        Restrictions.ge("commande.dateFin",debut));
-            Criterion rest2 = Restrictions.and(Restrictions.le("commande.dateDebut", fin), 
-                        Restrictions.ge("commande.dateFin",fin));
-
-            criteria.add(Restrictions.or(rest1, rest2));
-            criteria.add(Restrictions.eq("commande.retour", false));
-            criteria.add(Restrictions.eq("commande.annule", false));
-            criteria.add(Restrictions.eq("commande.recu", false));
-            
-            listeStock = criteria.list();
+           return this.getStockRestant(idStock, debut, fin, session);
         }catch(Exception e){
-            throw new Exception("impossible d'extraire la liste des commandes");
+            throw e;
         }finally{
             if(session!=null)session.close();
         }
-        int totalNeg = 0; 
-        int size = listeStock.size(); 
-        for(int i=0;i<size;i++){
-            CommandeStock commandeStockTemp = listeStock.get(i);
-            totalNeg += commandeStockTemp.getQuantiteCommande();
-        }
-        int restant = stock.getQuantite() - totalNeg;
-        return restant;
     }
     
     public int getStockRestant(long idStock, Date debut, Date fin, Session session)throws Exception{
@@ -435,7 +445,6 @@ public class ServiceCommande extends BaseService{
         List<CommandeStock> listeStock = null; 
         Stock stock = null;
         try{
-            
             stock = new Stock(idStock);
             HibernateDao.findById(stock, session);
             Criteria criteria = session.createCriteria(CommandeStock.class,"commandeStock");
@@ -443,10 +452,10 @@ public class ServiceCommande extends BaseService{
             criteria.createAlias("commandeStock.stock","stock");
             
             criteria.add(Restrictions.eq("stock.id", idStock));
-            Criterion rest1 = Restrictions.and(Restrictions.le("commande.dateDebut", debut), 
-                        Restrictions.ge("commande.dateFin",debut));
-            Criterion rest2 = Restrictions.and(Restrictions.le("commande.dateDebut", fin), 
-                        Restrictions.ge("commande.dateFin",fin));
+            Criterion rest1 = Restrictions.and(Restrictions.le("commande.dateAcquisition", debut), 
+                        Restrictions.ge("commande.dateRetour",debut));
+            Criterion rest2 = Restrictions.and(Restrictions.le("commande.dateAcquisition", fin), 
+                        Restrictions.ge("commande.dateRetour",fin));
 
             criteria.add(Restrictions.or(rest1, rest2));
             criteria.add(Restrictions.eq("commande.retour", false));

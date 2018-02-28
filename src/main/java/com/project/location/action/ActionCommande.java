@@ -238,7 +238,7 @@ public class ActionCommande extends BaseAction {
             session.setAttribute(ReferenceSession.IDCOMMANDE,idCommandeSession);
             dateDebut = DateUtil.convert(commande.getDateDebut()); 
             dateFin = DateUtil.convert(commande.getDateFin());
-            this.serviceCommande.setCommande(this.serviceCommande.fin(commande));
+            this.serviceCommande.setCommande(this.serviceCommande.find(commande));
         }
         listeCommandeStock = serviceCommande.getCommande();
         return Action.SUCCESS;

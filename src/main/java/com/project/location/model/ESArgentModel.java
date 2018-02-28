@@ -15,7 +15,7 @@ public class ESArgentModel extends BaseModel{
     protected double volaM; 
     protected Date date; 
     protected String designation; 
-    protected String reference; 
+ 
 
     public double getVolaM() {
         return volaM;
@@ -40,14 +40,4 @@ public class ESArgentModel extends BaseModel{
     public void setDesignation(String designation) {
         this.designation = designation;
     }
-
-    public String getReference() {
-        return reference;
-    }
-
-    public void setReference(String reference) {
-        this.reference = reference;
-    }
-    
-    
 }
