@@ -95,7 +95,7 @@
                                                 <form method="POST" action="newStock">
                                                     <div class="modal-header backg-brw">
                                                         <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                        <h4 class="modal-title">Ajouter un client</h4>
+                                                        <h4 class="modal-title">Ajouter stock</h4>
                                                     </div>
                                                     <div class="modal-body">
                                                         <div class="form-group">
@@ -111,13 +111,17 @@
                                                             <input name="prixLocation" class="form-control" placeholder="Prix de Location" type="number">
                                                         </div>
                                                         <div class="form-group">
+                                                            <label>Prix de casse unitaire</label>
+                                                            <input name="prixCasse" class="form-control" placeholder="Prix de Casse" type="number">
+                                                        </div>
+                                                        <div class="form-group">
                                                             <label>Quantit&eacute;</label>
                                                             <input name="quantite" class="form-control" placeholder="Quantité" type="number">
                                                         </div>
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Annuler</button>
-                                                        <button class="btn base-background pull-right">Ajouter</button>
+                                                        <button class="btn btn-default base-background pull-right">Ajouter</button>
                                                     </div>
                                                 </form>
                                             </div>

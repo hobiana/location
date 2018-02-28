@@ -31,6 +31,7 @@ public class ActionCommande extends BaseAction {
     private List<CommandeStock> listeCommandeStock;
     private ServiceStock serviceStock;
     private ServiceCommande serviceCommande;
+    private List<Commande> listeCommande;
 
     private int idCommande;
     private int idCommandeStock;
@@ -40,10 +41,42 @@ public class ActionCommande extends BaseAction {
 
     private String dateDebut;
     private String dateFin;
+    private String dateAquisition;
+    private String dateRetour;
     private String dateDebutCommande; 
     private String dateFinCommande; 
     private String action;
+    
+    private String client;
+    private String recu; 
+    private String retour; 
+    private String annule;
+    private String paye;
 
+    public String getDateAquisition() {
+        return dateAquisition;
+    }
+
+    public void setDateAquisition(String dateAquisition) {
+        this.dateAquisition = dateAquisition;
+    }
+
+    public String getDateRetour() {
+        return dateRetour;
+    }
+
+    public void setDateRetour(String dateRetour) {
+        this.dateRetour = dateRetour;
+    }
+    
+    public String getPaye() {
+        return paye;
+    }
+
+    public void setPaye(String paye) {
+        this.paye = paye;
+    }
+    
     public int getIdCommande() {
         return idCommande;
     }
@@ -68,12 +101,6 @@ public class ActionCommande extends BaseAction {
     public void setDateFinCommande(String dateFinCommande) {
         this.dateFinCommande = dateFinCommande;
     }
-    
-    
-    
-    private String recu; 
-    private String retour; 
-    private String annule; 
 
     public String getRecu() {
         return recu;
@@ -98,11 +125,7 @@ public class ActionCommande extends BaseAction {
     public void setAnnule(String annule) {
         this.annule = annule;
     }
-
     
-    
-    private String client; 
-
     public String getClient() {
         return client;
     }
@@ -110,10 +133,6 @@ public class ActionCommande extends BaseAction {
     public void setClient(String client) {
         this.client = client;
     }
-    
-    
-    private List<Commande> listeCommande;
-    // getter setter
 
     public String getAction() {
         return action;
@@ -227,6 +246,17 @@ public class ActionCommande extends BaseAction {
                 c.add(Calendar.DATE, 1);
                 d = c.getTime();
                 dateFin = DateUtil.convert(d);
+            }
+            if (Test.argmumentNull(dateAquisition)) {
+                dateAquisition = DateUtil.convert(Calendar.getInstance().getTime());
+            }
+            if (Test.argmumentNull(dateRetour)) {
+                Date d = new Date();
+                Calendar c = Calendar.getInstance();
+                c.setTime(d);
+                c.add(Calendar.DATE, 1);
+                d = c.getTime();
+                dateRetour = DateUtil.convert(d);
             }
         }else{
             HttpSession session = ServletActionContext.getRequest().getSession();          
