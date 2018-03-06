@@ -168,6 +168,8 @@
                <param name="idClient">${idClient}</param>
                 <param name="dateDebut">${dateDebut}</param>
                 <param name="dateFin">${dateFin}</param>
+                <param name="dateAquisition">${dateAquisition}</param>
+                <param name="dateRetour">${dateRetour}</param>
                 <param name="action">${action}</param>
            </result>
            <result name="error">index.js</result>
@@ -179,6 +181,8 @@
                <param name="idClient">${idClient}</param>
                 <param name="dateDebut">${dateDebut}</param>
                 <param name="dateFin">${dateFin}</param>
+                <param name="dateAquisitiont">${dateAquisition}</param>
+                <param name="dateRetour">${dateRetour}</param>
                 <param name="action">${action}</param>
            </result>
            <result name="error">index.js</result>
@@ -190,6 +194,8 @@
                <param name="idClient">${idClient}</param>
                 <param name="dateDebut">${dateDebut}</param>
                 <param name="dateFin">${dateFin}</param>
+                <param name="dateAquisitiont">${dateAquisition}</param>
+                <param name="dateRetour">${dateRetour}</param>
                 <param name="action">${action}</param>
            </result>
            <result name="error">index.js</result>
@@ -201,18 +207,35 @@
                <param name="idClient">${idClient}</param>
                 <param name="dateDebut">${dateDebut}</param>
                 <param name="dateFin">${dateFin}</param>
+                <param name="dateAquisition">${dateAquisition}</param>
+                <param name="dateRetour">${dateRetour}</param>
                 <param name="action">${action}</param>
            </result>
            <result name="error">index.js</result>
         </action>
         
-        <action name="validerCommande" method="validerSessionCommande" class="com.project.location.action.ActionCommande">
+        <action name="validerCommandeClient" method="validerSessionCommande" class="com.project.location.action.ActionCommande">
            <result name="success" type="redirectAction">client</result>
            <result name="error" type="redirectAction">
                <param name="actionName">commande</param>
                <param name="idClient">${idClient}</param>
                 <param name="dateDebut">${dateDebut}</param>
                 <param name="dateFin">${dateFin}</param>
+                <param name="dateAquisition">${dateAquisition}</param>
+                <param name="dateRetour">${dateRetour}</param>
+                <param name="action">${action}</param>
+           </result>
+        </action>
+        
+        <action name="validerCommandeUpdate" method="validerSessionCommande" class="com.project.location.action.ActionCommande">
+           <result name="success" type="redirectAction">listcommande</result>
+           <result name="error" type="redirectAction">
+               <param name="actionName">commande</param>
+               <param name="idClient">${idClient}</param>
+                <param name="dateDebut">${dateDebut}</param>
+                <param name="dateFin">${dateFin}</param>
+                <param name="dateAquisition">${dateAquisition}</param>
+                <param name="dateRetour">${dateRetour}</param>
                 <param name="action">${action}</param>
            </result>
         </action>
@@ -224,6 +247,26 @@
         
         <action name="fichecommande" method="ficheCommande" class="com.project.location.action.ActionCommande">
            <result name="success">fiche_commande.jsp</result>
+           <result name="error">index.jsp</result>
+        </action>
+        
+        <action name="caisse" method="caisse" class="com.project.location.action.ActionCaisse">
+           <result name="success">caisse.jsp</result>
+           <result name="error">index.jsp</result>
+        </action>
+        
+        <action name="historiquecaisse" method="historiquecaisse" class="com.project.location.action.ActionCaisse">
+           <result name="success">historiquecaisse.jsp</result>
+           <result name="error">index.jsp</result>
+        </action>
+        
+        <action name="quotient" method="quotient" class="com.project.location.action.ActionQuotient">
+           <result name="success">quotient.jsp</result>
+           <result name="error">index.jsp</result>
+        </action>
+        
+        <action name="historiquequotient" method="historiquequotient" class="com.project.location.action.ActionQuotient">
+           <result name="success">historiquequotient.jsp</result>
            <result name="error">index.jsp</result>
         </action>
     </package>

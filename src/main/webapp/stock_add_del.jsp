@@ -40,6 +40,10 @@
                                         <label>Quantités</label>
                                         <input name="quantite" type="number" min="1" class="form-control" placeholder="Quantités" value="">
                                     </div>
+                                    <div class="form-group">
+                                        <label>Description</label>
+                                        <input name="description" class="form-control" placeholder="Description" >
+                                    </div>
                                     <s:if test="action.equals('ajoutStock')">
                                         <div class="form-group">
                                             <label>Prix d'Achat unitaire (Ariary)</label>

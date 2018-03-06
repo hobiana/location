@@ -40,11 +40,10 @@
                                         <label>Client</label>
                                         <input name="client" class="form-control" placeholder="Client" value="<s:property value="getClient()"/>">
                                     </div>
-                                    
+
                                     <div class="form-group">
-                                        
                                         <div class="col-md-12">
-                                            <label>Date d'enregistrement du commande Début / Fin </label>
+                                            <label>Date d'enregistrement de la commande Début / Fin </label>
                                         </div>
                                         <div class="col-md-12">
                                             <div class="col-md-6">
@@ -56,9 +55,9 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        
-                                        <div class="col-md-12">
-                                            <label>Date du commande Début / Fin </label>
+
+                                        <div class="col-md-12" style="margin-top: 15px;">
+                                            <label>Date de la commande Début / Fin </label>
                                         </div>
                                         <div class="col-md-12">
                                             <div class="col-md-6">
@@ -70,75 +69,80 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <div class="col-md-12">
-                                            <div class="col-md-4">
-                                                <div class="col-md-12">
-                                                    <label>Re&ccedil;u par le client : </label>
+                                        <div class="col-md-12" style="margin-top: 15px;">
+                                                <div class="col-md-3">
+                                                    <div class="col-md-12">
+                                                        <label>Re&ccedil;u par le client : </label>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <input type="checkbox" name="recu" data-toggle="toggle" data-on="Oui" data-off="Non" <s:if test="recu!=null">checked</s:if>>
+                                                    </div>
                                                 </div>
-                                                <div class="col-md-12">
-                                                    <input type="checkbox" name="recu" data-toggle="toggle" data-on="Oui" data-off="Non" <s:if test="recu!=null">checked</s:if>>
+                                                <div class="col-md-3">
+                                                    <div class="col-md-12">
+                                                        <label>Retour : </label>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <input type="checkbox" name="retour" data-toggle="toggle" data-on="Oui" data-off="Non" <s:if test="retour!=null">checked</s:if>>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <div class="col-md-12">
-                                                    <label>Retour : </label>
+                                                <div class="col-md-3">
+                                                    <div class="col-md-12">
+                                                        <label>Commande annulée : </label>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <input type="checkbox" name="annule" data-toggle="toggle" data-on="Oui" data-off="Non" <s:if test="annule!=null">checked</s:if>>
+                                                    </div>
                                                 </div>
-                                                <div class="col-md-12">
-                                                    <input type="checkbox" name="retour" data-toggle="toggle" data-on="Oui" data-off="Non" <s:if test="retour!=null">checked</s:if>>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <div class="col-md-12">
-                                                    <label>Commande annuler : </label>
-                                                </div>
-                                                <div class="col-md-12">
-                                                    <input type="checkbox" name="annule" data-toggle="toggle" data-on="Oui" data-off="Non" <s:if test="annule!=null">checked</s:if>>
+                                                <div class="col-md-3">
+                                                    <div class="col-md-12">
+                                                        <label>Commande payé : </label>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <input type="checkbox" name="paye" data-toggle="toggle" data-on="Oui" data-off="Non" <s:if test="paye!=null">checked</s:if>>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        
-                                    </div>
-                                    
-                                             
-                                    <button style="margin-top: 15px;" type="submit" class="btn btn-default">Rechercher</button>
-                                </form>
+                                        <button style="margin-top: 15px;" type="submit" class="btn btn-default">Rechercher</button>
+                                    </form>
+                                </div>
+                                <!-- /.panel-body -->
                             </div>
-                            <!-- /.panel-body -->
-                        </div>
-                        <!-- /.panel -->
+                            <!-- /.panel -->
 
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <span>Liste des commandes</span>
-                            </div>
-                            <!-- /.panel-heading -->
-                            <div class="panel-body">
-                                <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
-                                    <thead>
-                                    <%@include file="/template/Success.jsp" %>
-                                    <%@include file="/template/Erreur.jsp" %>
-                                    <tr>
-                                        <th>R&eacute;f.</th>
-                                        <th>Client</th>
-                                        <th>Début de commande</th>
-                                        <th>Fin de commande</th>
-                                        <th>Date d'enre. du com.</th>
-                                        <th>Fiche</th>
-                                        <th>Modif.</th>
-                                    </tr>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <span>Liste des commandes</span>
+                                </div>
+                                <!-- /.panel-heading -->
+                                <div class="panel-body">
+                                    <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
+                                        <thead>
+                                        <%@include file="/template/Success.jsp" %>
+                                        <%@include file="/template/Erreur.jsp" %>
+                                        <tr>
+                                            <th>R&eacute;f.</th>
+                                            <th>Client</th>
+                                            <th>Début de commande</th>
+                                            <th>Fin de commande</th>
+                                            <th>Date d'enre. du com.</th>
+                                            <th>Fiche</th>
+                                            <th>Modif.</th>
+                                        </tr>
                                     </thead>
                                     <s:iterator value="listeCommande">
-                                    <tbody>
-                                        <tr class="odd gradeX">
-                                            <td> <s:property value="getRef()"/> </td>
-                                            <td> <s:property value="getClient().getNom()" /></td> 
-                                            <td><span class="pull-right"><s:property value="dateDebut()"/></span></td>
-                                            <td><span class="pull-right"><s:property value="dateFin()"/></span></td>
-                                            <td><span class="pull-right"><s:property value="dateCommande()"/></span></td>
-                                            <td><a type="button" class="btn btn-default center-block" href="fichecommande"><i class="fa fa-file-text-o"></i></a></td>
-                                            <td><a type="button" class="btn btn-default center-block" href="commande?idClient=1&action=modif&idCommande=<s:property value="getId()"/>"><i class="fa fa-edit"></i></a></td>
-                                        </tr>
-                                    </tbody>
+                                        <tbody>
+                                            <tr class="odd gradeX">
+                                                <td> <s:property value="getRef()"/> </td>
+                                                <td> <s:property value="getClient().getNom()" /></td> 
+                                                <td><span class="pull-right"><s:property value="dateDebut()"/></span></td>
+                                                <td><span class="pull-right"><s:property value="dateFin()"/></span></td>
+                                                <td><span class="pull-right"><s:property value="dateCommande()"/></span></td>
+                                                <td><a type="button" class="btn btn-default center-block" href="fichecommande"><i class="fa fa-file-text-o"></i></a></td>
+                                                <td><a type="button" class="btn btn-default center-block" href="commande?idClient=1&action=modif&idCommande=<s:property value="getId()"/>"><i class="fa fa-edit"></i></a></td>
+                                            </tr>
+                                        </tbody>
                                     </s:iterator>
                                 </table>
                             </div>
@@ -162,7 +166,7 @@
                 responsive: true
             });
         });
-        
-        
+
+
     </script>
 </html>

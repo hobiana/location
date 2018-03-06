@@ -30,6 +30,23 @@
                     </li>
                 </ul>
             </li>
+            <li>
+                <a><i class="fa fa-money fa-fw"></i> Caisse et quotient<span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level">
+                    <li>
+                        <a href="caisse"><i class="fa fa-money fa-fw"></i> Caisse</a>
+                    </li>
+                    <li>
+                        <a href="historiquecaisse"><i class="fa fa-money fa-fw"></i> Historique Caisse</a>
+                    </li>
+                    <li>
+                        <a href="quotient"><i class="fa fa-money fa-fw"></i> Quotient</a>
+                    </li>
+                    <li>
+                        <a href="historiquequotient"><i class="fa fa-money fa-fw"></i> Historique Quotient</a>
+                    </li>
+                </ul>
+            </li>
         </ul>
     </div>
     <!-- /.sidebar-collapse -->

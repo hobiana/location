@@ -168,9 +168,9 @@ public class ServiceStock extends BaseService {
                 historique.setDate(Calendar.getInstance().getTime());
                 historique.setPrix(stock.getPrixLocation());
                 historique.setStock(stock);
-                HibernateDao.save(historique, session);
-                HibernateDao.update(stock, session);
+                HibernateDao.save(historique, session);               
             }
+            HibernateDao.update(stock, session);
             tr.commit();
         } catch (Exception ex) {
             if (tr != null) {
