@@ -114,7 +114,7 @@
         
         <action name="inStock" method="inStock" class="com.project.location.action.ActionStock">
            <result name="success">stock_add_del.jsp</result>
-           <result name="error">index.js</result>
+           <result name="error">index.jsp</result>
         </action>
         
         <action name="ajoutStock" method="ajoutStock" class="com.project.location.action.ActionStock">

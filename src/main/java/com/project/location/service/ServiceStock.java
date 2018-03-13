@@ -38,6 +38,7 @@ public class ServiceStock extends BaseService {
             reponse = (List<Stock>) (Object) this.hibernateDao.findAll(new Stock());
             return reponse;
         } catch (Exception e) {
+            e.printStackTrace();
             throw new Exception("Erreur d'extraction des stocks");
         }
     }

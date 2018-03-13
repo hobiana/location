@@ -109,7 +109,7 @@
                                                         <div class="form-group">
                                                             <label>Prix de Location unitaire</label>
                                                             <input name="prixLocation" class="form-control" placeholder="Prix de Location" type="number">
-                                                        </div>
+                                                        </div>    
                                                         <div class="form-group">
                                                             <label>Prix de casse unitaire</label>
                                                             <input name="prixCasse" class="form-control" placeholder="Prix de Casse" type="number">

@@ -63,18 +63,43 @@ public class ServiceCommande extends BaseService{
             if(session!=null)session.close();
         } 
     }
-    
+    public void updateEtat(long id, boolean recu, boolean annule)throws Exception{
+        Commande commande = null; 
+        Session session = null; 
+        Transaction tr = null; 
+        try{
+            session = this.hibernateDao.getSessionFactory().openSession(); 
+            tr = session.beginTransaction();
+            commande = this.find(id, session); 
+            commande.setAnnule(annule);
+            commande.setRecu(recu);
+            HibernateDao.update(commande, session);
+            tr.commit();
+           
+        }catch(Exception e){
+            tr.rollback();
+            throw new Exception("Impossible de changer l'etat de la commande "+commande.getRef());
+            
+        }finally{
+            if(session!=null)session.close();
+        }
+    }
     public void setServiceStock(ServiceStock serviceStock) {
         this.serviceStock = serviceStock;
     }
     
     public Commande find(long idCommande)throws Exception{
+        Session session = null;
         try{
+            session = this.hibernateDao.getSessionFactory().openSession();
             Commande commande = new Commande(idCommande); 
-            this.hibernateDao.findById(commande);
+            this.hibernateDao.findById(commande,session);
+            this.populateClient(commande, session);
             return commande;
         }catch(Exception e){
             throw new Exception("impossible d'extraire la commande");
+        }finally{
+            if(session!=null)session.close();
         }
     }
     public Commande find(long idCommande, Session session)throws Exception{
@@ -226,6 +251,7 @@ public class ServiceCommande extends BaseService{
             Query query = session.createQuery(sql); 
             query.setParameter("id", commande.getId()); 
             Client reponse=null; 
+            List<Object> client =  query.list();
             if(!query.list().isEmpty()){
                 reponse= (Client) query.list().get(0);
                 commande.setClient(reponse);
@@ -235,6 +261,7 @@ public class ServiceCommande extends BaseService{
             throw new Exception("impossible de retouver le client");
         }
     }
+   
     
     private void populateClient(Commande commande,Session session) throws Exception{
         try{
@@ -432,6 +459,7 @@ public class ServiceCommande extends BaseService{
     public int getStockRestant(long idStock, Date debut, Date fin)throws Exception{
         Session session = null;
         try{
+            session = this.hibernateDao.getSessionFactory().openSession();
            return this.getStockRestant(idStock, debut, fin, session);
         }catch(Exception e){
             throw e;
@@ -464,6 +492,7 @@ public class ServiceCommande extends BaseService{
             
             listeStock = criteria.list();
         }catch(Exception e){
+            e.printStackTrace();
             throw new Exception("impossible d'extraire la liste des commandes");
         }
         int totalNeg = 0; 
@@ -725,7 +754,7 @@ public class ServiceCommande extends BaseService{
         }
         return reponse;
     }
-    public boolean saveCommande(long idClient, Date debut, Date fin) throws Exception{
+    public boolean saveCommande(long idClient, Date debut, Date fin, Date acquisition, Date retour) throws Exception{
         boolean reponse = true;
         Commande commande = new Commande(); 
         Client client = new Client(idClient);
@@ -735,6 +764,8 @@ public class ServiceCommande extends BaseService{
         commande.setDateDebut(debut);
         commande.setDateFin(fin);
         commande.setClient(client);
+        commande.setDateAcquisition(acquisition);
+        commande.setDateRetour(retour);
         commande.setDateCommande(Calendar.getInstance().getTime());
        
         List<CommandeStock> commandes = this.getCommande();
@@ -773,10 +804,12 @@ public class ServiceCommande extends BaseService{
         return reponse;
     }
     
-    public boolean saveCommande(long idClient, String debut, String fin) throws Exception{
+    public boolean saveCommande(long idClient, String debut, String fin, String acquisition ,String retour) throws Exception{
         Date debutD = DateUtil.convert(debut);
         Date finD = DateUtil.convert(fin);
-        return this.saveCommande(idClient,debutD, finD);
+        Date acquisitionD = DateUtil.convert(acquisition);
+        Date retourD = DateUtil.convert(retour);
+        return this.saveCommande(idClient,debutD, finD, acquisitionD, retourD);
     }
     
     public void clearSession(){

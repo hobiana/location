@@ -31,32 +31,48 @@
                     <div class="col-lg-12">
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                Fiche de la commande CMD00001
+                                Fiche de la commande <s:property value="commande.getRef()"/>
                             </div>
                             <!-- /.panel-heading -->
                             <div class="panel-body">
                                 <div class="form-group">
                                     <label>Client</label>
-                                    <input name="client" class="form-control" value="WAWA" readonly>
+                                    <input name="client" class="form-control" value="<s:property value="commande.getClient().getPrenom()"/> <s:property value="commande.getClient().getNom()"/>" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label>Date début</label>
-                                    <input name="dateDebut" class="form-control" type="date" value="2017-01-01" readonly>
+                                    <input name="dateDebut" class="form-control" type="date" value="<s:property value="commande.dateDebut()"/>" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label>Date Fin</label>
-                                    <input name="dateFin" class="form-control"  type="date" value="2017-01-01" readonly>
+                                    <input name="dateFin" class="form-control"  type="date" value="<s:property value="commande.dateFin()"/>" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label>Etat :</label>
                                     <label class="checkbox-inline">
-                                        <button type="button" class="btn btn-default btn-sm btn-circle"><i class="fa fa-check"></i></button>Reçu par le client
+                                        <s:if test="commande.isRecu()==false">
+                                            <button type="button" class="btn btn-default btn-sm btn-circle"><i class="fa fa-times"></i></button> Non reçu par le client
+                                        </s:if>
+                                        <s:else>
+                                            <button type="button" class="btn btn-default btn-sm btn-circle"><i class="fa fa-check"></i></button> Reçu par le client
+                                        </s:else>
+                                         
                                     </label>
                                     <label class="checkbox-inline">
-                                        <button type="button" class="btn btn-default btn-sm btn-circle"><i class="fa fa-check"></i></button>Annulé
+                                        <s:if test="commande.isAnnule()==false">
+                                            <button type="button" class="btn btn-default btn-sm btn-circle"><i class="fa fa-times"></i></button> Non annulé
+                                        </s:if>
+                                        <s:else>
+                                            <button type="button" class="btn btn-default btn-sm btn-circle"><i class="fa fa-check"></i></button> Annulé
+                                        </s:else>
                                     </label>
                                     <label class="checkbox-inline">
-                                        <button type="button" class="btn btn-default btn-sm btn-circle"><i class="fa fa-times"></i></button>efa niverina taty @ stock
+                                        <s:if test="commande.isRetour()==false">
+                                            <button type="button" class="btn btn-default btn-sm btn-circle"><i class="fa fa-times"></i></button> Non retour au stock
+                                        </s:if>
+                                        <s:else>
+                                            <button type="button" class="btn btn-default btn-sm btn-circle"><i class="fa fa-check"></i></button> Retour au stock
+                                        </s:else>
                                     </label>
                                 </div>
                                 <a class="btn btn-default pull-left" href="#retour" data-toggle="modal">Retour en stock</a>
@@ -184,11 +200,13 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr class="odd gradeX">
-                                            <td> STO0001 </td>
-                                            <td> Baffle </td> 
-                                            <td><span class="pull-right"> 5</span></td>
-                                        </tr>
+                                        <s:iterator value="listeCommandeStock">
+                                            <tr class="odd gradeX">
+                                                <td> <s:property value="getRef()"/> </td>
+                                                <td> <s:property value="getStock().getDesignation()"/> </td> 
+                                                <td><span class="pull-right"><s:property value="getQuantiteCommande()"/> </span></td>
+                                            </tr>
+                                        </s:iterator>
                                     </tbody>
                                 </table>
                                 <p class="text-right h4"><strong class="">Total :</strong> 50 000 Ar </p>

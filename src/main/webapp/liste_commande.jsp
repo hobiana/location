@@ -139,7 +139,7 @@
                                                 <td><span class="pull-right"><s:property value="dateDebut()"/></span></td>
                                                 <td><span class="pull-right"><s:property value="dateFin()"/></span></td>
                                                 <td><span class="pull-right"><s:property value="dateCommande()"/></span></td>
-                                                <td><a type="button" class="btn btn-default center-block" href="fichecommande"><i class="fa fa-file-text-o"></i></a></td>
+                                                <td><a type="button" class="btn btn-default center-block" href="fichecommande?idCommande=<s:property value="id"/>"><i class="fa fa-file-text-o"></i></a></td>
                                                 <td><a type="button" class="btn btn-default center-block" href="commande?idClient=1&action=modif&idCommande=<s:property value="getId()"/>"><i class="fa fa-edit"></i></a></td>
                                             </tr>
                                         </tbody>

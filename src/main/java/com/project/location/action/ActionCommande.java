@@ -19,7 +19,6 @@ import java.util.Date;
 import java.util.List;
 import javax.servlet.http.HttpSession;
 import org.apache.struts2.ServletActionContext;
-import org.hibernate.Session;
 
 /**
  *
@@ -32,6 +31,7 @@ public class ActionCommande extends BaseAction {
     private ServiceStock serviceStock;
     private ServiceCommande serviceCommande;
     private List<Commande> listeCommande;
+    private Commande commande;
 
     private int idCommande;
     private int idCommandeStock;
@@ -52,7 +52,25 @@ public class ActionCommande extends BaseAction {
     private String retour; 
     private String annule;
     private String paye;
+    private String reference; 
 
+    public Commande getCommande() {
+        return commande;
+    }
+
+    public void setCommande(Commande commande) {
+        this.commande = commande;
+    }
+
+    
+    public String getReference() {
+        return reference;
+    }
+
+    public void setReference(String reference) {
+        this.reference = reference;
+    }
+    
     public String getDateAquisition() {
         return dateAquisition;
     }
@@ -297,7 +315,7 @@ public class ActionCommande extends BaseAction {
     public String validerSessionCommande() throws Exception {
         if (action.equals("save")) {
             if (
-                serviceCommande.saveCommande(idClient, dateDebut, dateFin)) {
+                serviceCommande.saveCommande(idClient, dateDebut, dateFin,this.dateAquisition,this.dateRetour)) {
                 return Action.SUCCESS;
             }
         }
@@ -322,6 +340,8 @@ public class ActionCommande extends BaseAction {
     }
 
     public String ficheCommande() throws Exception {
+        commande = this.serviceCommande.find(idCommande);
+        this.listeCommandeStock = this.serviceCommande.find(commande);
         this.titre = "Fiche Commande";
         return Action.SUCCESS;
     }
