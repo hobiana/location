@@ -249,6 +249,20 @@
            <result name="success">fiche_commande.jsp</result>
            <result name="error">index.jsp</result>
         </action>
+        <action name="retourcommande" method="retourcommande" class="com.project.location.action.ActionCommande">
+           <result name="success" type="redirectAction">
+                <param name="actionName">fichecommande</param>
+                <param name="idCommande">${idCommande}</param>
+                <param name="dateDebut">${linkSuccess}</param>
+                <param name="dateFin">${messageSuccess}</param>
+           </result>
+          <result name="error" type="redirectAction">
+                <param name="actionName">fichecommande</param>
+                <param name="idCommande">${idCommande}</param>
+                <param name="dateDebut">${linkError}</param>
+                <param name="dateFin">${messageError}</param>
+           </result>
+        </action>
         
         <action name="caisse" method="caisse" class="com.project.location.action.ActionCaisse">
            <result name="success">caisse.jsp</result>

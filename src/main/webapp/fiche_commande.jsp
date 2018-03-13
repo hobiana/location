@@ -146,6 +146,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="modal-footer">
+                                                    <input type="hidden" name="idCommande" value="<s:property value="idCommande"/>" />
                                                     <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Annuler</button>
                                                     <button class="btn btn-default base-background pull-right">Modifier</button>
                                                 </div>
@@ -209,7 +210,7 @@
                                         </s:iterator>
                                     </tbody>
                                 </table>
-                                <p class="text-right h4"><strong class="">Total :</strong> 50 000 Ar </p>
+                                        <p class="text-right h4"><strong class="">Total :</strong> <s:property value="total"/> Ar </p>
                             </div>
                             <!-- /.panel-body -->
                         </div>

@@ -45,6 +45,7 @@ Contributor(s):
       <generator class="increment"/>
     </id>
     <property column="quantite" name="quantite" type="int"/>
+    <property column="description" name="description" type="string"/>
     <property column="datesortie" name="date" type="date"/>
     <many-to-one class="com.project.location.model.Stock" fetch="select" name="stock">
       <column name="idstock" not-null="true"/>

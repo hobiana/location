@@ -106,7 +106,7 @@
                                         </s:iterator>
                                     </tbody>
                                 </table>
-                                <p class="text-right h4"><strong class="">Total :</strong> 50 000 Ar </p>
+                                    <p class="text-right h4"><strong class="">Total :</strong> <s:property value="getTotal()"/> Ar </p>
                                 <a class="btn btn-success pull-right" id="validerCommande">Valider la commande</a>
                             </div>
                             <!-- /.panel-body -->

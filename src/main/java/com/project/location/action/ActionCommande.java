@@ -9,6 +9,7 @@ import com.opensymphony.xwork2.Action;
 import com.project.location.model.Commande;
 import com.project.location.model.CommandeStock;
 import com.project.location.model.Stock;
+import com.project.location.reference.ReferenceErreur;
 import com.project.location.reference.ReferenceSession;
 import com.project.location.service.ServiceCommande;
 import com.project.location.service.ServiceStock;
@@ -32,7 +33,9 @@ public class ActionCommande extends BaseAction {
     private ServiceCommande serviceCommande;
     private List<Commande> listeCommande;
     private Commande commande;
-
+    
+    private double total;
+    
     private int idCommande;
     private int idCommandeStock;
     private int idStock;
@@ -54,6 +57,14 @@ public class ActionCommande extends BaseAction {
     private String paye;
     private String reference; 
 
+    public double getTotal() {
+        return total;
+    }
+
+    public void setTotal(double total) {
+        this.total = total;
+    }
+ 
     public Commande getCommande() {
         return commande;
     }
@@ -286,9 +297,10 @@ public class ActionCommande extends BaseAction {
             session.setAttribute(ReferenceSession.IDCOMMANDE,idCommandeSession);
             dateDebut = DateUtil.convert(commande.getDateDebut()); 
             dateFin = DateUtil.convert(commande.getDateFin());
-            this.serviceCommande.setCommande(this.serviceCommande.find(commande));
+            this.serviceCommande.setCommande(this.serviceCommande.find(commande)); 
         }
         listeCommandeStock = serviceCommande.getCommande();
+        this.total = this.serviceCommande.getTotal(dateDebut, dateFin);
         return Action.SUCCESS;
     }
 
@@ -338,11 +350,29 @@ public class ActionCommande extends BaseAction {
         this.titre = "Liste Commande";
         return Action.SUCCESS;
     }
-
+    
+    public String retourcommande(){
+        boolean recuB  = this.recu!=null;
+        boolean retourB = this.retour!=null;
+        try{
+            this.serviceCommande.updateEtat(idCommande, recuB, retourB);
+            this.linkSuccess = ReferenceErreur.VISIBLE;
+            this.messageSuccess = "mise à jour effectué avec succes";
+            return Action.SUCCESS;
+        }catch(Exception e){
+            this.linkError=ReferenceErreur.VISIBLE;
+            this.messageError = e.getMessage();
+            return Action.ERROR;
+        }
+        
+    }
     public String ficheCommande() throws Exception {
         commande = this.serviceCommande.find(idCommande);
+        this.total = this.serviceCommande.getTotal(idCommande);
         this.listeCommandeStock = this.serviceCommande.find(commande);
         this.titre = "Fiche Commande";
+        if(commande.isRecu()) this.recu="true";
+        if(commande.isRetour()) this.retour="true";
         return Action.SUCCESS;
     }
 }
