@@ -283,5 +283,15 @@
            <result name="success">historiquequotient.jsp</result>
            <result name="error">index.jsp</result>
         </action>
+        
+        <action name="historiqueuser" method="historiqueuser" class="com.project.location.action.ActionUsers">
+           <result name="success">historiqueuser.jsp</result>
+           <result name="error">index.jsp</result>
+        </action>
+        
+        <action name="deluser" method="deluser" class="com.project.location.action.ActionUsers">
+           <result name="success">utilisateurs.jsp</result>
+           <result name="error">index.jsp</result>
+        </action>
     </package>
 </struts>

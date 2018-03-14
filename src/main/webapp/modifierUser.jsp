@@ -63,6 +63,34 @@
                                         <label>Confirmer</label>
                                         <input name="confirmation" type="password" class="form-control" placeholder="Confirmation mot de passe">
                                     </div>
+                                    <div class="form-group">
+                                        <label>Accès aux liens</label>
+                                        <div class="checkbox">
+                                            <label>
+                                                <input name="accesCaisseQuotient" type="checkbox" value="">Caisse et quotient
+                                            </label>
+                                        </div>
+                                        <div class="checkbox">
+                                            <label>
+                                                <input name="accesClient" type="checkbox" value="">Clients
+                                            </label>
+                                        </div>
+                                        <div class="checkbox">
+                                            <label>
+                                                <input name="accesCommande" type="checkbox" value="">Commande
+                                            </label>
+                                        </div>
+                                        <div class="checkbox">
+                                            <label>
+                                                <input name="accesStock" type="checkbox" value="">Stocks
+                                            </label>
+                                        </div>
+                                        <div class="checkbox">
+                                            <label>
+                                                <input name="accesUtilisateurs" type="checkbox" value="">Utilisateurs
+                                            </label>
+                                        </div>
+                                    </div>
                                     <input name="idUsers" type="hidden" value="<s:property value="getIdUsers()"/>"/>
                                     <button type="submit" class="btn btn-default">Modifier</button>
                                 </form>

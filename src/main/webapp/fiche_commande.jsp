@@ -74,6 +74,14 @@
                                             <button type="button" class="btn btn-default btn-sm btn-circle"><i class="fa fa-check"></i></button> Retour au stock
                                         </s:else>
                                     </label>
+                                    <label class="checkbox-inline">
+                                        <s:if test="commande.isPaye()==false">
+                                            <button type="button" class="btn btn-default btn-sm btn-circle"><i class="fa fa-times"></i></button> Non payé
+                                        </s:if>
+                                        <s:else>
+                                            <button type="button" class="btn btn-default btn-sm btn-circle"><i class="fa fa-check"></i></button> Payé
+                                        </s:else>
+                                    </label>
                                 </div>
                                 <a class="btn btn-default pull-left" href="#retour" data-toggle="modal">Retour en stock</a>
                                 <div class="modal fade" id="retour" role="dialog">

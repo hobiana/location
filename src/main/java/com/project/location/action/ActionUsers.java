@@ -189,4 +189,29 @@ public class ActionUsers extends BaseAction {
             return Action.ERROR;
         }
     }
+    
+    public String utilisateurs(){
+        this.titre="Utilisateurs";
+        return Action.SUCCESS;
+    }
+    
+    public String ficheuser(){
+        this.titre="Fiche Utilisateur";
+        return Action.SUCCESS;
+    }
+    
+    public String historiqueuser(){
+        this.titre="Historiques Utilisateur";
+        return Action.SUCCESS;
+    }
+    
+    public String modifuser(){
+        this.titre="Modifier Utilisateur";
+        return Action.SUCCESS;
+    }
+    
+    public String deluser(){
+        this.titre="Utilisateurs";
+        return Action.SUCCESS;
+    }
 }
