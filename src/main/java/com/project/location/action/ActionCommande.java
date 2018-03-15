@@ -353,9 +353,9 @@ public class ActionCommande extends BaseAction {
     
     public String retourcommande(){
         boolean recuB  = this.recu!=null;
-        boolean retourB = this.retour!=null;
+        boolean annuleB = this.annule!=null;
         try{
-            this.serviceCommande.updateEtat(idCommande, recuB, retourB);
+            this.serviceCommande.updateEtat(idCommande, recuB, annuleB);
             this.linkSuccess = ReferenceErreur.VISIBLE;
             this.messageSuccess = "mise à jour effectué avec succes";
             return Action.SUCCESS;
@@ -371,8 +371,6 @@ public class ActionCommande extends BaseAction {
         this.total = this.serviceCommande.getTotal(idCommande);
         this.listeCommandeStock = this.serviceCommande.find(commande);
         this.titre = "Fiche Commande";
-        if(commande.isRecu()) this.recu="true";
-        if(commande.isRetour()) this.retour="true";
         return Action.SUCCESS;
     }
 }
