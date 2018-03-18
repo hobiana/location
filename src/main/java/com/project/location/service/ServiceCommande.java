@@ -63,6 +63,10 @@ public class ServiceCommande extends BaseService{
             if(session!=null)session.close();
         } 
     }
+    public static void payer(Commande commande, Session session)throws Exception{
+        commande.setPaye(true);
+        HibernateDao.update(commande, session);
+    }
     
     public void updateEtat(long id, boolean recu, boolean annule)throws Exception{
         Commande commande = null; 

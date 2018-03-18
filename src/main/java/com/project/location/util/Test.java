@@ -5,6 +5,8 @@
  */
 package com.project.location.util;
 
+import java.util.Scanner;
+
 /**
  *
  * @author Diary

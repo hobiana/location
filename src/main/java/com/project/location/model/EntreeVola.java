@@ -17,4 +17,8 @@ public class EntreeVola extends ESArgentModel{
          Test.doubleNegatif(volaM,"La valeur de l'argent entrant ");
         this.volaM = volaM;
     }
+    public EntreeVola() {
+        this.type = "entree"; 
+    }
+    
 }
