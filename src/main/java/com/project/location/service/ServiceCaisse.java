@@ -137,6 +137,7 @@ public class ServiceCaisse extends BaseService {
             this.cleanCaisse(session);
             this.addCaisse(caisse, session);
             this.addEntree(vola, session);
+            ServiceHistoriqueUser.save("ajout de la somme "+vola.getVolaM()+" Ar dans la caisse", session);
             tr.commit();
         }catch(Exception e){
             if(tr!=null) tr.rollback();
@@ -146,7 +147,7 @@ public class ServiceCaisse extends BaseService {
         }
     }
     
-    public void addVolaCaisse(EntreeVola vola,Session session) throws Exception{
+    private void addVolaCaisse(EntreeVola vola,Session session) throws Exception{
         Caisse caisse = new Caisse();              
         double solde = 0; 
         try{
@@ -174,6 +175,7 @@ public class ServiceCaisse extends BaseService {
             this.cleanQuotient(session);
             this.addQuotient(quotient, session);
             this.addEntreeQuotient(vola, session);
+            ServiceHistoriqueUser.save("ajout de la somme "+vola.getVolaM()+" Ar dans la caisse des quotients", session);
             tr.commit();
         }catch(Exception e){
             if(tr!=null) tr.rollback();
@@ -183,7 +185,7 @@ public class ServiceCaisse extends BaseService {
         }
     }
     
-    public void addVolaQuotient(EntreeQuotient vola,Session session) throws Exception{
+    private void addVolaQuotient(EntreeQuotient vola,Session session) throws Exception{
         Quotient quotient = new Quotient();       
         double solde = 0;
         
@@ -213,6 +215,7 @@ public class ServiceCaisse extends BaseService {
             this.cleanCaisse(session);
             this.addCaisse(caisse, session);
             this.addSortie(vola, session);
+            ServiceHistoriqueUser.save("retrait de la somme de "+vola.getVolaM()+" Ar dans la caisse ", session);
             tr.commit();
         }catch(Exception e){
             if(tr!=null) tr.rollback();
@@ -237,6 +240,7 @@ public class ServiceCaisse extends BaseService {
             this.cleanQuotient(session);
             this.addQuotient(quotient, session);
             this.addSortieQuotient(vola, session);
+            ServiceHistoriqueUser.save("retrait de la somme de "+vola.getVolaM()+ "dans la caisse des quotients", session);
             tr.commit();
         }catch(Exception e){
             if(tr!=null) tr.rollback();
@@ -312,6 +316,7 @@ public class ServiceCaisse extends BaseService {
             if(entreeQuotient!=null) this.addVolaQuotient(entreeQuotient, session);
             ServiceFacture.newFacture(facture,session);
             ServiceCommande.payer(commande, session);
+            ServiceHistoriqueUser.save("payement de la commande "+commande.getRef(), session);
             tr.commit();
         }catch(Exception e){
             if(tr!=null)tr.rollback();
@@ -323,7 +328,7 @@ public class ServiceCaisse extends BaseService {
         
     }
     
-    private void payerCommande(long idCommande, double quotient)throws Exception{
+    public void payerCommande(long idCommande, double quotient)throws Exception{
         Commande commande = this.serviceCommande.find(idCommande);
         this.payerCommande(commande, quotient);
     }

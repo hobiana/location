@@ -78,11 +78,12 @@ public class ServiceCommande extends BaseService{
             commande = this.find(id, session); 
             commande.setAnnule(annule);
             commande.setRecu(recu);
+            ServiceHistoriqueUser.save("mise à jour des états de la commande "+commande.getRef(), session);
             HibernateDao.update(commande, session);
             tr.commit();
            
         }catch(Exception e){
-            tr.rollback();
+            if(tr!=null)tr.rollback();
             throw new Exception("Impossible de changer l'etat de la commande "+commande.getRef());
             
         }finally{
@@ -770,6 +771,7 @@ public class ServiceCommande extends BaseService{
             Commande commande = this.find(idCommande,session);
             commande.setDateDebut(debut);
             commande.setDateFin(fin);
+            ServiceHistoriqueUser.save("mise à jour de la commande "+commande.getRef(), session);
             HibernateDao.update(commande, session);
             for(int i=0;i<size;i++){
                 CommandeStock temp = commandeStocks.get(i); 
@@ -843,6 +845,7 @@ public class ServiceCommande extends BaseService{
             session = this.hibernateDao.getSessionFactory().openSession();
             tr = session.beginTransaction();
             HibernateDao.save(commande, session);
+            ServiceHistoriqueUser.save("ajout de la commande "+commande.getRef(), session);
             for(int i=0;i<size;i++){
                 CommandeStock temp = commandes.get(i);
                 temp.setCommande(commande);

@@ -44,6 +44,9 @@
     <bean id="serviceHistoriquePrixStock" class="com.project.location.service.ServiceHistoriquePrixStock">
         <property name="hibernateDao" ref="hibernateDao" />
     </bean>
+    <bean id="serviceHistoriqueUser" class="com.project.location.service.ServiceHistoriqueUser">     
+        <property name="hibernateDao" ref="hibernateDao" />
+    </bean>
     <bean id="serviceSortie" class="com.project.location.service.ServiceSortie">     
         <property name="hibernateDao" ref="hibernateDao" />
         <property name="serviceStock" ref="serviceStock" />
