@@ -5,11 +5,13 @@
  */
 package com.project.location.service;
 
+import com.project.location.dao.HibernateDao;
 import com.project.location.model.Users;
 import com.project.location.util.Test;
 import java.util.List;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 /**
  *
@@ -24,18 +26,28 @@ public class ServiceUsers extends BaseService{
             throw new Exception("impossible d'extraire la liste des utilisateurs");
         }       
     }
+    
     public void save(Users users)throws Exception{
+        Session session = null; 
+        Transaction tr = null; 
         try{
+            session = this.hibernateDao.getSessionFactory().openSession();
+            tr = session.beginTransaction();
             if(!this.exist(users.getPseudo())){
-                this.hibernateDao.save(users);
+                HibernateDao.save(users,session);
             }else{
                 throw new Exception("le pseudo utilisé existe déjà");
             }
-            
+            ServiceHistoriqueUser.save("ajout d'un nouveau user "+users.getPrenom()+" "+users.getNom(),session);
+            tr.commit();
         }catch(Exception e){
+            if(tr!=null)tr.rollback();
             throw new Exception("impossible d'enregistrer l'utilisateur dans la base de donnée cause"+e.getMessage());
+        }finally{
+            if(session!=null)session.close();
         }
     }
+    
     public Users find(long id)throws Exception{
         Users reponse;
         try{
@@ -46,16 +58,27 @@ public class ServiceUsers extends BaseService{
             throw new Exception("impossible d'extraire l'user");
         }
     }
+    
     public void update(Users user) throws Exception{
         Users temp = this.find(user.getId());  
         if(temp.getPseudo().compareTo(user.getPseudo())!=0) if(this.exist(user.getPseudo()))throw new Exception("le pseudo inseré existe déja");             
         if(Test.argmumentNull(user.getMdp()))user.setMdp(temp.getMdp());
+        Session session = null; 
+        Transaction tr= null;
         try{
-            this.hibernateDao.update(user);
+            session = this.hibernateDao.getSessionFactory().openSession();
+            tr = session.beginTransaction();
+            HibernateDao.update(user,session);
+            ServiceHistoriqueUser.save("mise à jour de l'user "+user.getPseudo(), session);
+            tr.commit();
         }catch(Exception e){
+            if(tr!=null)tr.rollback();
             throw new Exception("impossible de metrre à jour l'utilisateur cause "+e.getMessage());
+        }finally{
+            if(session!=null)session.close();
         }
     }
+    
     public Users find(String pseudo)throws Exception{
         Session session = null;
         Query query = null;
@@ -73,6 +96,7 @@ public class ServiceUsers extends BaseService{
             if(session!=null) session.close();
         }    
     }
+    
     public boolean exist(String pseudo)throws Exception{
         Session session = null;
         Query query = null;

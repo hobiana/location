@@ -86,6 +86,15 @@ public class HibernateDao {
                 session.close();
         }
     }
+    public static List<BaseModel> findAll(BaseModel obj, Session session)  throws Exception{ 
+        try{
+            Criteria criteria = session.createCriteria(obj.getClass());
+            criteria.addOrder(Order.asc("id"));
+            return criteria.list();
+        }catch (Exception ex){
+            throw ex;
+        }
+    }
     
 
     public void update(BaseModel model) throws Exception {
@@ -133,5 +142,13 @@ public class HibernateDao {
             if(session!=null)
                 session.close();
         }   
+    }
+    public static void delete(BaseModel model,Session session) throws Exception {
+        // TODO Auto-generated method stub 
+        try{
+            session.delete(model);
+        }catch (Exception ex){          
+            throw ex;
+        }  
     }
 }

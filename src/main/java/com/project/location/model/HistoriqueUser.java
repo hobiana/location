@@ -15,7 +15,7 @@ public class HistoriqueUser extends BaseModel{
     private Users user; 
     private String action; 
     private Date dateHU; 
-    
+
     public Users getUser() {
         return user;
     }

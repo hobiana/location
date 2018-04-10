@@ -16,6 +16,7 @@ import java.util.Date;
 public class ESStockModel extends BaseModel{
     protected Stock stock; 
     protected int quantite; 
+    protected String description;
     protected Date date; 
 
     public Stock getStock() {
@@ -28,6 +29,14 @@ public class ESStockModel extends BaseModel{
 
     public int getQuantite() {
         return quantite;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public void setQuantite(int quantite) throws Exception {

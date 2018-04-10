@@ -9,6 +9,7 @@ import com.opensymphony.xwork2.Action;
 import com.project.location.model.Entree;
 import com.project.location.model.Sortie;
 import com.project.location.model.Stock;
+import com.project.location.model.Users;
 import com.project.location.service.ServiceEntree;
 import com.project.location.service.ServiceSortie;
 import com.project.location.service.ServiceStock;
@@ -39,6 +40,7 @@ public class ActionStock extends BaseAction {
     private int prixLocationMax;
     private int prixAchatMin;
     private int prixAchatMax;
+    private int prixCasse; 
     
     private List<Stock> listeStock;
     private List<Entree> listeEntree;
@@ -51,9 +53,25 @@ public class ActionStock extends BaseAction {
     private String title_panel;
     private String refStock;
     private String action;
-
+    private String description; 
+    
     // getters setters
+    public String getDescription() {
+        return description;
+    }
+    public void setDescription(String description) {   
+        this.description = description;
+    }
 
+    public int getPrixCasse() {
+        return prixCasse;
+    }
+
+    public void setPrixCasse(int prixCasse) {
+        this.prixCasse = prixCasse;
+    }
+
+    
     public List<Sortie> getListeSortie() {
         return listeSortie;
     }
@@ -250,6 +268,11 @@ public class ActionStock extends BaseAction {
     
     
     public String load() throws Exception {
+        try {
+            Users u=this.getSessionUser();
+        } catch (Exception ex) {
+            return Action.LOGIN;
+        }
         this.titre="Stock";
         listeStock = serviceStock.find(designation, quantiteMin, quantiteMax, prixLocationMin, prixLocationMax);
         return Action.SUCCESS;
@@ -279,16 +302,17 @@ public class ActionStock extends BaseAction {
         entree.setQuantite(quantite);
         entree.setDate(Calendar.getInstance().getTime());
         entree.setPrixAchat(prixAchat);
+        entree.setDescription(description);
         serviceEntree.insert(entree);
         return Action.SUCCESS;
     }
     
     public String newStock() throws Exception{
-        Entree entree=new Entree();
         Stock stock = new Stock();
         stock.setPrixLocation(prixLocation);
         stock.setDesignation(designation);
         stock.setQuantite(quantite);
+        stock.setPrixCasse(this.getPrixCasse());
         serviceStock.insert(stock,prixAchat);
         return Action.SUCCESS;
     }
@@ -298,6 +322,7 @@ public class ActionStock extends BaseAction {
         sortie.setStock(new Stock(idStock));
         sortie.setQuantite(quantite);
         sortie.setDate(Calendar.getInstance().getTime());
+        sortie.setDescription(description);
         serviceSortie.insert(sortie);
         return Action.SUCCESS;
     }
@@ -318,12 +343,22 @@ public class ActionStock extends BaseAction {
     }
     
     public String listInStock() throws Exception {
+        try {
+            Users u=this.getSessionUser();
+        } catch (Exception ex) {
+            return Action.LOGIN;
+        }
         this.titre="Liste entrée de Stock";
         listeEntree = serviceEntree.find(designation, prixAchatMin, prixAchatMax, quantiteMin, quantiteMax, dateMin, dateMax);
         return Action.SUCCESS;
     }
     
     public String listOutStock() throws Exception {
+        try {
+            Users u=this.getSessionUser();
+        } catch (Exception ex) {
+            return Action.LOGIN;
+        }
         this.titre="Liste sortie de Stock";
         listeSortie= serviceSortie.find(designation, quantiteMin, quantiteMax, dateMin, dateMax);
         return Action.SUCCESS;

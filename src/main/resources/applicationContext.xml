@@ -24,12 +24,17 @@
         <property name="serviceCommande" ref="serviceCommande" />
     </bean>
     <!--service class-->   
+    <bean id="serviceCaisse" class="com.project.location.service.ServiceCaisse">
+        <property name="hibernateDao" ref="hibernateDao" />
+        <property name="serviceCommande" ref="serviceCommande" />
+    </bean>
     <bean id="clientService" class="com.project.location.service.ServiceClient">
         <property name="hibernateDao" ref="hibernateDao" />
     </bean>
     <bean id="serviceCommande" class="com.project.location.service.ServiceCommande">
         <property name="hibernateDao" ref="hibernateDao" />
         <property name="serviceStock" ref="serviceStock" />
+        <property name="serviceUtil" ref="serviceUtil" />
     </bean>
     <bean id="serviceEntree" class="com.project.location.service.ServiceEntree">
         <property name="hibernateDao" ref="hibernateDao" />
@@ -37,6 +42,9 @@
         <property name="serviceUtil" ref="serviceUtil" />
     </bean>
     <bean id="serviceHistoriquePrixStock" class="com.project.location.service.ServiceHistoriquePrixStock">
+        <property name="hibernateDao" ref="hibernateDao" />
+    </bean>
+    <bean id="serviceHistoriqueUser" class="com.project.location.service.ServiceHistoriqueUser">     
         <property name="hibernateDao" ref="hibernateDao" />
     </bean>
     <bean id="serviceSortie" class="com.project.location.service.ServiceSortie">     

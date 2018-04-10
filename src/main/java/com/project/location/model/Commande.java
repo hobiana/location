@@ -6,7 +6,9 @@
 package com.project.location.model;
 
 import com.project.location.reference.Reference;
+import com.project.location.util.DateUtil;
 import java.util.Date;
+import java.util.List;
 
 /**
  *
@@ -14,13 +16,50 @@ import java.util.Date;
  */
 public class Commande extends BaseModel {
     private Date dateCommande;
+    private Date dateAcquisition; 
+    private Date dateRetour; 
     private Date dateDebut; 
     private Date dateFin; 
     private boolean annule; 
     private boolean retour;
     private boolean recu;
+    private boolean paye; 
     private Client client;
+    private List<CommandeStock> commandeStock;
 
+    public List<CommandeStock> getCommandeStock() {
+        return commandeStock;
+    }
+
+    public void setCommandeStock(List<CommandeStock> commandeStock) {
+        this.commandeStock = commandeStock;
+    }
+    
+    public Date getDateAcquisition() {
+        return dateAcquisition;
+    }
+
+    public void setDateAcquisition(Date dateAcquisition) {
+        this.dateAcquisition = dateAcquisition;
+    }
+
+    public Date getDateRetour() {
+        return dateRetour;
+    }
+
+    public void setDateRetour(Date dateRetour) {
+        this.dateRetour = dateRetour;
+    }
+
+    public boolean isPaye() {
+        return paye;
+    }
+
+    public void setPaye(boolean paye) {
+        this.paye = paye;
+    }
+
+     
     public boolean isRecu() {
         return recu;
     }
@@ -48,7 +87,17 @@ public class Commande extends BaseModel {
     public Date getDateDebut() {
         return dateDebut;
     }
-
+    public String dateDebut() throws Exception{
+        return DateUtil.convert(dateDebut);
+    }
+    public String dateFin() throws Exception{
+        return DateUtil.convert(dateFin);
+    }
+    
+    public String dateCommande() throws Exception{
+        return DateUtil.convert(dateCommande);
+    }
+    
     public void setDateDebut(Date dateDebut) {
         this.dateDebut = dateDebut;
     }
@@ -83,5 +132,15 @@ public class Commande extends BaseModel {
     public Commande(long id){
         super.setId(id);
         super.setReference(Reference.COMMANDE);    
+    }
+    public int getTotal(List<CommandeStock> commandeStock) throws Exception{
+        int total = 0; 
+        int jour = DateUtil.nombreJ(dateDebut, dateFin);
+        int size= commandeStock.size(); 
+        for(int i=0;i<size;i++){
+            CommandeStock temp = commandeStock.get(i); 
+           total+= temp.getQuantiteCommande()*temp.getPrixLocation()*jour;
+        }      
+        return total; 
     }
 }

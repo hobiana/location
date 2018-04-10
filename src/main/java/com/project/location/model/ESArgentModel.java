@@ -14,8 +14,9 @@ import java.util.Date;
 public class ESArgentModel extends BaseModel{
     protected double volaM; 
     protected Date date; 
-    protected String designation; 
-    protected String reference; 
+    protected String designation;
+    protected String type;
+ 
 
     public double getVolaM() {
         return volaM;
@@ -41,13 +42,12 @@ public class ESArgentModel extends BaseModel{
         this.designation = designation;
     }
 
-    public String getReference() {
-        return reference;
+    public String getType() {
+        return type;
     }
 
-    public void setReference(String reference) {
-        this.reference = reference;
+    public void setType(String type) {
+        this.type = type;
     }
-    
     
 }

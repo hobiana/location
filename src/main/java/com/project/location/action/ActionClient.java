@@ -11,8 +11,13 @@ import com.project.location.model.Users;
 import com.project.location.reference.ReferenceErreur;
 import com.project.location.reference.ReferenceSession;
 import com.project.location.service.ServiceClient;
+import com.project.location.util.DateUtil;
 import com.project.location.util.Test;
+import java.sql.Timestamp;
+import java.util.Calendar;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.http.HttpSession;
 import org.apache.struts2.ServletActionContext;
 
@@ -151,6 +156,9 @@ public class ActionClient extends BaseAction {
         }
         try {
             this.user = this.clientService.login(email, password);
+            HttpSession session = ServletActionContext.getRequest().getSession();
+            
+            session.setAttribute(ReferenceSession.USER, this.user);
         } catch (Exception e) {
             e.printStackTrace();
             this.linkError = ReferenceErreur.VISIBLE;
@@ -161,16 +169,16 @@ public class ActionClient extends BaseAction {
     }
 
     public String listclient() {
+        try {
+            Users u=this.getSessionUser();
+        } catch (Exception ex) {
+            return Action.LOGIN;
+        }
         this.titre = "Clients";
         listeClient = clientService.getListClient();
         if (listeClient == null) {
             return Action.ERROR;
         }
-        return Action.SUCCESS;
-    }
-
-    public String modifClient() {
-        this.titre = "Modifier un client";
         return Action.SUCCESS;
     }
 
@@ -186,7 +194,7 @@ public class ActionClient extends BaseAction {
 
             this.linkSuccess = ReferenceErreur.VISIBLE;
             this.messageSuccess = "Le client " + nom + " a été ajouté avec succès";
-
+            
             return Action.SUCCESS;
         } catch (Exception ex) {
             this.linkError = ReferenceErreur.VISIBLE;
@@ -197,13 +205,28 @@ public class ActionClient extends BaseAction {
 
     public String loadModifier() {
         try {
+            Users u=this.getSessionUser();
+        } catch (Exception ex) {
+            return Action.LOGIN;
+        }
+        try {
             client = this.clientService.find(idClient);
-            if(Test.argmumentNull(nom)) this.setNom(client.getNom());
-            if(Test.argmumentNull(prenom)) this.setPrenom(client.getPrenom());
-            if(Test.argmumentNull(cin)) this.setCin(client.getCIN());
-            if(Test.argmumentNull(adresse)) this.setAdresse(client.getAdresse());
-            if(Test.argmumentNull(blacklist)) this.setBlacklist(String.valueOf(client.isBlackListe()));
-            
+            if (Test.argmumentNull(nom)) {
+                this.setNom(client.getNom());
+            }
+            if (Test.argmumentNull(prenom)) {
+                this.setPrenom(client.getPrenom());
+            }
+            if (Test.argmumentNull(cin)) {
+                this.setCin(client.getCIN());
+            }
+            if (Test.argmumentNull(adresse)) {
+                this.setAdresse(client.getAdresse());
+            }
+            if (Test.argmumentNull(blacklist)) {
+                this.setBlacklist(String.valueOf(client.isBlackListe()));
+            }
+
             return Action.SUCCESS;
         } catch (Exception e) {
             this.linkError = ReferenceErreur.VISIBLE;
@@ -221,11 +244,13 @@ public class ActionClient extends BaseAction {
             client.setPrenom(prenom);
             client.setNom(nom);
             client.setCIN(cin);
-            if(blacklist==null) blacklist="false";
+            if (blacklist == null) {
+                blacklist = "false";
+            }
             client.setBlackListe(blacklist);
 
             this.clientService.modifier(client);
-            
+
             this.linkSuccess = ReferenceErreur.VISIBLE;
             this.messageSuccess = "Le client " + nom + " a été modifié avec succès";
             return Action.SUCCESS;

@@ -5,6 +5,7 @@
  */
 package com.project.location.service;
 
+import com.project.location.dao.HibernateDao;
 import com.project.location.model.Entree;
 import com.project.location.model.Stock;
 import com.project.location.util.DateUtil;
@@ -14,6 +15,7 @@ import java.util.Date;
 import java.util.List;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 /**
  *
@@ -42,20 +44,23 @@ public class ServiceEntree extends BaseService{
     }
     
     public void insert(Entree entree)throws Exception{
+        Session session = null; 
+        Transaction tr = null;
         try{
-            this.hibernateDao.save(entree);           
+            session = this.hibernateDao.getSessionFactory().openSession(); 
+            tr = session.beginTransaction();          
+            HibernateDao.save(entree,session);           
             Stock stock = this.ServiceStock.find(entree.getStock().getId());
-            stock.setQuantite(stock.getQuantite()+entree.getQuantite());
-            try{
-                this.ServiceStock.update(stock);
-            }catch(Exception e){
-                e.printStackTrace();
-                this.hibernateDao.delete(entree);
-                throw e;
-            }                    
+            ServiceHistoriqueUser.save("ajout de "+entree.getQuantite()+" "+stock.getDesignation()+" dans le stock", session);
+            stock.setQuantite(stock.getQuantite()+entree.getQuantite());           
+            this.ServiceStock.update(stock,session); 
+            
+            tr.commit();
         }catch(Exception e){
-            e.printStackTrace();
+            if(tr!=null)tr.rollback();
             throw new Exception("Impossible d'inserer l'entree dans la BDD cause "+e.getMessage());
+        }finally{
+            if(session!=null)session.close();
         }
     }
     public void instanceStock(List<Entree> entree) throws Exception{

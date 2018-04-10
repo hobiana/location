@@ -111,10 +111,38 @@
                                                             <label>Confirmer</label>
                                                             <input name="confirmation" type="password" class="form-control" placeholder="Confirmation mot de passe">
                                                         </div>
+                                                        <div class="form-group">
+                                                            <label>Accès aux liens</label>
+                                                            <div class="checkbox">
+                                                                <label>
+                                                                    <input type="checkbox" value="">Caisse et quotient
+                                                                </label>
+                                                            </div>
+                                                            <div class="checkbox">
+                                                                <label>
+                                                                    <input type="checkbox" value="">Clients
+                                                                </label>
+                                                            </div>
+                                                            <div class="checkbox">
+                                                                <label>
+                                                                    <input type="checkbox" value="">Commande
+                                                                </label>
+                                                            </div>
+                                                            <div class="checkbox">
+                                                                <label>
+                                                                    <input type="checkbox" value="">Stocks
+                                                                </label>
+                                                            </div>
+                                                            <div class="checkbox">
+                                                                <label>
+                                                                    <input type="checkbox" value="">Utilisateurs
+                                                                </label>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Annuler</button>
-                                                        <button class="btn base-background pull-right">Ajouter</button>
+                                                        <button class="btn btn-default pull-right">Ajouter</button>
                                                     </div>
                                                 </form>
                                             </div>
@@ -126,7 +154,9 @@
                                         <th>Prenom</th>
                                         <th>T&eacute;l&eacute;phone</th>
                                         <th>Adresse</th>
-                                        <th></th>
+                                        <th>Hist.</th>
+                                        <th>Modif.</th>
+                                        <th>Suppr.</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -137,8 +167,9 @@
                                                 <td><s:property value="prenom"  /></td>
                                                 <td><s:property value="phone"  /></td>
                                                 <td><s:property value="adresse"  /></td>
-                                                
-                                                <td><a type="button" class="btn btn-default center-block" href="modifierUser?idUsers=<s:property value="id"/>">Modifier</a></td>
+                                                <td><a type="button" class="btn btn-default btn-circle  center-block" href="historiqueuser?idUser=<s:property value="id"/>"><i class="fa fa-history"></i></a></td>
+                                                <td><a type="button" class="btn btn-default btn-circle  center-block" href="modifierUser?idUsers=<s:property value="id"/>"><i class="fa fa-edit"></i></a></td>
+                                                <td><a type="button" class="btn btn-danger btn-circle  center-block" href="deluser?idUser=<s:property value="id"  />"><i class="fa fa-times"></i></a></td>
                                             </tr>
                                         </s:iterator>
                                     </tbody>

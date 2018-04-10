@@ -16,6 +16,16 @@ public class Stock extends BaseModel {
     private String designation; 
     private int prixLocation; 
     private int quantite; 
+    private int prixCasse;
+
+    public int getPrixCasse() {
+        return prixCasse;
+    }
+
+    public void setPrixCasse(int prixCasse) {
+        this.prixCasse = prixCasse;
+    }
+    
 
     public Stock() {
         this.reference = Reference.STOCK;

@@ -14,6 +14,11 @@ import java.util.Date;
  * @author diary
  */
 public class DateUtil {
+    public static int nombreJ(Date debut, Date fin)throws Exception{
+        final long MILLISECONDS_PER_DAY = 1000 * 60 * 60 * 24; 
+        long delta = fin.getTime() - debut.getTime();
+        return (int)(delta / (MILLISECONDS_PER_DAY))+1;
+    }
     public static String convert(Date date)throws Exception{
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); 
         String reponse; 
