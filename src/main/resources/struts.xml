@@ -24,6 +24,7 @@
         
         <action name="client" method="listclient" class="com.project.location.action.ActionClient">
             <result name="success">client.jsp</result>
+            <result name="login" type="redirect">index</result>
             <result name="error">index.jsp</result>
         </action>
         
@@ -42,6 +43,7 @@
         
         <action name="modifclient" method="loadModifier" class="com.project.location.action.ActionClient">
             <result name="success">modifClient.jsp</result>
+            <result name="login" type="redirect">index</result>
             <result name="error" type="redirect">client</result>
         </action>
         
@@ -67,6 +69,7 @@
         
          <action name="indexUsers" method="index" class="com.project.location.action.ActionUsers">
             <result name="success">usersListe.jsp</result>
+            <result name="login" type="redirect">index</result>
             <result name="error">index.jsp</result>
         </action>
         
@@ -85,6 +88,7 @@
         
         <action name="modifierUser" method="loadModifier" class="com.project.location.action.ActionUsers">
             <result name="success">modifierUser.jsp</result>
+            <result name="login" type="redirect">index</result>
             <result name="error" type="redirect">indexUsers</result>
         </action>
         
@@ -109,11 +113,13 @@
         
         <action name="stock" method="load" class="com.project.location.action.ActionStock">
            <result name="success">stock.jsp</result>
+           <result name="login" type="redirect">index</result>
            <result name="error">index.js</result>
         </action>
         
         <action name="inStock" method="inStock" class="com.project.location.action.ActionStock">
            <result name="success">stock_add_del.jsp</result>
+           <result name="login" type="redirect">index</result>
            <result name="error">index.jsp</result>
         </action>
         
@@ -129,6 +135,7 @@
         
         <action name="outStock" method="outStock" class="com.project.location.action.ActionStock">
            <result name="success">stock_add_del.jsp</result>
+           <result name="login" type="redirect">index</result>
            <result name="error">index.js</result>
         </action>
         
@@ -139,6 +146,7 @@
         
         <action name="toupdateStock" method="toupdateStock" class="com.project.location.action.ActionStock">
            <result name="success">stock_update.jsp</result>
+            <result name="login" type="redirect">index</result>
            <result name="error">index.js</result>
         </action>
         
@@ -149,16 +157,19 @@
         
         <action name="listInStock" method="listInStock" class="com.project.location.action.ActionStock">
            <result name="success">stock_in.jsp</result>
+           <result name="login" type="redirect">index</result>
            <result name="error">index.js</result>
         </action>
         
         <action name="listOutStock" method="listOutStock" class="com.project.location.action.ActionStock">
            <result name="success">stock_out.jsp</result>
+           <result name="login" type="redirect">index</result>
            <result name="error">index.js</result>
         </action>
         
         <action name="commande" method="commande" class="com.project.location.action.ActionCommande">
            <result name="success">commande.jsp</result>
+           <result name="login" type="redirect">index</result>
            <result name="error">index.js</result>
         </action>
         
@@ -242,6 +253,7 @@
         
         <action name="listcommande" method="listCommande" class="com.project.location.action.ActionCommande">
            <result name="success">liste_commande.jsp</result>
+           <result name="login" type="redirect">index</result>
            <result name="error">index.jsp</result>
         </action>
         
@@ -266,26 +278,31 @@
         
         <action name="caisse" method="caisse" class="com.project.location.action.ActionCaisse">
            <result name="success">caisse.jsp</result>
+           <result name="login" type="redirect">index</result>
            <result name="error">index.jsp</result>
         </action>
         
         <action name="historiquecaisse" method="historiquecaisse" class="com.project.location.action.ActionCaisse">
            <result name="success">historiquecaisse.jsp</result>
+           <result name="login" type="redirect">index</result>
            <result name="error">index.jsp</result>
         </action>
         
         <action name="quotient" method="quotient" class="com.project.location.action.ActionQuotient">
            <result name="success">quotient.jsp</result>
+           <result name="login" type="redirect">index</result>
            <result name="error">index.jsp</result>
         </action>
         
         <action name="historiquequotient" method="historiquequotient" class="com.project.location.action.ActionQuotient">
            <result name="success">historiquequotient.jsp</result>
+           <result name="login" type="redirect">index</result>
            <result name="error">index.jsp</result>
         </action>
         
         <action name="historiqueuser" method="historiqueuser" class="com.project.location.action.ActionUsers">
            <result name="success">historiqueuser.jsp</result>
+           <result name="login" type="redirect">index</result>
            <result name="error">index.jsp</result>
         </action>
         

@@ -23,7 +23,6 @@ public class BaseModel {
         this.reference = reference;
     }
     
-    
     public String getRef(){
         return this.getReference()+NumberTest.toRef(id);
     }

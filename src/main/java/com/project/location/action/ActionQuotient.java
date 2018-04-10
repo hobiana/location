@@ -6,6 +6,7 @@
 package com.project.location.action;
 
 import com.opensymphony.xwork2.Action;
+import com.project.location.model.Users;
 
 /**
  *
@@ -13,11 +14,21 @@ import com.opensymphony.xwork2.Action;
  */
 public class ActionQuotient extends BaseAction{
     public String quotient(){
+        try {
+            Users u=this.getSessionUser();
+        } catch (Exception ex) {
+            return Action.LOGIN;
+        }
         this.titre="Quotient";
         return Action.SUCCESS;
     }
     
     public String historiquequotient(){
+        try {
+            Users u=this.getSessionUser();
+        } catch (Exception ex) {
+            return Action.LOGIN;
+        }
         this.titre="Historique Quotient";
         return Action.SUCCESS;
     }

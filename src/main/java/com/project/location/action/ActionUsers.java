@@ -114,6 +114,12 @@ public class ActionUsers extends BaseAction {
     }
 
     public String index() {
+        try {
+            Users u=this.getSessionUser();
+        } catch (Exception ex) {
+            return Action.LOGIN;
+        }
+        
         this.titre = "Users | Liste";
         try {
             this.users = this.serviceUsers.findAll();
@@ -125,6 +131,12 @@ public class ActionUsers extends BaseAction {
         }
     }
     public String loadModifier(){
+        this.titre="Modifier Utilisateur";
+        try {
+            Users u=this.getSessionUser();
+        } catch (Exception ex) {
+            return Action.LOGIN;
+        }
         try{
             this.utilisateur = this.serviceUsers.find(this.idUsers);
             if(Test.argmumentNull(pseudo)) this.setPseudo(utilisateur.getPseudo());
@@ -155,7 +167,7 @@ public class ActionUsers extends BaseAction {
             this.serviceUsers.update(temp);
             this.linkSuccess = ReferenceErreur.VISIBLE;
             this.messageSuccess = "L'utilisateur " + nom + " a été mise à jour avec succès";
-
+            
             return Action.SUCCESS;
         }catch(Exception e){
             e.printStackTrace();
@@ -180,7 +192,7 @@ public class ActionUsers extends BaseAction {
             this.serviceUsers.save(e);
             this.linkSuccess = ReferenceErreur.VISIBLE;
             this.messageSuccess = "L'utilisateur " + nom + " a été ajouté avec succès";
-
+            
             return Action.SUCCESS;
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -201,12 +213,12 @@ public class ActionUsers extends BaseAction {
     }
     
     public String historiqueuser(){
+        try {
+            Users u=this.getSessionUser();
+        } catch (Exception ex) {
+            return Action.LOGIN;
+        }
         this.titre="Historiques Utilisateur";
-        return Action.SUCCESS;
-    }
-    
-    public String modifuser(){
-        this.titre="Modifier Utilisateur";
         return Action.SUCCESS;
     }
     

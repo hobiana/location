@@ -6,18 +6,25 @@
 package com.project.location.action;
 
 import com.opensymphony.xwork2.ActionSupport;
+import com.project.location.model.HistoriqueUser;
 import com.project.location.model.Users;
+import com.project.location.reference.ReferenceSession;
+import java.sql.Timestamp;
+import java.util.Calendar;
+import javax.servlet.http.HttpSession;
+import org.apache.struts2.ServletActionContext;
 
 /**
  *
  * @author Diary
  */
-public class BaseAction extends ActionSupport{
+public class BaseAction extends ActionSupport {
+
     protected Users user;
-    protected String titre; 
-    protected String linkError ="none";
+    protected String titre;
+    protected String linkError = "none";
     protected String messageError;
-    protected String linkSuccess ="none";
+    protected String linkSuccess = "none";
     protected String messageSuccess;
 
     public String getLinkSuccess() {
@@ -51,11 +58,9 @@ public class BaseAction extends ActionSupport{
     public void setMessageError(String messageError) {
         this.messageError = messageError;
     }
-    
-    
-    
-    protected boolean checkArgument(String arg){
-        return !(arg==null||arg.compareTo("")==0);
+
+    protected boolean checkArgument(String arg) {
+        return !(arg == null || arg.compareTo("") == 0);
     }
 
     public Users getUser() {
@@ -73,6 +78,11 @@ public class BaseAction extends ActionSupport{
     public void setTitre(String titre) {
         this.titre = titre;
     }
-    
+
+    public Users getSessionUser() throws Exception{
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        if(session.getAttribute(ReferenceSession.USER)==null) throw new Exception("Not Logged => No session");
+        return (Users)session.getAttribute(ReferenceSession.USER);
+    }
     
 }

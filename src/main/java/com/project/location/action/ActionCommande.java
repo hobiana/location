@@ -9,6 +9,7 @@ import com.opensymphony.xwork2.Action;
 import com.project.location.model.Commande;
 import com.project.location.model.CommandeStock;
 import com.project.location.model.Stock;
+import com.project.location.model.Users;
 import com.project.location.reference.ReferenceErreur;
 import com.project.location.reference.ReferenceSession;
 import com.project.location.service.ServiceCommande;
@@ -261,6 +262,11 @@ public class ActionCommande extends BaseAction {
 
     // getter setters
     public String commande() throws Exception {
+        try {
+            Users u=this.getSessionUser();
+        } catch (Exception ex) {
+            return Action.LOGIN;
+        }
         
         this.titre = "Commande";
         listeStock = serviceStock.find();
@@ -333,7 +339,6 @@ public class ActionCommande extends BaseAction {
         }
         else if(!action.equals("save")){
             // ito fonction update ito ilay ataon la
-           
             if (serviceCommande.updateCommande(dateDebut, dateFin)) {
                 return Action.SUCCESS;
             }
@@ -342,6 +347,11 @@ public class ActionCommande extends BaseAction {
     }
    
     public String listCommande() throws Exception {
+        try {
+            Users u=this.getSessionUser();
+        } catch (Exception ex) {
+            return Action.LOGIN;
+        }
         try{
             this.listeCommande = this.serviceCommande.getCommande(client,dateDebutCommande,dateFinCommande,this.dateDebut, this.dateFin,!Test.argmumentNull(recu),!Test.argmumentNull(retour),!Test.argmumentNull(annule));
         }catch(Exception e){
@@ -367,6 +377,12 @@ public class ActionCommande extends BaseAction {
         
     }
     public String ficheCommande() throws Exception {
+        try {
+            Users u=this.getSessionUser();
+        } catch (Exception ex) {
+            return Action.LOGIN;
+        }
+        
         commande = this.serviceCommande.find(idCommande);
         this.total = this.serviceCommande.getTotal(idCommande);
         this.listeCommandeStock = this.serviceCommande.find(commande);

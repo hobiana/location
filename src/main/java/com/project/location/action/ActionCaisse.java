@@ -6,6 +6,7 @@
 package com.project.location.action;
 
 import com.opensymphony.xwork2.Action;
+import com.project.location.model.Users;
 
 /**
  *
@@ -13,11 +14,21 @@ import com.opensymphony.xwork2.Action;
  */
 public class ActionCaisse extends BaseAction{
     public String caisse(){
+        try {
+            Users u=this.getSessionUser();
+        } catch (Exception ex) {
+            return Action.LOGIN;
+        }
         this.titre="Caisse";
         return Action.SUCCESS;
     }
     
     public String historiquecaisse(){
+        try {
+            Users u=this.getSessionUser();
+        } catch (Exception ex) {
+            return Action.LOGIN;
+        }
         this.titre="Historique Caisse";
         return Action.SUCCESS;
     }

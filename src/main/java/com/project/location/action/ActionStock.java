@@ -9,6 +9,7 @@ import com.opensymphony.xwork2.Action;
 import com.project.location.model.Entree;
 import com.project.location.model.Sortie;
 import com.project.location.model.Stock;
+import com.project.location.model.Users;
 import com.project.location.service.ServiceEntree;
 import com.project.location.service.ServiceSortie;
 import com.project.location.service.ServiceStock;
@@ -267,6 +268,11 @@ public class ActionStock extends BaseAction {
     
     
     public String load() throws Exception {
+        try {
+            Users u=this.getSessionUser();
+        } catch (Exception ex) {
+            return Action.LOGIN;
+        }
         this.titre="Stock";
         listeStock = serviceStock.find(designation, quantiteMin, quantiteMax, prixLocationMin, prixLocationMax);
         return Action.SUCCESS;
@@ -337,12 +343,22 @@ public class ActionStock extends BaseAction {
     }
     
     public String listInStock() throws Exception {
+        try {
+            Users u=this.getSessionUser();
+        } catch (Exception ex) {
+            return Action.LOGIN;
+        }
         this.titre="Liste entrée de Stock";
         listeEntree = serviceEntree.find(designation, prixAchatMin, prixAchatMax, quantiteMin, quantiteMax, dateMin, dateMax);
         return Action.SUCCESS;
     }
     
     public String listOutStock() throws Exception {
+        try {
+            Users u=this.getSessionUser();
+        } catch (Exception ex) {
+            return Action.LOGIN;
+        }
         this.titre="Liste sortie de Stock";
         listeSortie= serviceSortie.find(designation, quantiteMin, quantiteMax, dateMin, dateMax);
         return Action.SUCCESS;
