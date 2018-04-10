@@ -132,18 +132,27 @@ public class ServiceStock extends BaseService {
         historique.setDate(Calendar.getInstance().getTime());
         historique.setPrix(stock.getPrixLocation());
         historique.setStock(stock);
+        
+        Session session = null; 
+        Transaction tr = null; 
         try {
+            session = this.hibernateDao.getSessionFactory().openSession();
+            tr = session.beginTransaction();
+            
             if (stock == null) {
                 throw new Exception("stock non initialisé");
             }
-            this.hibernateDao.save(stock);
-            this.hibernateDao.save(historique);
-            if (entree != null) {
-                this.hibernateDao.save(entree);
-            }
+            ServiceHistoriqueUser.save("ajout d'un nouveau stock : "+stock.getDesignation()+" qte : "+entree.getQuantite(), session);
+            HibernateDao.save(stock,session);
+            HibernateDao.save(historique,session);
+           
+            HibernateDao.save(entree,session);
+            tr.commit();
         } catch (Exception e) {
-            e.printStackTrace();
+            if(tr!=null)tr.rollback();
             throw new Exception("Impossible d'inserer le stock cause " + e.getMessage());
+        }finally{
+            if(session!=null)session.close();
         }
     }
 
@@ -171,6 +180,7 @@ public class ServiceStock extends BaseService {
                 historique.setStock(stock);
                 HibernateDao.save(historique, session);               
             }
+            ServiceHistoriqueUser.save("mise à jour du stock "+stock.getRef(), session);
             HibernateDao.update(stock, session);
             tr.commit();
         } catch (Exception ex) {
@@ -183,6 +193,21 @@ public class ServiceStock extends BaseService {
                 session.close();
             }
         }
+    }
+    public void update(Stock stock,Session session) throws Exception {
+        try {
+            Stock oldStock = this.find(stock.getId());
+            if (oldStock.getPrixLocation() != stock.getPrixLocation()) {
+                HistoriquePrixStock historique = new HistoriquePrixStock();
+                historique.setDate(Calendar.getInstance().getTime());
+                historique.setPrix(stock.getPrixLocation());
+                historique.setStock(stock);
+                HibernateDao.save(historique, session);               
+            }
+            HibernateDao.update(stock, session);
+        } catch (Exception ex) {
+            throw new Exception("impossible de d'ajouter dans historique de prix stock ou de modifier le stock : " + stock.getRef());
+        } 
     }
 
     public void delete(Stock stock) throws Exception {

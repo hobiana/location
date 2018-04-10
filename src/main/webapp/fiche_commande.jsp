@@ -139,7 +139,7 @@
                                                                     <label>Re&ccedil;u par le client : </label>
                                                                 </div>
                                                                 <div class="col-md-3">
-                                                                    <input type="checkbox" name="recu" data-toggle="toggle" data-on="Oui" data-off="Non" <s:if test="recu!=null">checked</s:if>>
+                                                                    <input type="checkbox" name="recu" data-toggle="toggle" data-on="Oui" data-off="Non" <s:if test="commande.isRecu()==true">checked</s:if>>
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-6">
@@ -147,7 +147,7 @@
                                                                     <label>Annulée : </label>
                                                                 </div>
                                                                 <div class="col-md-12">
-                                                                    <input type="checkbox" name="annule" data-toggle="toggle" data-on="Oui" data-off="Non" <s:if test="annule!=null">checked</s:if>>
+                                                                    <input type="checkbox" name="annule" data-toggle="toggle" data-on="Oui" data-off="Non" <s:if test="commande.isAnnule()==true">checked</s:if>>
                                                                 </div>
                                                             </div>
                                                         </div>

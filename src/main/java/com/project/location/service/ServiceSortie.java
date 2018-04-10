@@ -5,6 +5,7 @@
  */
 package com.project.location.service;
 
+import com.project.location.dao.HibernateDao;
 import com.project.location.model.Sortie;
 import com.project.location.model.Stock;
 import com.project.location.util.DateUtil;
@@ -14,6 +15,7 @@ import java.util.Date;
 import java.util.List;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 /**
  *
@@ -40,21 +42,24 @@ public class ServiceSortie extends BaseService{
     }
     
     public void insert(Sortie sortie)throws Exception{
+        Session session = null; 
+        Transaction tr = null; 
         try{
+            session = this.hibernateDao.getSessionFactory().openSession();
+            tr = session.beginTransaction();           
             Stock stock = this.ServiceStock.find(sortie.getStock().getId());
+            ServiceHistoriqueUser.save("sortie de "+sortie.getQuantite()+" "+stock.getDesignation()+" dans le stock", session);
             int value = stock.getQuantite()-sortie.getQuantite();
             if(value<0)throw new Exception("stock insuffisant pour cette sortie");
-            this.hibernateDao.save(sortie);           
-            stock.setQuantite(value);
-            try{
-                this.ServiceStock.update(stock);
-            }catch(Exception e){
-                this.hibernateDao.delete(sortie);
-                throw e;
-            }          
+            HibernateDao.save(sortie,session);           
+            stock.setQuantite(value);          
+            this.ServiceStock.update(stock,session);
+            tr.commit();
         }catch(Exception e){
-            e.printStackTrace();
+            if(tr!=null)tr.rollback();
             throw new Exception("Impossible de faire cette sortie cause : "+e.getMessage());
+        }finally{
+            if(session!=null)session.close();
         }
     }
     public void instanceStock(List<Sortie> sorties) throws Exception{
