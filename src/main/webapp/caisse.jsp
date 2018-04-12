@@ -34,7 +34,7 @@
                             </div>
                             <!-- /.panel-heading -->
                             <div class="panel-body">
-                                <h3 class="text-center"><strong>Solde : 10 000 000 Ar</strong></h3>
+                                <h3 class="text-center"><strong>Solde : <s:property value="soldeCaisse"  /> Ar</strong></h3>
                             </div>
                             <!-- /.panel-body -->
                         </div>
@@ -45,14 +45,14 @@
                             </div>
                             <!-- /.panel-heading -->
                             <div class="panel-body">
-                                <form role="form">
+                                <form action="incaisse" methode="POST">
                                     <div class="form-group">
                                         <label>Solde</label>
-                                        <input class="form-control" type="number" min="0" placeholder="Solde">
+                                        <input name="volaM" class="form-control" type="number" min="0" placeholder="Solde">
                                     </div>
                                     <div class="form-group">
                                         <label>D&eacute;scription</label>
-                                        <input class="form-control" placeholder="Description">
+                                        <input name="designation" class="form-control" placeholder="Description">
                                     </div>
                                     <button type="submit" class="btn btn-default">Valider</button>
                                 </form>
@@ -66,14 +66,14 @@
                             </div>
                             <!-- /.panel-heading -->
                             <div class="panel-body">
-                                <form role="form">
+                                <form action="outcaisse">
                                     <div class="form-group">
                                         <label>Solde</label>
-                                        <input class="form-control" type="number" min="0" placeholder="Solde">
+                                        <input name="volaM" class="form-control" type="number" min="0" placeholder="Solde">
                                     </div>
                                     <div class="form-group">
                                         <label>D&eacute;scription</label>
-                                        <input class="form-control" placeholder="Description">
+                                        <input name="designation" class="form-control" placeholder="Description">
                                     </div>
                                     <button type="submit" class="btn btn-default">Valider</button>
                                 </form>

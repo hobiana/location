@@ -40,7 +40,7 @@ made subject to such option by the copyright holder.
 Contributor(s):
 -->
 <hibernate-mapping>
-  <class name="com.project.location.model.SortieVola" table="sortievola">
+  <class name="com.project.location.model.SortieVola" table="historiquecaisse">
         <id column="idhistoriquecaisse" name="id" type="long">
           <generator class="increment"/>
         </id>

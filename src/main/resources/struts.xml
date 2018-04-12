@@ -282,6 +282,16 @@
            <result name="error">index.jsp</result>
         </action>
         
+        <action name="incaisse" method="inCaisse" class="com.project.location.action.ActionCaisse">
+           <result name="success" type="redirect">caisse</result>
+           <result name="error">index.jsp</result>
+        </action>
+        
+        <action name="outcaisse" method="outCaisse" class="com.project.location.action.ActionCaisse">
+           <result name="success" type="redirect">caisse</result>
+           <result name="error">index.jsp</result>
+        </action>
+        
         <action name="historiquecaisse" method="historiquecaisse" class="com.project.location.action.ActionCaisse">
            <result name="success">historiquecaisse.jsp</result>
            <result name="login" type="redirect">index</result>
@@ -291,6 +301,16 @@
         <action name="quotient" method="quotient" class="com.project.location.action.ActionQuotient">
            <result name="success">quotient.jsp</result>
            <result name="login" type="redirect">index</result>
+           <result name="error">index.jsp</result>
+        </action>
+        
+        <action name="inquotient" method="inQuotient" class="com.project.location.action.ActionQuotient">
+           <result name="success" type="redirect">quotient</result>
+           <result name="error">index.jsp</result>
+        </action>
+        
+        <action name="outquotient" method="outQuotient" class="com.project.location.action.ActionQuotient">
+           <result name="success" type="redirect">quotient</result>
            <result name="error">index.jsp</result>
         </action>
         
