@@ -11,7 +11,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="index.html">Location</a>
+        <a class="navbar-brand" href="dashboard">Location</a>
     </div>
     <!-- /.navbar-header -->
 

@@ -167,6 +167,10 @@ public class ActionClient extends BaseAction {
         }
         return Action.SUCCESS;
     }
+    
+    public String dashboard(){
+        return Action.SUCCESS;
+    }
 
     public String listclient() {
         try {
