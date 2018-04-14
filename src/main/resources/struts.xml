@@ -13,8 +13,12 @@
             <result name="success">login.jsp</result>
         </action>
         
+        <action name="dashboard" method="dashboard" class="com.project.location.action.ActionClient">
+            <result name="success">template.jsp</result>
+        </action>
+        
         <action name="login" method="login" class="com.project.location.action.ActionClient">
-            <result name="success" >template.jsp</result>
+            <result name="success" type="redirectAction">dashboard</result>
             <result name="error" type="chain">
                 <param name="actionName">index</param>
                 <param name="linkError">${linkError}</param>
