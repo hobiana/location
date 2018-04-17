@@ -29,4 +29,13 @@ public class NumberTest {
     public static String toMoney(double value){
         return String.format("%,d", (int)value);
     }
+    public static double  toDouble(String value)throws Exception{
+        double response = 0; 
+        try{
+            response = Double.valueOf(value);
+        }catch(Exception e){
+            throw new Exception(value+" n'est pas un nombre valide");
+        }
+        return response;
+    }
 }
