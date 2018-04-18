@@ -11,7 +11,7 @@ import com.project.location.util.Test;
  *
  * @author Diary
  */
-public class SortieQuotient extends ESArgentModel {
+public class SortieQuotient extends ESArgentQuotientModel {
     public void setVolaM(double volaM) throws Exception{
         Test.doubleNegatif(volaM,"La valeur de l'argent sortant");
         this.volaM = volaM;

@@ -28,6 +28,10 @@
         <property name="hibernateDao" ref="hibernateDao" />
         <property name="serviceCommande" ref="serviceCommande" />
     </bean>
+    <bean id="serviceCaisseQuotient" class="com.project.location.service.ServiceCaisseQuotient">
+        <property name="hibernateDao" ref="hibernateDao" />
+        <property name="serviceUtil" ref="serviceUtil" />
+    </bean>
     <bean id="clientService" class="com.project.location.service.ServiceClient">
         <property name="hibernateDao" ref="hibernateDao" />
     </bean>
