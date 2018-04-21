@@ -302,6 +302,20 @@
            <result name="error">index.jsp</result>
         </action>
         
+        <action name="findcaisse" method="findcaisse" class="com.project.location.action.ActionCaisse">
+           <result name="success" type="redirectAction">
+               <param name="actionName">historiquecaisse</param>
+                <param name="dateMin">${dateMin}</param>
+                <param name="dateMax">${dateMax}</param>
+                <param name="soldeMin">${soldeMin}</param>
+                <param name="soldeMax">${soldeMax}</param>
+                <param name="designation">${designation}</param>
+                <param name="type">${type}</param>
+           </result>
+           <result name="login" type="redirect">index</result>
+           <result name="error">index.jsp</result>
+        </action>
+        
         <action name="quotient" method="quotient" class="com.project.location.action.ActionQuotient">
            <result name="success">quotient.jsp</result>
            <result name="login" type="redirect">index</result>
@@ -320,6 +334,20 @@
         
         <action name="historiquequotient" method="historiquequotient" class="com.project.location.action.ActionQuotient">
            <result name="success">historiquequotient.jsp</result>
+           <result name="login" type="redirect">index</result>
+           <result name="error">index.jsp</result>
+        </action>
+        
+        <action name="findquotient" method="findquotient" class="com.project.location.action.ActionQuotient">
+           <result name="success" type="redirectAction">
+               <param name="actionName">historiquequotient</param>
+                <param name="dateMin">${dateMin}</param>
+                <param name="dateMax">${dateMax}</param>
+                <param name="soldeMin">${soldeMin}</param>
+                <param name="soldeMax">${soldeMax}</param>
+                <param name="designation">${designation}</param>
+                <param name="type">${type}</param>
+           </result>
            <result name="login" type="redirect">index</result>
            <result name="error">index.jsp</result>
         </action>
