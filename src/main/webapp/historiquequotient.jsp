@@ -34,10 +34,10 @@
                             </div>
                             <!-- /.panel-heading -->
                             <div class="panel-body">
-                                <form role="form">
+                                <form role="form" action="findquotient">
                                     <div class="form-group">
                                         <label>Description</label>
-                                        <input name="description" class="form-control" placeholder="Description" value="">
+                                        <input name="designation" class="form-control" placeholder="Description" value="">
                                     </div>
                                     <div class="form-group">
                                         <div class="col-md-12">
@@ -71,6 +71,7 @@
                                         </div>
                                         <div class="col-md-12" >
                                             <select name="type" class="form-control">
+                                                <option value=""></option>
                                                 <option value="entree">Entree</option>
                                                 <option value="sortie">Sortie</option>
                                             </select>
@@ -97,12 +98,14 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr class="odd gradeX">
-                                            <td> 2017-01-01 </td> 
-                                            <td>CMD du client ref 001</td> 
-                                            <td>Entrée/Sortie</td>
-                                            <td>50 000</td>
-                                        </tr>
+                                        <s:iterator value="listeQuotient">
+                                            <tr class="odd gradeX">
+                                                <td> <s:property value="date"/> </td> 
+                                                <td><s:property value="designation"/></td> 
+                                                <td><s:property value="type"/></td>
+                                                <td><s:property value="volaM"/></td>
+                                            </tr>
+                                        </s:iterator>
                                     </tbody>
                                 </table>
                             </div>

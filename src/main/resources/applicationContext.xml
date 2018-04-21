@@ -10,6 +10,14 @@
        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
         
     <!--Action class-->
+    <bean id="quotientAction" class="com.project.location.action.ActionQuotient">
+        <property name="ServiceCaisse" ref="serviceCaisse" />
+        <property name="ServiceCaisseQuotient" ref="serviceCaisseQuotient" />
+    </bean>
+    <bean id="caisseAction" class="com.project.location.action.ActionCaisse">
+        <property name="serviceCaisse" ref="serviceCaisse" />
+        <property name="ServiceCaisseQuotient" ref="serviceCaisseQuotient" />
+    </bean>
     <bean id="clientAction" class="com.project.location.action.ActionClient">
         <property name="clientService" ref="clientService" />
     </bean>
@@ -27,6 +35,10 @@
     <bean id="serviceCaisse" class="com.project.location.service.ServiceCaisse">
         <property name="hibernateDao" ref="hibernateDao" />
         <property name="serviceCommande" ref="serviceCommande" />
+    </bean>
+    <bean id="serviceCaisseQuotient" class="com.project.location.service.ServiceCaisseQuotient">
+        <property name="hibernateDao" ref="hibernateDao" />
+        <property name="serviceUtil" ref="serviceUtil" />
     </bean>
     <bean id="clientService" class="com.project.location.service.ServiceClient">
         <property name="hibernateDao" ref="hibernateDao" />
