@@ -900,6 +900,7 @@ public class ServiceCommande extends BaseService{
         fin = DateUtil.convert(dateFin);
         return this.updateCommande(debut, fin);
     }
+    
     public CommandeStock findCommandeStockById(long idCommandeStock) throws Exception {
          CommandeStock commandeStock = new CommandeStock(); 
          commandeStock.setId(idCommandeStock);
