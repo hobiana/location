@@ -9,7 +9,10 @@ import com.project.location.dao.HibernateDao;
 import com.project.location.model.HistoriqueUser;
 import com.project.location.model.Users;
 import com.project.location.reference.ReferenceSession;
+import com.project.location.util.Test;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import javax.servlet.http.HttpSession;
 import org.apache.struts2.ServletActionContext;
@@ -21,6 +24,16 @@ import org.hibernate.Session;
  * @author Diary
  */
 public class ServiceHistoriqueUser extends BaseService{
+    private ServiceUtil serviceUtil;
+
+    public ServiceUtil getServiceUtil() {
+        return serviceUtil;
+    }
+
+    public void setServiceUtil(ServiceUtil serviceUtil) {
+        this.serviceUtil = serviceUtil;
+    }
+    
     public static void save(String action, Session session)throws Exception{
         HttpSession sessionServlet = ServletActionContext.getRequest().getSession();
         Users user = (Users)sessionServlet.getAttribute(ReferenceSession.USER);
@@ -50,4 +63,49 @@ public class ServiceHistoriqueUser extends BaseService{
             throw new Exception("impossible d'extraire la liste des action de l'utilisateur cause "+e.getMessage());
         }
     }
+    public List<Users> find(String action, Date dateMin, Date dateMax, String adresse) throws Exception {
+        List<Object[]> arg = new ArrayList<>();
+        Object[] actionUsers = Test.instance(2);
+        actionUsers[0] = "action";
+        actionUsers[1] = action;
+        if (Test.argmumentNull(action)) {
+            actionUsers = null;
+        }
+        Object[] date = Test.instance(3); 
+        date[0] = "dateHU";
+        if(dateMin.before(dateMax)){
+            date[1] = dateMin;
+            date[2] = dateMax;
+        }else if(dateMax.before(dateMin)){            
+            date[1] = dateMax;  
+            date[2] = dateMin;    
+        }else if(dateMin==null&&dateMax!=null){
+            date = Test.instance(2);
+            date[0] = "dateHU";
+            date[1] = dateMax;
+        }else if(dateMax==null&&dateMin!=null){
+            date = Test.instance(2);
+            date[0] = "dateHU";
+            date[1] = dateMin;
+        }else if(dateMax==null&&dateMin==null){
+            date = null;
+        }else{
+            date = Test.instance(2);
+            date[0] = "dateHU";
+            date[1] = dateMin;
+        }
+
+        if (!Test.testNull(actionUsers)) {
+            arg.add(actionUsers);
+        }
+        List<Users> reponse = null;
+        try {
+            reponse = (List<Users>) (Object) this.serviceUtil.find(arg, Users.class);
+            return reponse;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new Exception("Impossible d'extraire la recherche");
+        }
+    }
+
 }

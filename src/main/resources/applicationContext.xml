@@ -59,6 +59,7 @@
     </bean>
     <bean id="serviceHistoriqueUser" class="com.project.location.service.ServiceHistoriqueUser">     
         <property name="hibernateDao" ref="hibernateDao" />
+        <property name="serviceUtil" ref="serviceUtil" />
     </bean>
     <bean id="serviceSortie" class="com.project.location.service.ServiceSortie">     
         <property name="hibernateDao" ref="hibernateDao" />
