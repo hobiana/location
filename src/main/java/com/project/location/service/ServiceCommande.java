@@ -900,4 +900,56 @@ public class ServiceCommande extends BaseService{
         fin = DateUtil.convert(dateFin);
         return this.updateCommande(debut, fin);
     }
+    public CommandeStock findCommandeStockById(long idCommandeStock) throws Exception {
+         CommandeStock commandeStock = new CommandeStock(); 
+         commandeStock.setId(idCommandeStock);
+         this.hibernateDao.findById(commandeStock);
+         return commandeStock;
+    } 
+    
+    public static CommandeStock findCommandeStockById(long idCommandeStock,Session session) throws Exception {
+         CommandeStock commandeStock = new CommandeStock(); 
+         commandeStock.setId(idCommandeStock);
+         HibernateDao.findById(commandeStock,session);
+         return commandeStock;
+    } 
+    
+    public static CommandeStock findCommandeStockById(CommandeStock commandeStock,Session session) throws Exception {       
+         HibernateDao.findById(commandeStock,session);
+         return commandeStock;
+    } 
+    
+    public void retour(long idCommandStock, int quantite, Session session) throws Exception {       
+        CommandeStock commandeStock = ServiceCommande.findCommandeStockById(idCommandStock, session); 
+        if(quantite>commandeStock.getPrixLocation()) throw new Exception("La quantite de retour ne peut être supérieure à la quantite louer");
+        try {
+            commandeStock.setQuantiteRetour(quantite);
+            HibernateDao.update(commandeStock, session);
+        } catch( Exception e) {
+            e.printStackTrace();
+            throw new Exception("Erreur Interne, impossible de sauvegarder la retour"); 
+        }
+    }
+    
+    public void retour(List<Long> ids, List<Integer> quantites) throws Exception{
+        if(ids.size()!=quantites.size()) throw new Exception("le nombre d'id et de quantité sont different");
+        Session session = null; 
+        Transaction tr = null; 
+        try {
+            session = this.hibernateDao.getSessionFactory().openSession();
+            tr = session.beginTransaction();
+            int size = ids.size();
+            for(int i=0;i<size;i++) {
+                long id = ids.get(i); 
+                int quantite = quantites.get(i);
+                this.retour(id, quantite, session);
+            }    
+            tr.commit();
+        } catch (Exception e) {
+            if(tr!=null) tr.rollback();
+            e.printStackTrace();
+        } finally {
+            if(session!=null) session.close();
+        }
+    }
 }
