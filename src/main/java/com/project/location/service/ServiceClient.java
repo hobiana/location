@@ -6,7 +6,6 @@
 package com.project.location.service;
 
 import com.project.location.dao.HibernateDao;
-import com.project.location.model.BaseModel;
 import com.project.location.model.Client;
 import com.project.location.model.Users;
 import com.project.location.security.Cryptage;

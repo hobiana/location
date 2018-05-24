@@ -8,6 +8,7 @@ package com.project.location.service;
 import com.project.location.dao.HibernateDao;
 import com.project.location.model.Users;
 import com.project.location.util.Test;
+import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -18,6 +19,16 @@ import org.hibernate.Transaction;
  * @author Diary
  */
 public class ServiceUsers extends BaseService{
+    private ServiceUtil serviceUtil;
+
+    public ServiceUtil getServiceUtil() {
+        return serviceUtil;
+    }
+
+    public void setServiceUtil(ServiceUtil serviceUtil) {
+        this.serviceUtil = serviceUtil;
+    }
+    
     public List<Users> findAll() throws Exception{
         try{
         List<Users> reponse = (List<Users>)(Object)this.hibernateDao.findAll(new Users());
@@ -113,5 +124,54 @@ public class ServiceUsers extends BaseService{
         }finally{
             if(session!=null) session.close();
         }    
+    }
+
+    public List<Users> find(String nom, String prenom, String pseudo, String adresse) throws Exception {
+        List<Object[]> arg = new ArrayList<>();
+        Object[] nomUser = Test.instance(2);
+        nomUser[0] = "nom";
+        nomUser[1] = nom;
+        if (Test.argmumentNull(nom)) {
+            nomUser = null;
+        }
+        Object[] prenomUser = Test.instance(2);
+        prenomUser[0] = "prenom";
+        prenomUser[1] = prenom;
+        if (Test.argmumentNull(prenom)) {
+            prenomUser = null;
+        }
+        Object[] pseudoUser = Test.instance(2);
+        pseudoUser[0] = "pseudo";
+        pseudoUser[1] = pseudo;
+        if (Test.argmumentNull(pseudo)) {
+            pseudoUser = null;
+        }
+        Object[] adresseUser = Test.instance(2);
+        adresseUser[0] = "adresse";
+        adresseUser[1] = adresse;
+        if (Test.argmumentNull(adresse)) {
+            adresseUser = null;
+        }
+
+        if (!Test.testNull(nomUser)) {
+            arg.add(nomUser);
+        }
+        if (!Test.testNull(prenomUser)) {
+            arg.add(prenomUser);
+        }
+        if (!Test.testNull(pseudoUser)) {
+            arg.add(pseudoUser);
+        }
+        if (!Test.testNull(adresseUser)) {
+            arg.add(adresseUser);
+        }
+        List<Users> reponse = null;
+        try {
+            reponse = (List<Users>) (Object) this.serviceUtil.find(arg, Users.class);
+            return reponse;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new Exception("Impossible d'extraire la recherche");
+        }
     }
 }

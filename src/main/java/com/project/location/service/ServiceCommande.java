@@ -926,6 +926,7 @@ public class ServiceCommande extends BaseService{
         try {
             commandeStock.setQuantiteRetour(quantite);
             HibernateDao.update(commandeStock, session);
+            ServiceHistoriqueUser.save("Retour  des commandes "+commandeStock.getRef(), session);
         } catch( Exception e) {
             e.printStackTrace();
             throw new Exception("Erreur Interne, impossible de sauvegarder la retour"); 
