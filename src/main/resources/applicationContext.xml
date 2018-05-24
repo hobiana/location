@@ -42,6 +42,7 @@
     </bean>
     <bean id="clientService" class="com.project.location.service.ServiceClient">
         <property name="hibernateDao" ref="hibernateDao" />
+        <property name="serviceUtil" ref="serviceUtil" />
     </bean>
     <bean id="serviceCommande" class="com.project.location.service.ServiceCommande">
         <property name="hibernateDao" ref="hibernateDao" />

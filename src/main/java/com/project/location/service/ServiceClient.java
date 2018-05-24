@@ -10,6 +10,8 @@ import com.project.location.model.BaseModel;
 import com.project.location.model.Client;
 import com.project.location.model.Users;
 import com.project.location.security.Cryptage;
+import com.project.location.util.Test;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,6 +24,16 @@ import org.hibernate.Transaction;
  * @author Hobiana
  */
 public class ServiceClient extends BaseService{
+    private ServiceUtil serviceUtil;
+
+    public ServiceUtil getServiceUtil() {
+        return serviceUtil;
+    }
+
+    public void setServiceUtil(ServiceUtil serviceUtil) {
+        this.serviceUtil = serviceUtil;
+    }
+    
     public Users login(String matricule, String password)throws Exception{
         Session session = null;
         Query query = null;
@@ -121,6 +133,54 @@ public class ServiceClient extends BaseService{
             this.delete(client);
         }catch(Exception e){
             throw new Exception("impossible de supprimer le client dans la base de donnée");
+        }
+    }
+      public List<Client> find(String nom, String prenom, String CIN, String adresse) throws Exception {
+        List<Object[]> arg = new ArrayList<>();
+        Object[] nomUser = Test.instance(2);
+        nomUser[0] = "nom";
+        nomUser[1] = nom;
+        if (Test.argmumentNull(nom)) {
+            nomUser = null;
+        }
+        Object[] prenomUser = Test.instance(2);
+        prenomUser[0] = "prenom";
+        nomUser[1] = prenom;
+        if (Test.argmumentNull(prenom)) {
+            nomUser = null;
+        }
+        Object[] cin = Test.instance(2);
+        cin[0] = "CIN";
+        cin[1] = CIN;
+        if (Test.argmumentNull(CIN)) {
+            cin = null;
+        }
+        Object[] adresseUser = Test.instance(2);
+        cin[0] = "adresse";
+        cin[1] = adresse;
+        if (Test.argmumentNull(adresse)) {
+            cin = null;
+        }
+
+        if (!Test.testNull(nomUser)) {
+            arg.add(nomUser);
+        }
+        if (!Test.testNull(prenomUser)) {
+            arg.add(prenomUser);
+        }
+        if (!Test.testNull(cin)) {
+            arg.add(cin);
+        }
+        if (!Test.testNull(adresse)) {
+            arg.add(adresseUser);
+        }
+        List<Client> reponse = null;
+        try {
+            reponse = (List<Client>) (Object) this.serviceUtil.find(arg, Client.class);
+            return reponse;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new Exception("Impossible d'extraire la recherche");
         }
     }
 }
