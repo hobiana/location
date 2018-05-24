@@ -145,7 +145,7 @@ public class ServiceClient extends BaseService{
         }
         Object[] prenomUser = Test.instance(2);
         prenomUser[0] = "prenom";
-        nomUser[1] = prenom;
+        prenomUser[1] = prenom;
         if (Test.argmumentNull(prenom)) {
             nomUser = null;
         }
