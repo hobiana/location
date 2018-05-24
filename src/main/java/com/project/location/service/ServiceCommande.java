@@ -247,7 +247,7 @@ public class ServiceCommande extends BaseService{
         }
     }
     
-    public List<Commande> find(String nomClient, Date dateMin, Date dateMax, boolean recu, boolean retour, boolean annule) throws Exception{
+    public List<Commande> find(String nomClient, Date dateMin, Date dateMax, boolean recu, boolean retour, boolean annule, boolean paye) throws Exception{
         List<Object[]> arg = new ArrayList<>(); 
         Object[] des = Test.instance(2);
             des[0] = "client.nom";
@@ -288,10 +288,14 @@ public class ServiceCommande extends BaseService{
         Object[] retourD = Test.instance(2); 
         retourD[0] = "retour"; 
         retourD[1] = retour;
+        Object[] payeD = Test.instance(2); 
+        payeD[0] = "paye"; 
+        payeD[1] = paye;
         
         arg.add(annuleD); 
         arg.add(recuD); 
         arg.add(retourD); 
+        arg.add(payeD);
         if(!Test.testNull(des))arg.add(des);
         if(!Test.testNull(date))arg.add(date);
         List<Commande> reponse = null;
@@ -353,13 +357,13 @@ public class ServiceCommande extends BaseService{
         }
     }
     
-    public List<Commande> find(String nomClient, String dateMin, String dateMax,boolean recu, boolean retour, boolean annule ) throws Exception{
+    public List<Commande> find(String nomClient, String dateMin, String dateMax,boolean recu, boolean retour, boolean annule, boolean paye) throws Exception{
        
        Date dateMiD = null;
        Date dateMaD = null; 
        if(!Test.argmumentNull(dateMin))dateMiD = DateUtil.convert(dateMin); 
        if(!Test.argmumentNull(dateMax))dateMaD = DateUtil.convert(dateMax); 
-       return this.find(nomClient, dateMiD, dateMaD,recu,retour,annule);
+       return this.find(nomClient, dateMiD, dateMaD,recu,retour,annule,paye);
     }
     
     public List<Commande> getCommande(Date debut, Date fin)throws Exception{
