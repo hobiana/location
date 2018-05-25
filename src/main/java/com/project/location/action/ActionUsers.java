@@ -178,7 +178,7 @@ public class ActionUsers extends BaseAction {
         
         this.titre = "Users | Liste";
         try {
-            this.users = this.serviceUsers.findAll();
+            this.users = this.serviceUsers.find(nom, prenom, pseudo, adresse);
             return Action.SUCCESS;
         } catch (Exception e) {
             this.linkError = ReferenceErreur.VISIBLE; 
