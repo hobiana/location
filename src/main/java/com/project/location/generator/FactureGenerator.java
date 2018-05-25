@@ -12,7 +12,6 @@ import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
-import com.itextpdf.text.Image;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
 import com.itextpdf.text.Rectangle;
@@ -20,8 +19,14 @@ import com.itextpdf.text.pdf.GrayColor;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+import com.project.location.data.PathData;
+import com.project.location.model.Commande;
+import com.project.location.model.CommandeStock;
+import com.project.location.util.DateUtil;
+import com.project.location.util.UtilConvert;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
@@ -30,7 +35,9 @@ import javax.servlet.http.HttpServletRequest;
  * @author diary
  */
 public class FactureGenerator {
-
+    private Commande commande;
+    private List<CommandeStock> commandeStock;
+    private int nombreJour;
     
     private static final Font boltTableFont = new Font(Font.FontFamily.TIMES_ROMAN, 10, Font.BOLD);
     private static final Font normalBoldTableFont = new Font(Font.FontFamily.TIMES_ROMAN, 9, Font.BOLD);
@@ -47,15 +54,41 @@ public class FactureGenerator {
     private static Font extraSmallFont = new Font(Font.FontFamily.TIMES_ROMAN, 7, Font.BOLD);
     private static Font smallFontBold = new Font(Font.FontFamily.TIMES_ROMAN, 9, Font.BOLD);
 
-    public static void main(String[] arg) throws Exception {
-//        Test test = new Test();
-        FactureGenerator g = new FactureGenerator();
+    public Commande getCommande() {
+        return commande;
     }
 
-    public FactureGenerator() throws Exception {
-        
+    public void setCommande(Commande commande) {
+        this.commande = commande;
+    }
+    
+    public List<CommandeStock> getCommandeStock() {
+        return commandeStock;
+    }
+
+    public void setCommandeStock(List<CommandeStock> commandeStock) {
+        this.commandeStock = commandeStock;
+    }
+
+    public int getNombreJour() {
+        return nombreJour;
+    }
+
+    public void setNombreJour(int nombreJour) {
+        this.nombreJour = nombreJour;
+    }
+    
+    public static void main(String[] arg) throws Exception {
+//        Test test = new Test();
+//        FactureGenerator g = new FactureGenerator();
+    }
+
+    public FactureGenerator(Commande commande,List<CommandeStock> commandeStocks,HttpServletRequest servletRequest) throws Exception {
+        this.setCommande(commande);
+        this.setCommandeStock(commandeStock);
+        this.setNombreJour(this.commande.nombreJour());
         Document document = new Document();
-        PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream("D:/Projet/location/pdfTest/facture.pdf"));
+        PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(servletRequest.getSession().getServletContext().getRealPath("/")+PathData.PATH_PDF_FACTURE));
         document.open();
         addMetaData(document);
         addContent(document,writer);
@@ -89,7 +122,7 @@ public class FactureGenerator {
         information = new Paragraph();
         addEmptyLine(information, 2);
         
-        information.add(new Phrase("Object : Faturation N° FAC0000001",boldFont));
+        information.add(new Phrase("Object : Facture de la commande N° "+ this.commande.getRef(),boldFont));
         addEmptyLine(information,2);
             
        
@@ -132,29 +165,33 @@ public class FactureGenerator {
         table.addCell(c1);
 //        List<TacheModel> taches; 
 //        taches = offre.getTacheinitials().getTravaux();
-        for (int i = 0; i < 4; i++) {
-            
+        int size = this.commandeStock.size();
+        int somme = 0; 
+        for (int i = 0; i < size; i++) {
+            CommandeStock cs = this.commandeStock.get(i);
 //            TacheModel tache = this.offre.getTacheinitials().getTravaux().get(i);
 
-            c1 = new PdfPCell(new Phrase("Assiette", smallFont));
+            c1 = new PdfPCell(new Phrase(cs.getDescription(), smallFont));
             c1.setHorizontalAlignment(Element.ALIGN_LEFT);
             c1.setPadding(2);
             table.addCell(c1);
 
-            c1 = new PdfPCell(new Phrase("10", smallFont));
+            c1 = new PdfPCell(new Phrase(String.valueOf(cs.getQuantiteCommande()), smallFont));
             c1.setHorizontalAlignment(Element.ALIGN_CENTER);
             c1.setVerticalAlignment(Element.ALIGN_MIDDLE);
             table.addCell(c1);
 
-            c1 = new PdfPCell(new Phrase("10 000", smallFont));
+            c1 = new PdfPCell(new Phrase(UtilConvert.toMoney(cs.getPrixLocation()), smallFont));
             c1.setHorizontalAlignment(Element.ALIGN_RIGHT);
             c1.setVerticalAlignment(Element.ALIGN_MIDDLE);
             table.addCell(c1);
-
-            c1 = new PdfPCell(new Phrase("100 000", smallFont));
+            double total = cs.getQuantiteCommande()*cs.getPrixLocation();
+            c1 = new PdfPCell(new Phrase(UtilConvert.toMoney(total), smallFont));
             c1.setHorizontalAlignment(Element.ALIGN_RIGHT);
             c1.setVerticalAlignment(Element.ALIGN_MIDDLE);
             table.addCell(c1);
+            
+            somme += total;
 
         }
         
@@ -170,20 +207,45 @@ public class FactureGenerator {
         c1.setBorder(Rectangle.NO_BORDER);
         table.addCell(c1);
         
-        c1 = new PdfPCell(new Phrase("TOTAL ", boldFont));
+        c1 = new PdfPCell(new Phrase("TOTAL : "+UtilConvert.toMoney(somme), boldFont));
         c1.setColspan(2);
         c1.setBorder(Rectangle.NO_BORDER);
         c1.setHorizontalAlignment(Element.ALIGN_RIGHT);
         c1.setVerticalAlignment(Element.ALIGN_MIDDLE);
         table.addCell(c1);
-
-        c1 = new PdfPCell(new Phrase("400 000", smallFont));
+         
+        
+        c1 = new PdfPCell();
+        c1.setHorizontalAlignment(Element.ALIGN_LEFT);
+        c1.setPadding(5);
+        c1.setBorder(Rectangle.NO_BORDER);
+        table.addCell(c1);
+        
+        c1 = new PdfPCell();
+        c1.setHorizontalAlignment(Element.ALIGN_LEFT);
+        c1.setPadding(5);
+        c1.setBorder(Rectangle.NO_BORDER);
+        table.addCell(c1);
+        
+        c1 = new PdfPCell();
+        c1.setHorizontalAlignment(Element.ALIGN_LEFT);
+        c1.setPadding(5);
+        c1.setBorder(Rectangle.NO_BORDER);
+        table.addCell(c1);
+        
+        c1 = new PdfPCell(new Phrase("Nombre de jour : "+this.nombreJour, boldFont));
+        c1.setColspan(2);
+        c1.setBorder(Rectangle.NO_BORDER);
         c1.setHorizontalAlignment(Element.ALIGN_RIGHT);
         c1.setVerticalAlignment(Element.ALIGN_MIDDLE);
         table.addCell(c1);
+         
         
-        
-        
+        c1 = new PdfPCell();
+        c1.setHorizontalAlignment(Element.ALIGN_LEFT);
+        c1.setPadding(5);
+        c1.setBorder(Rectangle.NO_BORDER);
+        table.addCell(c1);
         c1 = new PdfPCell();
         c1.setHorizontalAlignment(Element.ALIGN_LEFT);
         c1.setPadding(5);
@@ -195,6 +257,21 @@ public class FactureGenerator {
         c1.setPadding(5);
         c1.setBorder(Rectangle.NO_BORDER);
         table.addCell(c1);
+        
+        c1 = new PdfPCell(new Phrase("Total à payer : "+ UtilConvert.toMoney(this.nombreJour*somme), boldFont));
+        c1.setColspan(2);
+        c1.setBorder(Rectangle.NO_BORDER);
+        c1.setHorizontalAlignment(Element.ALIGN_RIGHT);
+        c1.setVerticalAlignment(Element.ALIGN_MIDDLE);
+        table.addCell(c1);
+         
+        
+        c1 = new PdfPCell();
+        c1.setHorizontalAlignment(Element.ALIGN_LEFT);
+        c1.setPadding(5);
+        c1.setBorder(Rectangle.NO_BORDER);
+        table.addCell(c1);
+        
 
         
 
@@ -209,7 +286,7 @@ public class FactureGenerator {
 //        document.add(information);
         
         information = new Paragraph();
-        information.add(new Phrase("Antananarivo le,",smallFont));
+        information.add(new Phrase("Antananarivo le, "+DateUtil.toLettre(Calendar.getInstance().getTime()),smallFont));
         addEmptyLine(information,1);
         
         

@@ -6,6 +6,7 @@
 package com.project.location.service;
 
 import com.project.location.dao.HibernateDao;
+import com.project.location.generator.FactureGenerator;
 import com.project.location.model.Client;
 import com.project.location.model.Commande;
 import com.project.location.model.CommandeStock;
@@ -17,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.apache.struts2.ServletActionContext;
 import org.hibernate.Criteria;
@@ -192,7 +194,12 @@ public class ServiceCommande extends BaseService{
         List<CommandeStock> list = this.find(commande); 
         return this.getTotal(list, commande.getDateDebut(), commande.getDateFin());
     }
-    
+     
+    public int getNombreJour(long idCommande) throws Exception {
+        Commande commande = this.find(idCommande); 
+        return DateUtil.nombreJ(commande.getDateDebut(),commande.getDateFin()); 
+    }
+     
     public List<CommandeStock> find(Commande commande) throws Exception{
         Session session = null ; 
         Query query = null;
@@ -953,5 +960,23 @@ public class ServiceCommande extends BaseService{
         } finally {
             if(session!=null) session.close();
         }
+    }
+
+    public void generatPdfFacture(long idCommande,HttpServletRequest servletRequest) throws Exception {
+        Session session = null; 
+        try {
+            session = this.hibernateDao.getSessionFactory().openSession(); 
+            Commande commande = this.find(idCommande, session);
+            List<CommandeStock> commandeStock = this.find(commande,session);
+            if(commandeStock != null ) {
+                FactureGenerator facture = new FactureGenerator(commande,commandeStock, servletRequest);
+            } 
+        } catch ( Exception e) {
+            throw new Exception("problème lors de la génération de la facture");
+        
+        } finally { 
+            if(session!=null) session.close();
+        }
+         
     }
 }

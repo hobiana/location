@@ -143,4 +143,7 @@ public class Commande extends BaseModel {
         }      
         return total; 
     }
+    public int nombreJour() throws Exception {
+        return DateUtil.nombreJ(dateDebut, dateFin);
+    }
 }
