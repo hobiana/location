@@ -99,6 +99,13 @@
             <version>1.7.12</version>
         </dependency>
         <!--tiles end-->
+        <!--iText-->
+        <dependency>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>itextpdf</artifactId>
+            <version>5.0.6</version>
+        </dependency>  
+        <!--iText End-->
     </dependencies>
 
     <build>
