@@ -265,6 +265,15 @@
            <result name="success">fiche_commande.jsp</result>
            <result name="error">index.jsp</result>
         </action>
+		
+	<action name="payerCommande" method="payerCommande" class="com.project.location.action.ActionCommande">
+           <result name="success" type="redirectAction">
+                <param name="actionName">fichecommande</param>
+                <param name="idCommande">${idCommande}</param>
+           </result>
+           <result name="error">index.jsp</result>
+        </action>
+		
         <action name="retourcommande" method="retourcommande" class="com.project.location.action.ActionCommande">
            <result name="success" type="redirectAction">
                 <param name="actionName">fichecommande</param>

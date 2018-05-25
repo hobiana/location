@@ -5,6 +5,7 @@
  */
 package com.project.location.model;
 
+import com.project.location.util.DateUtil;
 import java.util.Date;
 
 /**
@@ -38,6 +39,10 @@ public class HistoriqueUser extends BaseModel{
 
     public void setDateHU(Date dateHU) {
         this.dateHU = dateHU;
+    }
+    
+    public String getDateString() throws Exception{
+       return DateUtil.convert(dateHU);
     }
    
     

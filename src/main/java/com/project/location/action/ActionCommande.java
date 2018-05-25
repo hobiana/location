@@ -12,6 +12,7 @@ import com.project.location.model.Stock;
 import com.project.location.model.Users;
 import com.project.location.reference.ReferenceErreur;
 import com.project.location.reference.ReferenceSession;
+import com.project.location.service.ServiceCaisse;
 import com.project.location.service.ServiceCommande;
 import com.project.location.service.ServiceStock;
 import com.project.location.util.DateUtil;
@@ -32,6 +33,7 @@ public class ActionCommande extends BaseAction {
     private List<CommandeStock> listeCommandeStock;
     private ServiceStock serviceStock;
     private ServiceCommande serviceCommande;
+    private ServiceCaisse serviceCaisse;
     private List<Commande> listeCommande;
     private Commande commande;
     
@@ -57,7 +59,25 @@ public class ActionCommande extends BaseAction {
     private String annule;
     private String paye;
     private String reference; 
+    
+    private double quotient;
 
+    public ServiceCaisse getServiceCaisse() {
+        return serviceCaisse;
+    }
+
+    public void setServiceCaisse(ServiceCaisse serviceCaisse) {
+        this.serviceCaisse = serviceCaisse;
+    }
+
+    public double getQuotient() {
+        return quotient;
+    }
+
+    public void setQuotient(double quotient) {
+        this.quotient = quotient;
+    }
+    
     public double getTotal() {
         return total;
     }
@@ -387,6 +407,11 @@ public class ActionCommande extends BaseAction {
         this.total = this.serviceCommande.getTotal(idCommande);
         this.listeCommandeStock = this.serviceCommande.find(commande);
         this.titre = "Fiche Commande";
+        return Action.SUCCESS;
+    }
+    
+    public String payerCommande() throws Exception{
+        this.serviceCaisse.payerCommande(idCommande, quotient);
         return Action.SUCCESS;
     }
 }

@@ -44,7 +44,7 @@ Contributor(s):
     <id column="idfacture" name="id" type="long">
       <generator class="increment"/>
     </id>
-    <property column="dateFature" name="dateFacture" type="date"/>
+    <property column="datefacture" name="dateFacture" type="date"/>
     <property column="quotient" name="quotient" type="double"/>
     <property column="tva" name="TVA" type="double"/>
     <property column="remise" name="remise" type="double"/>

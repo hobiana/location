@@ -9,6 +9,7 @@ import com.project.location.dao.HibernateDao;
 import com.project.location.model.HistoriqueUser;
 import com.project.location.model.Users;
 import com.project.location.reference.ReferenceSession;
+import com.project.location.util.DateUtil;
 import com.project.location.util.Test;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -63,7 +64,20 @@ public class ServiceHistoriqueUser extends BaseService{
             throw new Exception("impossible d'extraire la liste des action de l'utilisateur cause "+e.getMessage());
         }
     }
-    public List<Users> find(String action, Date dateMin, Date dateMax, String adresse) throws Exception {
+    
+    public List<HistoriqueUser> find(String action, String dateMin, String dateMax, String adresse) throws Exception {
+        Date dateMins = null;
+        Date dateMaxs = null;
+        if(!Test.argmumentNull(dateMin)){
+            dateMins = DateUtil.convert(dateMin);
+        }
+        if(!Test.argmumentNull(dateMax)){
+            dateMaxs = DateUtil.convert(dateMax);
+        }
+        return this.find(action, dateMins, dateMaxs, adresse);
+    }
+    
+    public List<HistoriqueUser> find(String action, Date dateMin, Date dateMax, String adresse) throws Exception {
         List<Object[]> arg = new ArrayList<>();
         Object[] actionUsers = Test.instance(2);
         actionUsers[0] = "action";
@@ -73,13 +87,7 @@ public class ServiceHistoriqueUser extends BaseService{
         }
         Object[] date = Test.instance(3); 
         date[0] = "dateHU";
-        if(dateMin.before(dateMax)){
-            date[1] = dateMin;
-            date[2] = dateMax;
-        }else if(dateMax.before(dateMin)){            
-            date[1] = dateMax;  
-            date[2] = dateMin;    
-        }else if(dateMin==null&&dateMax!=null){
+        if(dateMin==null&&dateMax!=null){
             date = Test.instance(2);
             date[0] = "dateHU";
             date[1] = dateMax;
@@ -89,7 +97,13 @@ public class ServiceHistoriqueUser extends BaseService{
             date[1] = dateMin;
         }else if(dateMax==null&&dateMin==null){
             date = null;
-        }else{
+        }else if(dateMin.before(dateMax)){
+            date[1] = dateMin;
+            date[2] = dateMax;
+        }else if(dateMax.before(dateMin)){            
+            date[1] = dateMax;  
+            date[2] = dateMin;    
+        } else{
             date = Test.instance(2);
             date[0] = "dateHU";
             date[1] = dateMin;
@@ -98,9 +112,9 @@ public class ServiceHistoriqueUser extends BaseService{
         if (!Test.testNull(actionUsers)) {
             arg.add(actionUsers);
         }
-        List<Users> reponse = null;
+        List<HistoriqueUser> reponse = null;
         try {
-            reponse = (List<Users>) (Object) this.serviceUtil.find(arg, Users.class);
+            reponse = (List<HistoriqueUser>) (Object) this.serviceUtil.find(arg, HistoriqueUser.class);
             return reponse;
         } catch (Exception e) {
             e.printStackTrace();

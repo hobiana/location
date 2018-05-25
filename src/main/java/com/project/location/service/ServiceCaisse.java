@@ -320,12 +320,11 @@ public class ServiceCaisse extends BaseService {
             tr.commit();
         }catch(Exception e){
             if(tr!=null)tr.rollback();
+            e.printStackTrace();
             throw new Exception("impossible de payer la commande causse"+e.getMessage());
         }finally{
             if(session!=null)session.close();
         }
-        
-        
     }
     
     public void payerCommande(long idCommande, double quotient)throws Exception{

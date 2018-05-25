@@ -6,9 +6,11 @@
 package com.project.location.action;
 
 import com.opensymphony.xwork2.Action;
+import com.project.location.model.HistoriqueUser;
 import com.project.location.model.Users;
 import com.project.location.reference.ReferenceErreur;
 import com.project.location.security.Cryptage;
+import com.project.location.service.ServiceHistoriqueUser;
 import com.project.location.service.ServiceUsers;
 import com.project.location.util.Test;
 import java.util.List;
@@ -21,7 +23,9 @@ public class ActionUsers extends BaseAction {
 
     private Users utilisateur; 
     private ServiceUsers serviceUsers;
+    private ServiceHistoriqueUser serviceHistoriqueUser;
     private List<Users> users;
+    private List<HistoriqueUser> historiqueUsers;
     
     private long idUsers; 
     private String nom; 
@@ -31,6 +35,58 @@ public class ActionUsers extends BaseAction {
     private String pseudo; 
     private String mdp; 
     private String confirmation;
+    
+    private String action;
+    private String dateMin;
+    private String dateMax;
+
+    public Users getUtilisateur() {
+        return utilisateur;
+    }
+
+    public void setUtilisateur(Users utilisateur) {
+        this.utilisateur = utilisateur;
+    }
+
+    public String getAction() {
+        return action;
+    }
+
+    public void setAction(String action) {
+        this.action = action;
+    }
+
+    public String getDateMin() {
+        return dateMin;
+    }
+
+    public void setDateMin(String dateMin) {
+        this.dateMin = dateMin;
+    }
+
+    public String getDateMax() {
+        return dateMax;
+    }
+
+    public void setDateMax(String dateMax) {
+        this.dateMax = dateMax;
+    }
+
+    public ServiceHistoriqueUser getServiceHistoriqueUser() {
+        return serviceHistoriqueUser;
+    }
+
+    public void setServiceHistoriqueUser(ServiceHistoriqueUser serviceHistoriqueUser) {
+        this.serviceHistoriqueUser = serviceHistoriqueUser;
+    }
+
+    public List<HistoriqueUser> getHistoriqueUsers() {
+        return historiqueUsers;
+    }
+
+    public void setHistoriqueUsers(List<HistoriqueUser> historiqueUsers) {
+        this.historiqueUsers = historiqueUsers;
+    }
 
     public long getIdUsers() {
         return idUsers;
@@ -212,13 +268,14 @@ public class ActionUsers extends BaseAction {
         return Action.SUCCESS;
     }
     
-    public String historiqueuser(){
+    public String historiqueuser() throws Exception{
         try {
             Users u=this.getSessionUser();
         } catch (Exception ex) {
             return Action.LOGIN;
         }
         this.titre="Historiques Utilisateur";
+        this.historiqueUsers = serviceHistoriqueUser.find(action, dateMin, dateMax, adresse);
         return Action.SUCCESS;
     }
     

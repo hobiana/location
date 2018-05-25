@@ -33,22 +33,22 @@
                             </div>
                             <!-- /.panel-heading -->
                             <div class="panel-body">
-                                <form role="form">
+                                <form role="form" action="indexUsers">
                                     <div class="form-group">
                                         <label>Nom</label>
-                                        <input class="form-control" placeholder="Nom">
+                                        <input name="nom" class="form-control" placeholder="Nom">
                                     </div>
                                     <div class="form-group">
                                         <label>Pr&eacute;nom</label>
-                                        <input class="form-control" placeholder="Prenom">
+                                        <input name="prenom" class="form-control" placeholder="Prenom">
                                     </div>
                                     <div class="form-group">
-                                        <label>CIN</label>
-                                        <input class="form-control" placeholder="CIN" type="number">
+                                        <label>Pseudo</label>
+                                        <input name="pseudo" class="form-control" placeholder="Pseudo" type="number">
                                     </div>
                                     <div class="form-group">
                                         <label>Adresse</label>
-                                        <input class="form-control" placeholder="Adresse">
+                                        <input name="adresse" class="form-control" placeholder="Adresse">
                                     </div>
                                     <button type="submit" class="btn btn-default">Rechercher</button>
                                 </form>

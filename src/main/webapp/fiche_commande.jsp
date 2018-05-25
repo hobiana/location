@@ -163,30 +163,33 @@
                                         </div>
                                     </div>
                                     <a style='margin-left: 10px;' class="btn btn-default pull-left" >PDF</a>
-                                    <a class="btn btn-success pull-right" href="#payer" data-toggle="modal">Payer la commande</a>
-                                    <div class="modal fade" id="payer" role="dialog">
-                                        <div class="modal-dialog modal-md">
-                                            <!-- Modal content-->
-                                            <div class="modal-content">
-                                                <form method="POST" action="saveclient">
-                                                    <div class="modal-header backg-brw">
-                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                        <h4 class="modal-title">Payer la commande</h4>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <div class="form-group">
-                                                            <label>Quotient</label>
-                                                            <input name="quotient" class="form-control" placeholder="Quotient">
+                                    <s:if test="commande.isPaye()==false">
+                                        <a class="btn btn-success pull-right" href="#payer" data-toggle="modal">Payer la commande</a>
+                                        <div class="modal fade" id="payer" role="dialog">
+                                            <div class="modal-dialog modal-md">
+                                                <!-- Modal content-->
+                                                <div class="modal-content">
+                                                    <form method="POST" action="payerCommande">
+                                                        <div class="modal-header backg-brw">
+                                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                            <h4 class="modal-title">Payer la commande</h4>
                                                         </div>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Annuler</button>
-                                                        <button class="btn btn-success base-background pull-right">Payer</button>
-                                                    </div>
-                                                </form>
+                                                        <div class="modal-body">
+                                                            <div class="form-group">
+                                                                <label>Quotient</label>
+                                                                <input name="quotient" type="number" class="form-control" placeholder="Quotient">
+                                                                <input name="idCommande" type="hidden" value="<s:property value="idCommande"/>">
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Annuler</button>
+                                                            <button class="btn btn-success base-background pull-right">Payer</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </s:if>
                                 </div>
                                 <!-- /.panel-body -->
                             </div>

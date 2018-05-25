@@ -9,13 +9,13 @@
                         <a href="caisse"><i class="fa fa-money fa-fw"></i> Caisse</a>
                     </li>
                     <li>
-                        <a href="historiquecaisse"><i class="fa fa-money fa-fw"></i> Historique Caisse</a>
+                        <a href="findcaisse"><i class="fa fa-money fa-fw"></i> Historique Caisse</a>
                     </li>
                     <li>
                         <a href="quotient"><i class="fa fa-money fa-fw"></i> Quotient</a>
                     </li>
                     <li>
-                        <a href="historiquequotient"><i class="fa fa-money fa-fw"></i> Historique Quotient</a>
+                        <a href="findquotient"><i class="fa fa-money fa-fw"></i> Historique Quotient</a>
                     </li>
                 </ul>
             </li>

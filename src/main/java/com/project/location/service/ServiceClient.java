@@ -147,7 +147,7 @@ public class ServiceClient extends BaseService{
         prenomUser[0] = "prenom";
         prenomUser[1] = prenom;
         if (Test.argmumentNull(prenom)) {
-            nomUser = null;
+            prenomUser = null;
         }
         Object[] cin = Test.instance(2);
         cin[0] = "CIN";
@@ -156,10 +156,10 @@ public class ServiceClient extends BaseService{
             cin = null;
         }
         Object[] adresseUser = Test.instance(2);
-        cin[0] = "adresse";
-        cin[1] = adresse;
+        adresseUser[0] = "adresse";
+        adresseUser[1] = adresse;
         if (Test.argmumentNull(adresse)) {
-            cin = null;
+            adresseUser = null;
         }
 
         if (!Test.testNull(nomUser)) {
@@ -171,7 +171,7 @@ public class ServiceClient extends BaseService{
         if (!Test.testNull(cin)) {
             arg.add(cin);
         }
-        if (!Test.testNull(adresse)) {
+        if (!Test.testNull(adresseUser)) {
             arg.add(adresseUser);
         }
         List<Client> reponse = null;

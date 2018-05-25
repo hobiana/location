@@ -72,10 +72,12 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr class="odd gradeX">
-                                            <td>Suppr. du client blabla</td>
-                                            <td> 2017-01-01 </td> 
-                                        </tr>
+                                        <s:iterator value="historiqueUsers">
+                                            <tr class="odd gradeX">
+                                                <td><s:property value="action"  /></td>
+                                                <td><s:property value="getDateString()"  /></td>
+                                            </tr>
+                                        </s:iterator>
                                     </tbody>
                                 </table>
                             </div>
