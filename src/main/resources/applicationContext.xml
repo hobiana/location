@@ -72,6 +72,7 @@
     </bean>
     <bean id="serviceUsers" class="com.project.location.service.ServiceUsers">
         <property name="hibernateDao" ref="hibernateDao" />
+        <property name="serviceUtil" ref="serviceUtil" />
     </bean>
     <bean id="serviceUtil" class="com.project.location.service.ServiceUtil">
         <property name="hibernateDao" ref="hibernateDao" />
