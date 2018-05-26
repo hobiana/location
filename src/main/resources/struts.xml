@@ -362,5 +362,15 @@
            <result name="success">utilisateurs.jsp</result>
            <result name="error">index.jsp</result>
         </action>
+        <action name="downloadPDF" class="com.project.location.action.ActionCommande" method="generateFacture">
+            <result name="success" type="stream">
+                <param name="contentDisposition">attachment;filename=${fileName}</param>
+                <param name="contentType">application/vnd.ms-excel</param>
+                <param name="inputName">fileInputStream</param>
+                <param name="bufferSize">1024</param>
+            </result>
+            <result name="login" type="redirect">index</result> 
+            <result name="error" type="redirect">index</result> 
+        </action>
     </package>
 </struts>

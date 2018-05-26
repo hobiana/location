@@ -968,10 +968,12 @@ public class ServiceCommande extends BaseService{
             session = this.hibernateDao.getSessionFactory().openSession(); 
             Commande commande = this.find(idCommande, session);
             List<CommandeStock> commandeStock = this.find(commande,session);
+            this.initStock(commandeStock, session);
             if(commandeStock != null ) {
                 FactureGenerator facture = new FactureGenerator(commande,commandeStock, servletRequest);
             } 
         } catch ( Exception e) {
+            e.printStackTrace();
             throw new Exception("problème lors de la génération de la facture");
         
         } finally { 

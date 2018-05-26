@@ -85,7 +85,7 @@ public class FactureGenerator {
 
     public FactureGenerator(Commande commande,List<CommandeStock> commandeStocks,HttpServletRequest servletRequest) throws Exception {
         this.setCommande(commande);
-        this.setCommandeStock(commandeStock);
+        this.setCommandeStock(commandeStocks);
         this.setNombreJour(this.commande.nombreJour());
         Document document = new Document();
         PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(servletRequest.getSession().getServletContext().getRealPath("/")+PathData.PATH_PDF_FACTURE));
@@ -171,7 +171,7 @@ public class FactureGenerator {
             CommandeStock cs = this.commandeStock.get(i);
 //            TacheModel tache = this.offre.getTacheinitials().getTravaux().get(i);
 
-            c1 = new PdfPCell(new Phrase(cs.getDescription(), smallFont));
+            c1 = new PdfPCell(new Phrase(cs.getStock().getDesignation(), smallFont));
             c1.setHorizontalAlignment(Element.ALIGN_LEFT);
             c1.setPadding(2);
             table.addCell(c1);
