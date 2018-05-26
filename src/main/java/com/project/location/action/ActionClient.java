@@ -172,14 +172,14 @@ public class ActionClient extends BaseAction {
         return Action.SUCCESS;
     }
 
-    public String listclient() {
+    public String listclient() throws Exception {
         try {
             Users u=this.getSessionUser();
         } catch (Exception ex) {
             return Action.LOGIN;
         }
         this.titre = "Clients";
-        listeClient = clientService.getListClient();
+        listeClient = clientService.find(nom, prenom, cin, adresse);
         if (listeClient == null) {
             return Action.ERROR;
         }

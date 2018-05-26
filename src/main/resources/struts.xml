@@ -265,18 +265,27 @@
            <result name="success">fiche_commande.jsp</result>
            <result name="error">index.jsp</result>
         </action>
+		
+	<action name="payerCommande" method="payerCommande" class="com.project.location.action.ActionCommande">
+           <result name="success" type="redirectAction">
+                <param name="actionName">fichecommande</param>
+                <param name="idCommande">${idCommande}</param>
+           </result>
+           <result name="error">index.jsp</result>
+        </action>
+		
         <action name="retourcommande" method="retourcommande" class="com.project.location.action.ActionCommande">
            <result name="success" type="redirectAction">
                 <param name="actionName">fichecommande</param>
                 <param name="idCommande">${idCommande}</param>
-                <param name="dateDebut">${linkSuccess}</param>
-                <param name="dateFin">${messageSuccess}</param>
+                <param name="linkSuccess">${linkSuccess}</param>
+                <param name="messageSuccess">${messageSuccess}</param>
            </result>
           <result name="error" type="redirectAction">
                 <param name="actionName">fichecommande</param>
                 <param name="idCommande">${idCommande}</param>
-                <param name="dateDebut">${linkError}</param>
-                <param name="dateFin">${messageError}</param>
+                <param name="linkError">${linkError}</param>
+                <param name="messageError">${messageError}</param>
            </result>
         </action>
         
@@ -361,6 +370,16 @@
         <action name="deluser" method="deluser" class="com.project.location.action.ActionUsers">
            <result name="success">utilisateurs.jsp</result>
            <result name="error">index.jsp</result>
+        </action>
+        <action name="downloadPDF" class="com.project.location.action.ActionCommande" method="generateFacture">
+            <result name="success" type="stream">
+                <param name="contentDisposition">attachment;filename=${fileName}</param>
+                <param name="contentType">application/vnd.ms-excel</param>
+                <param name="inputName">fileInputStream</param>
+                <param name="bufferSize">1024</param>
+            </result>
+            <result name="login" type="redirect">index</result> 
+            <result name="error" type="redirect">index</result> 
         </action>
     </package>
 </struts>

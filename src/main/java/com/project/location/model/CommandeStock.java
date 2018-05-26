@@ -84,6 +84,10 @@ public class CommandeStock extends BaseModel {
     public void setQuantiteRetour(double quantiteRetour) {
         this.quantiteRetour = quantiteRetour;
     }
+    
+    public String getStringPrixLocation(){
+        return NumberTest.toMoney(prixLocation);
+    }
 
     public CommandeStock() {
         this.reference = "COS";

@@ -6,16 +6,22 @@
 package com.project.location.action;
 
 import com.opensymphony.xwork2.Action;
+import com.project.location.data.PathData;
 import com.project.location.model.Commande;
 import com.project.location.model.CommandeStock;
+import com.project.location.model.ProduitRetour;
 import com.project.location.model.Stock;
 import com.project.location.model.Users;
 import com.project.location.reference.ReferenceErreur;
 import com.project.location.reference.ReferenceSession;
+import com.project.location.service.ServiceCaisse;
 import com.project.location.service.ServiceCommande;
 import com.project.location.service.ServiceStock;
 import com.project.location.util.DateUtil;
 import com.project.location.util.Test;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -32,8 +38,11 @@ public class ActionCommande extends BaseAction {
     private List<CommandeStock> listeCommandeStock;
     private ServiceStock serviceStock;
     private ServiceCommande serviceCommande;
+    private ServiceCaisse serviceCaisse;
     private List<Commande> listeCommande;
     private Commande commande;
+    
+    private List<ProduitRetour> listProduitRetour;
     
     private double total;
     
@@ -57,9 +66,52 @@ public class ActionCommande extends BaseAction {
     private String annule;
     private String paye;
     private String reference; 
+    private double quotient;
+    private InputStream fileInputStream;
+    private String fileName;
 
+    public List<ProduitRetour> getListProduitRetour() {
+        return listProduitRetour;
+    }
+
+    public void setListProduitRetour(List<ProduitRetour> listProduitRetour) {
+        this.listProduitRetour = listProduitRetour;
+    }
+
+    public ServiceCaisse getServiceCaisse() {
+        return serviceCaisse;
+    }
+
+    public void setServiceCaisse(ServiceCaisse serviceCaisse) {
+        this.serviceCaisse = serviceCaisse;
+    }
+
+    public double getQuotient() {
+        return quotient;
+    }
+
+    public void setQuotient(double quotient) {
+        this.quotient = quotient;
+    }
+    
     public double getTotal() {
         return total;
+    }
+
+    public InputStream getFileInputStream() {
+        return fileInputStream;
+    }
+
+    public void setFileInputStream(InputStream fileInputStream) {
+        this.fileInputStream = fileInputStream;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
     }
 
     public void setTotal(double total) {
@@ -365,7 +417,8 @@ public class ActionCommande extends BaseAction {
         boolean recuB  = this.recu!=null;
         boolean annuleB = this.annule!=null;
         try{
-            this.serviceCommande.updateEtat(idCommande, recuB, annuleB);
+            this.serviceCommande.retour(listProduitRetour);
+            this.serviceCommande.updateEtat(idCommande);
             this.linkSuccess = ReferenceErreur.VISIBLE;
             this.messageSuccess = "mise à jour effectué avec succes";
             return Action.SUCCESS;
@@ -375,6 +428,20 @@ public class ActionCommande extends BaseAction {
             return Action.ERROR;
         }
         
+    }
+    public String generateFacture() {
+        try {
+            this.serviceCommande.generatPdfFacture(idCommande,this.servletRequest);
+            File fileToDownload = new File(this.servletRequest.getSession().getServletContext().getRealPath("/")+PathData.PATH_PDF_FACTURE);
+            fileName = fileToDownload.getName();
+            fileInputStream = new FileInputStream(fileToDownload);
+            return Action.SUCCESS;
+        }catch (Exception e ) {
+            e.printStackTrace();
+            this.linkError=ReferenceErreur.VISIBLE;
+            this.messageError = e.getMessage();
+            return Action.ERROR;
+        }
     }
     public String ficheCommande() throws Exception {
         try {
@@ -387,6 +454,11 @@ public class ActionCommande extends BaseAction {
         this.total = this.serviceCommande.getTotal(idCommande);
         this.listeCommandeStock = this.serviceCommande.find(commande);
         this.titre = "Fiche Commande";
+        return Action.SUCCESS;
+    }
+    
+    public String payerCommande() throws Exception{
+        this.serviceCaisse.payerCommande(idCommande, quotient);
         return Action.SUCCESS;
     }
 }

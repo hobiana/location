@@ -6,9 +6,11 @@
 package com.project.location.service;
 
 import com.project.location.dao.HibernateDao;
+import com.project.location.generator.FactureGenerator;
 import com.project.location.model.Client;
 import com.project.location.model.Commande;
 import com.project.location.model.CommandeStock;
+import com.project.location.model.ProduitRetour;
 import com.project.location.model.Stock;
 import com.project.location.reference.ReferenceSession;
 import com.project.location.util.DateUtil;
@@ -17,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.apache.struts2.ServletActionContext;
 import org.hibernate.Criteria;
@@ -79,6 +82,27 @@ public class ServiceCommande extends BaseService{
             commande.setAnnule(annule);
             commande.setRecu(recu);
             ServiceHistoriqueUser.save("mise à jour des états de la commande "+commande.getRef(), session);
+            HibernateDao.update(commande, session);
+            tr.commit();
+           
+        }catch(Exception e){
+            if(tr!=null)tr.rollback();
+            throw new Exception("Impossible de changer l'etat de la commande "+commande.getRef());
+            
+        }finally{
+            if(session!=null)session.close();
+        }
+    }
+    public void updateEtat(long id)throws Exception{
+        Commande commande = null; 
+        Session session = null; 
+        Transaction tr = null; 
+        try{
+            session = this.hibernateDao.getSessionFactory().openSession(); 
+            tr = session.beginTransaction();
+            commande = this.find(id, session); 
+            commande.setRetour(true);
+            ServiceHistoriqueUser.save("retour en stock "+commande.getRef(), session);
             HibernateDao.update(commande, session);
             tr.commit();
            
@@ -192,7 +216,12 @@ public class ServiceCommande extends BaseService{
         List<CommandeStock> list = this.find(commande); 
         return this.getTotal(list, commande.getDateDebut(), commande.getDateFin());
     }
-    
+     
+    public int getNombreJour(long idCommande) throws Exception {
+        Commande commande = this.find(idCommande); 
+        return DateUtil.nombreJ(commande.getDateDebut(),commande.getDateFin()); 
+    }
+     
     public List<CommandeStock> find(Commande commande) throws Exception{
         Session session = null ; 
         Query query = null;
@@ -247,7 +276,7 @@ public class ServiceCommande extends BaseService{
         }
     }
     
-    public List<Commande> find(String nomClient, Date dateMin, Date dateMax, boolean recu, boolean retour, boolean annule) throws Exception{
+    public List<Commande> find(String nomClient, Date dateMin, Date dateMax, boolean recu, boolean retour, boolean annule, boolean paye) throws Exception{
         List<Object[]> arg = new ArrayList<>(); 
         Object[] des = Test.instance(2);
             des[0] = "client.nom";
@@ -288,10 +317,14 @@ public class ServiceCommande extends BaseService{
         Object[] retourD = Test.instance(2); 
         retourD[0] = "retour"; 
         retourD[1] = retour;
+        Object[] payeD = Test.instance(2); 
+        payeD[0] = "paye"; 
+        payeD[1] = paye;
         
         arg.add(annuleD); 
         arg.add(recuD); 
         arg.add(retourD); 
+        arg.add(payeD);
         if(!Test.testNull(des))arg.add(des);
         if(!Test.testNull(date))arg.add(date);
         List<Commande> reponse = null;
@@ -353,13 +386,13 @@ public class ServiceCommande extends BaseService{
         }
     }
     
-    public List<Commande> find(String nomClient, String dateMin, String dateMax,boolean recu, boolean retour, boolean annule ) throws Exception{
+    public List<Commande> find(String nomClient, String dateMin, String dateMax,boolean recu, boolean retour, boolean annule, boolean paye) throws Exception{
        
        Date dateMiD = null;
        Date dateMaD = null; 
        if(!Test.argmumentNull(dateMin))dateMiD = DateUtil.convert(dateMin); 
        if(!Test.argmumentNull(dateMax))dateMaD = DateUtil.convert(dateMax); 
-       return this.find(nomClient, dateMiD, dateMaD,recu,retour,annule);
+       return this.find(nomClient, dateMiD, dateMaD,recu,retour,annule,paye);
     }
     
     public List<Commande> getCommande(Date debut, Date fin)throws Exception{
@@ -895,5 +928,79 @@ public class ServiceCommande extends BaseService{
         debut = DateUtil.convert(dateDebut); 
         fin = DateUtil.convert(dateFin);
         return this.updateCommande(debut, fin);
+    }
+    
+    public CommandeStock findCommandeStockById(long idCommandeStock) throws Exception {
+         CommandeStock commandeStock = new CommandeStock(); 
+         commandeStock.setId(idCommandeStock);
+         this.hibernateDao.findById(commandeStock);
+         return commandeStock;
+    } 
+    
+    public static CommandeStock findCommandeStockById(long idCommandeStock,Session session) throws Exception {
+         CommandeStock commandeStock = new CommandeStock(); 
+         commandeStock.setId(idCommandeStock);
+         HibernateDao.findById(commandeStock,session);
+         return commandeStock;
+    } 
+    
+    public static CommandeStock findCommandeStockById(CommandeStock commandeStock,Session session) throws Exception {       
+         HibernateDao.findById(commandeStock,session);
+         return commandeStock;
+    } 
+    
+    public void retour(long idCommandStock, int quantite, Session session) throws Exception {       
+        CommandeStock commandeStock = ServiceCommande.findCommandeStockById(idCommandStock, session); 
+        if(quantite>commandeStock.getPrixLocation()) throw new Exception("La quantite de retour ne peut être supérieure à la quantite louer");
+        try {
+            commandeStock.setQuantiteRetour(quantite);
+            HibernateDao.update(commandeStock, session);
+            ServiceHistoriqueUser.save("Retour  des commandes "+commandeStock.getRef(), session);
+        } catch( Exception e) {
+            e.printStackTrace();
+            throw new Exception("Erreur Interne, impossible de sauvegarder la retour"); 
+        }
+    }
+    
+    public void retour(List<ProduitRetour> retour) throws Exception{
+        
+        Session session = null; 
+        Transaction tr = null; 
+        try {
+            session = this.hibernateDao.getSessionFactory().openSession();
+            tr = session.beginTransaction();
+            int size = retour.size();
+            for(int i=0;i<size;i++) {
+                long id = retour.get(i).getIdProduit(); 
+                int quantite = retour.get(i).getValueProduitRetour();
+                this.retour(id, quantite, session);
+            }    
+            tr.commit();
+        } catch (Exception e) {
+            if(tr!=null) tr.rollback();
+            e.printStackTrace();
+        } finally {
+            if(session!=null) session.close();
+        }
+    }
+
+    public void generatPdfFacture(long idCommande,HttpServletRequest servletRequest) throws Exception {
+        Session session = null; 
+        try {
+            session = this.hibernateDao.getSessionFactory().openSession(); 
+            Commande commande = this.find(idCommande, session);
+            List<CommandeStock> commandeStock = this.find(commande,session);
+            this.initStock(commandeStock, session);
+            if(commandeStock != null ) {
+                FactureGenerator facture = new FactureGenerator(commande,commandeStock, servletRequest);
+            } 
+        } catch ( Exception e) {
+            e.printStackTrace();
+            throw new Exception("problème lors de la génération de la facture");
+        
+        } finally { 
+            if(session!=null) session.close();
+        }
+         
     }
 }
