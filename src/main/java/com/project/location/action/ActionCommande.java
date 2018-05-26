@@ -6,6 +6,7 @@
 package com.project.location.action;
 
 import com.opensymphony.xwork2.Action;
+import com.project.location.data.PathData;
 import com.project.location.model.Commande;
 import com.project.location.model.CommandeStock;
 import com.project.location.model.ProduitRetour;
@@ -18,6 +19,9 @@ import com.project.location.service.ServiceCommande;
 import com.project.location.service.ServiceStock;
 import com.project.location.util.DateUtil;
 import com.project.location.util.Test;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -62,8 +66,9 @@ public class ActionCommande extends BaseAction {
     private String annule;
     private String paye;
     private String reference; 
-    
     private double quotient;
+    private InputStream fileInputStream;
+    private String fileName;
 
     public List<ProduitRetour> getListProduitRetour() {
         return listProduitRetour;
@@ -91,6 +96,22 @@ public class ActionCommande extends BaseAction {
     
     public double getTotal() {
         return total;
+    }
+
+    public InputStream getFileInputStream() {
+        return fileInputStream;
+    }
+
+    public void setFileInputStream(InputStream fileInputStream) {
+        this.fileInputStream = fileInputStream;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
     }
 
     public void setTotal(double total) {
@@ -407,6 +428,20 @@ public class ActionCommande extends BaseAction {
             return Action.ERROR;
         }
         
+    }
+    public String generateFacture() {
+        try {
+            this.serviceCommande.generatPdfFacture(idCommande,this.servletRequest);
+            File fileToDownload = new File(this.servletRequest.getSession().getServletContext().getRealPath("/")+PathData.PATH_PDF_FACTURE);
+            fileName = fileToDownload.getName();
+            fileInputStream = new FileInputStream(fileToDownload);
+            return Action.SUCCESS;
+        }catch (Exception e ) {
+            e.printStackTrace();
+            this.linkError=ReferenceErreur.VISIBLE;
+            this.messageError = e.getMessage();
+            return Action.ERROR;
+        }
     }
     public String ficheCommande() throws Exception {
         try {

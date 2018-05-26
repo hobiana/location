@@ -174,7 +174,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <a style='margin-left: 10px;' class="btn btn-default pull-left" >PDF</a>
+                                    <a style='margin-left: 10px;' href="downloadPDF?idCommande=<s:property value="idCommande"/>" class="btn btn-default pull-left" >Facture</a>
                                     <s:if test="commande.isPaye()==false">
                                         <a class="btn btn-success pull-right" href="#payer" data-toggle="modal">Payer la commande</a>
                                         <div class="modal fade" id="payer" role="dialog">

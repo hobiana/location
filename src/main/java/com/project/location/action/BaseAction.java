@@ -11,14 +11,16 @@ import com.project.location.model.Users;
 import com.project.location.reference.ReferenceSession;
 import java.sql.Timestamp;
 import java.util.Calendar;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.apache.struts2.ServletActionContext;
+import org.apache.struts2.interceptor.ServletRequestAware;
 
 /**
  *
  * @author Diary
  */
-public class BaseAction extends ActionSupport {
+public class BaseAction extends ActionSupport implements ServletRequestAware{
 
     protected Users user;
     protected String titre;
@@ -26,6 +28,7 @@ public class BaseAction extends ActionSupport {
     protected String messageError;
     protected String linkSuccess = "none";
     protected String messageSuccess;
+    protected HttpServletRequest servletRequest;
 
     public String getLinkSuccess() {
         return linkSuccess;
@@ -83,6 +86,10 @@ public class BaseAction extends ActionSupport {
         HttpSession session = ServletActionContext.getRequest().getSession();
         if(session.getAttribute(ReferenceSession.USER)==null) throw new Exception("Not Logged => No session");
         return (Users)session.getAttribute(ReferenceSession.USER);
+    }
+    @Override
+    public void setServletRequest(HttpServletRequest request) {
+        this.servletRequest = request;
     }
     
 }
