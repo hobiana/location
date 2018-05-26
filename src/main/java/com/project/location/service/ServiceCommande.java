@@ -9,6 +9,7 @@ import com.project.location.dao.HibernateDao;
 import com.project.location.model.Client;
 import com.project.location.model.Commande;
 import com.project.location.model.CommandeStock;
+import com.project.location.model.ProduitRetour;
 import com.project.location.model.Stock;
 import com.project.location.reference.ReferenceSession;
 import com.project.location.util.DateUtil;
@@ -79,6 +80,27 @@ public class ServiceCommande extends BaseService{
             commande.setAnnule(annule);
             commande.setRecu(recu);
             ServiceHistoriqueUser.save("mise à jour des états de la commande "+commande.getRef(), session);
+            HibernateDao.update(commande, session);
+            tr.commit();
+           
+        }catch(Exception e){
+            if(tr!=null)tr.rollback();
+            throw new Exception("Impossible de changer l'etat de la commande "+commande.getRef());
+            
+        }finally{
+            if(session!=null)session.close();
+        }
+    }
+    public void updateEtat(long id)throws Exception{
+        Commande commande = null; 
+        Session session = null; 
+        Transaction tr = null; 
+        try{
+            session = this.hibernateDao.getSessionFactory().openSession(); 
+            tr = session.beginTransaction();
+            commande = this.find(id, session); 
+            commande.setRetour(true);
+            ServiceHistoriqueUser.save("retour en stock "+commande.getRef(), session);
             HibernateDao.update(commande, session);
             tr.commit();
            
@@ -933,17 +955,17 @@ public class ServiceCommande extends BaseService{
         }
     }
     
-    public void retour(List<Long> ids, List<Integer> quantites) throws Exception{
-        if(ids.size()!=quantites.size()) throw new Exception("le nombre d'id et de quantité sont different");
+    public void retour(List<ProduitRetour> retour) throws Exception{
+        
         Session session = null; 
         Transaction tr = null; 
         try {
             session = this.hibernateDao.getSessionFactory().openSession();
             tr = session.beginTransaction();
-            int size = ids.size();
+            int size = retour.size();
             for(int i=0;i<size;i++) {
-                long id = ids.get(i); 
-                int quantite = quantites.get(i);
+                long id = retour.get(i).getIdProduit(); 
+                int quantite = retour.get(i).getValueProduitRetour();
                 this.retour(id, quantite, session);
             }    
             tr.commit();

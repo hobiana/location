@@ -278,14 +278,14 @@
            <result name="success" type="redirectAction">
                 <param name="actionName">fichecommande</param>
                 <param name="idCommande">${idCommande}</param>
-                <param name="dateDebut">${linkSuccess}</param>
-                <param name="dateFin">${messageSuccess}</param>
+                <param name="linkSuccess">${linkSuccess}</param>
+                <param name="messageSuccess">${messageSuccess}</param>
            </result>
           <result name="error" type="redirectAction">
                 <param name="actionName">fichecommande</param>
                 <param name="idCommande">${idCommande}</param>
-                <param name="dateDebut">${linkError}</param>
-                <param name="dateFin">${messageError}</param>
+                <param name="linkError">${linkError}</param>
+                <param name="messageError">${messageError}</param>
            </result>
         </action>
         

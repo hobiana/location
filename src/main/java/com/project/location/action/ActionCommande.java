@@ -8,6 +8,7 @@ package com.project.location.action;
 import com.opensymphony.xwork2.Action;
 import com.project.location.model.Commande;
 import com.project.location.model.CommandeStock;
+import com.project.location.model.ProduitRetour;
 import com.project.location.model.Stock;
 import com.project.location.model.Users;
 import com.project.location.reference.ReferenceErreur;
@@ -37,6 +38,8 @@ public class ActionCommande extends BaseAction {
     private List<Commande> listeCommande;
     private Commande commande;
     
+    private List<ProduitRetour> listProduitRetour;
+    
     private double total;
     
     private int idCommande;
@@ -61,6 +64,14 @@ public class ActionCommande extends BaseAction {
     private String reference; 
     
     private double quotient;
+
+    public List<ProduitRetour> getListProduitRetour() {
+        return listProduitRetour;
+    }
+
+    public void setListProduitRetour(List<ProduitRetour> listProduitRetour) {
+        this.listProduitRetour = listProduitRetour;
+    }
 
     public ServiceCaisse getServiceCaisse() {
         return serviceCaisse;
@@ -385,7 +396,8 @@ public class ActionCommande extends BaseAction {
         boolean recuB  = this.recu!=null;
         boolean annuleB = this.annule!=null;
         try{
-            this.serviceCommande.updateEtat(idCommande, recuB, annuleB);
+            this.serviceCommande.retour(listProduitRetour);
+            this.serviceCommande.updateEtat(idCommande);
             this.linkSuccess = ReferenceErreur.VISIBLE;
             this.messageSuccess = "mise à jour effectué avec succes";
             return Action.SUCCESS;
