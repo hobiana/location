@@ -138,7 +138,7 @@
                                     <div class="modal-dialog modal-lg">
                                         <!-- Modal content-->
                                         <div class="modal-content">
-                                            <form method="POST" action="retourcommande">
+                                            <form method="POST" action="updateEtat">
                                                 <div class="modal-header backg-brw">
                                                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                                                     <h4 class="modal-title">Modifier les états de la commande</h4>
@@ -175,6 +175,9 @@
                                         </div>
                                     </div>
                                     <a style='margin-left: 10px;' href="downloadPDF?idCommande=<s:property value="idCommande"/>" class="btn btn-default pull-left" >Facture</a>
+                                    <a style='margin-left: 10px;' href="downloadBS?idCommande=<s:property value="idCommande"/>" class="btn btn-default pull-left" >Bon de Sortie</a>
+                                    <a style='margin-left: 10px;' href="downloadBR?idCommande=<s:property value="idCommande"/>" class="btn btn-default pull-left" >Bon de Reception</a>
+                                    <a style='margin-left: 10px;' href="downloadQuotient?idCommande=<s:property value="idCommande"/>" class="btn btn-default pull-left" >Facture Quotient</a>
                                     <s:if test="commande.isPaye()==false">
                                         <a class="btn btn-success pull-right" href="#payer" data-toggle="modal">Payer la commande</a>
                                         <div class="modal fade" id="payer" role="dialog">

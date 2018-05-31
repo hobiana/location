@@ -35,9 +35,9 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  *
- * @author diary
+ * @author Diary
  */
-public class FactureGenerator {
+public class FactureQuotient {
     private Commande commande;
     private List<CommandeStock> commandeStock;
     private int nombreJour;
@@ -98,22 +98,14 @@ public class FactureGenerator {
     public void setFacture(Facture facture) {
         this.facture = facture;
     }
-    
-    
-    
-    public static void main(String[] arg) throws Exception {
-//        Test test = new Test();
-//        FactureGenerator g = new FactureGenerator();
-    }
-
-    public FactureGenerator(Client client,Commande commande,List<CommandeStock> commandeStocks,Facture facture,HttpServletRequest servletRequest) throws Exception {
+    public FactureQuotient(Client client,Commande commande,List<CommandeStock> commandeStocks,Facture facture,HttpServletRequest servletRequest) throws Exception {
         this.setCommande(commande);
         this.setCommandeStock(commandeStocks);
         this.setNombreJour(this.commande.nombreJour());
         this.setClient(client);
         this.setFacture(facture);
         Document document = new Document();
-        PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(servletRequest.getSession().getServletContext().getRealPath("/")+PathData.PATH_PDF_FACTURE));
+        PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(servletRequest.getSession().getServletContext().getRealPath("/")+PathData.PATH_PDF_BON_QUOTIENT));
         document.open();
         addMetaData(document);
         addContent(document,writer);
@@ -151,7 +143,7 @@ public class FactureGenerator {
         information = new Paragraph();
         addEmptyLine(information, 2);
         
-        information.add(new Phrase("Object : Facture de la commande N° "+ this.commande.getRef(),boldFont));
+        information.add(new Phrase("Object : Facture de la quotient commande N° "+ this.commande.getRef(),boldFont));
         addEmptyLine(information,1);
         information.add(new Phrase("N° Facture "+ this.facture.getRef(),boldFont));
         addEmptyLine(information,2);
@@ -161,11 +153,11 @@ public class FactureGenerator {
         document.add(information);
 
         PdfPTable table;
-        table = new PdfPTable(5);
+        table = new PdfPTable(6);
 
         table.setWidthPercentage(100);
 
-        table.setWidths(new float[]{5, 2, 2,2, 2});
+        table.setWidths(new float[]{5, 2,2, 2,2, 2});
 
         PdfPCell c1;
 
@@ -177,6 +169,11 @@ public class FactureGenerator {
         table.addCell(c1);
 
         c1 = new PdfPCell(new Phrase("QUANTITE", header));
+        c1.setHorizontalAlignment(Element.ALIGN_CENTER);    
+//        c1.setBackgroundColor(myColorpan);
+        
+        table.addCell(c1);
+        c1 = new PdfPCell(new Phrase("Qte. Non Retour", header));
         c1.setHorizontalAlignment(Element.ALIGN_CENTER);    
 //        c1.setBackgroundColor(myColorpan);
         
@@ -203,7 +200,7 @@ public class FactureGenerator {
 //        List<TacheModel> taches; 
 //        taches = offre.getTacheinitials().getTravaux();
         int size = this.commandeStock.size();
-        int somme = 0; 
+        double somme = 0; 
         for (int i = 0; i < size; i++) {
             CommandeStock cs = this.commandeStock.get(i);
 //            TacheModel tache = this.offre.getTacheinitials().getTravaux().get(i);
@@ -212,8 +209,14 @@ public class FactureGenerator {
             c1.setHorizontalAlignment(Element.ALIGN_LEFT);
             c1.setPadding(2);
             table.addCell(c1);
-
+            
             c1 = new PdfPCell(new Phrase(String.valueOf(cs.getQuantiteCommande()), smallFont));
+            c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+            c1.setVerticalAlignment(Element.ALIGN_MIDDLE);
+            table.addCell(c1);
+            
+            double nmbreNR = cs.getQuantiteCommande()- cs.getQuantiteRetour();
+            c1 = new PdfPCell(new Phrase(String.valueOf(nmbreNR), smallFont));
             c1.setHorizontalAlignment(Element.ALIGN_CENTER);
             c1.setVerticalAlignment(Element.ALIGN_MIDDLE);
             table.addCell(c1);
@@ -228,7 +231,7 @@ public class FactureGenerator {
             c1.setVerticalAlignment(Element.ALIGN_MIDDLE);
             table.addCell(c1);
             
-            double total = cs.getQuantiteCommande()*cs.getPrixLocation();
+            double total = nmbreNR*cs.getPrixCasse();
             c1 = new PdfPCell(new Phrase(UtilConvert.toMoney(total), smallFont));
             c1.setHorizontalAlignment(Element.ALIGN_RIGHT);
             c1.setVerticalAlignment(Element.ALIGN_MIDDLE);
@@ -237,6 +240,11 @@ public class FactureGenerator {
             somme += total;
 
         }
+        
+        c1 = new PdfPCell();
+        c1.setHorizontalAlignment(Element.ALIGN_LEFT);
+        c1.setBorder(Rectangle.NO_BORDER);
+        table.addCell(c1);
         
         c1 = new PdfPCell();
         c1.setHorizontalAlignment(Element.ALIGN_LEFT);
@@ -270,6 +278,11 @@ public class FactureGenerator {
         table.addCell(c1);
         
         c1 = new PdfPCell();
+        c1.setHorizontalAlignment(Element.ALIGN_LEFT);
+        c1.setBorder(Rectangle.NO_BORDER);
+        table.addCell(c1);
+        
+        c1 = new PdfPCell();
         c1.setHorizontalAlignment(Element.ALIGN_LEFT); 
         c1.setBorder(Rectangle.NO_BORDER);
         table.addCell(c1);
@@ -292,32 +305,6 @@ public class FactureGenerator {
         
          // end
         
-        c1 = new PdfPCell();
-        c1.setHorizontalAlignment(Element.ALIGN_LEFT);
-        c1.setBorder(Rectangle.NO_BORDER);
-        table.addCell(c1);
-        
-        c1 = new PdfPCell();
-        c1.setHorizontalAlignment(Element.ALIGN_LEFT);     
-        c1.setBorder(Rectangle.NO_BORDER);
-        table.addCell(c1);
-        
-        c1 = new PdfPCell();
-        c1.setHorizontalAlignment(Element.ALIGN_LEFT);       
-        c1.setBorder(Rectangle.NO_BORDER);
-        table.addCell(c1);
-        
-        c1 = new PdfPCell(new Phrase("Nombre de jour", boldFont));       
-        c1.setBorder(Rectangle.NO_BORDER);
-        c1.setHorizontalAlignment(Element.ALIGN_RIGHT);
-        c1.setVerticalAlignment(Element.ALIGN_MIDDLE);     
-        table.addCell(c1);
-        
-        c1 = new PdfPCell(new Phrase(String.valueOf(this.nombreJour), boldFont));        
-        c1.setHorizontalAlignment(Element.ALIGN_RIGHT);
-        c1.setVerticalAlignment(Element.ALIGN_MIDDLE);
-        table.addCell(c1);
-        // end
         
         c1 = new PdfPCell();
         c1.setHorizontalAlignment(Element.ALIGN_LEFT);        
@@ -334,12 +321,21 @@ public class FactureGenerator {
         c1.setBorder(Rectangle.NO_BORDER);
         table.addCell(c1);
         
-         c1 = new PdfPCell(new Phrase("Total à payer", boldFont));
+        c1 = new PdfPCell();
+        c1.setHorizontalAlignment(Element.ALIGN_LEFT);        
+        c1.setBorder(Rectangle.NO_BORDER);
+        table.addCell(c1);
+        
+        String message = "Total à récupérer";
+        if(this.facture.getQuotient()-somme < 0){
+            message = "Total à payer";
+        }
+        c1 = new PdfPCell(new Phrase(message, boldFont));
         c1.setHorizontalAlignment(Element.ALIGN_RIGHT);        
         c1.setBorder(Rectangle.NO_BORDER);
         table.addCell(c1);
-        
-        c1 = new PdfPCell(new Phrase(UtilConvert.toMoney((this.nombreJour*somme)+this.facture.getQuotient()), boldFont));       
+        double sommeToPay = Math.abs(this.facture.getQuotient()-somme);
+        c1 = new PdfPCell(new Phrase(UtilConvert.toMoney(sommeToPay), boldFont));       
         c1.setHorizontalAlignment(Element.ALIGN_RIGHT);
         c1.setVerticalAlignment(Element.ALIGN_MIDDLE);
         table.addCell(c1);
@@ -351,7 +347,7 @@ public class FactureGenerator {
         if(leftPage<300)sautPage(document,1);
         
         information = new Paragraph(); 
-        information.add(new Phrase("Arrété la présente facture à  la somme de : "+ConvertionLettre.getLettre((this.nombreJour*somme)+this.facture.getQuotient())+" Ariary ",smallFontBold));
+        information.add(new Phrase("Arrété la présente facture à  la somme de : "+ConvertionLettre.getLettre(sommeToPay)+" Ariary ",smallFontBold));
         document.add(information);
         
         information = new Paragraph();

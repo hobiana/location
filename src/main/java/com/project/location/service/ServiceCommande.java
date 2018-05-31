@@ -6,10 +6,18 @@
 package com.project.location.service;
 
 import com.project.location.dao.HibernateDao;
+import com.project.location.exception.ConnexionException;
+import com.project.location.exception.NotFacturedException;
+import com.project.location.exception.NotReturnException;
+import com.project.location.exception.NotTakeCLientException;
+import com.project.location.generator.BonReception;
+import com.project.location.generator.BonSortieGenerator;
 import com.project.location.generator.FactureGenerator;
+import com.project.location.generator.FactureQuotient;
 import com.project.location.model.Client;
 import com.project.location.model.Commande;
 import com.project.location.model.CommandeStock;
+import com.project.location.model.Facture;
 import com.project.location.model.ProduitRetour;
 import com.project.location.model.Stock;
 import com.project.location.reference.ReferenceSession;
@@ -23,6 +31,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.apache.struts2.ServletActionContext;
 import org.hibernate.Criteria;
+import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -155,6 +164,20 @@ public class ServiceCommande extends BaseService{
         }catch(Exception e){
             e.printStackTrace();
             throw new Exception("impossible d'extraire le stock de la commande");
+        }
+    }
+    public  Facture findFacture(Commande commande, Session session) throws NotFacturedException, ConnexionException{
+        Query query = null; 
+        try{
+            String sql = "SELECT facture FROM Facture facture join facture.commande commande where commande.id = :id";
+            query = session.createQuery(sql);
+            query.setParameter("id", commande.getId());
+            return (Facture)query.list().get(0);
+            
+        }catch(IndexOutOfBoundsException out){
+            throw new NotFacturedException();
+        }catch(HibernateException hibernate) {
+            throw new ConnexionException(hibernate.getMessage());
         }
     }
     
@@ -990,17 +1013,102 @@ public class ServiceCommande extends BaseService{
             session = this.hibernateDao.getSessionFactory().openSession(); 
             Commande commande = this.find(idCommande, session);
             List<CommandeStock> commandeStock = this.find(commande,session);
+            Client client = this.findClient(commande, session);
+            Facture factureF = this.findFacture(commande, session);
             this.initStock(commandeStock, session);
-            if(commandeStock != null ) {
-                FactureGenerator facture = new FactureGenerator(commande,commandeStock, servletRequest);
-            } 
-        } catch ( Exception e) {
-            e.printStackTrace();
-            throw new Exception("problème lors de la génération de la facture");
-        
-        } finally { 
+            FactureGenerator facture = new FactureGenerator(client,commande,commandeStock, factureF,servletRequest);
+            
+        } catch( NullPointerException npe) {
+            npe.printStackTrace();
+            throw new Exception("Les données de la commande sont vide");
+        } catch ( NotFacturedException e) {
+            throw new Exception("La commande n'est pas payé");
+        } catch( ConnexionException ce) {
+            throw new Exception("Probleme de connexion à la base de donnée");
+        } catch( Exception e){
+            throw e;
+        }finally { 
             if(session!=null) session.close();
         }
          
+    }
+    public void generatPdfBS(long idCommande,HttpServletRequest servletRequest) throws Exception {
+        Session session = null; 
+        try {
+            session = this.hibernateDao.getSessionFactory().openSession(); 
+            Commande commande = this.find(idCommande, session);
+            if(!commande.isRecu()) throw new NotTakeCLientException("la commande n'a pas encore était reçu par le client");
+            List<CommandeStock> commandeStock = this.find(commande,session);
+            Client client = this.findClient(commande, session);
+            this.initStock(commandeStock, session);
+            BonSortieGenerator facture = new BonSortieGenerator(client,commande,commandeStock,servletRequest);
+            
+        } catch( NullPointerException npe) {
+            npe.printStackTrace();
+            throw new Exception("Les données de la commande sont vide");
+        } catch ( NotTakeCLientException e) {
+            throw e;
+        } catch( ConnexionException ce) {
+            throw new Exception("Probleme de connexion à la base de donnée");
+        } catch( Exception e){
+            throw e;
+        }finally { 
+            if(session!=null) session.close();
+        }
+    }
+    public void generatPdfBR(long idCommande,HttpServletRequest servletRequest) throws Exception {
+        Session session = null; 
+        try {
+            session = this.hibernateDao.getSessionFactory().openSession(); 
+            Commande commande = this.find(idCommande, session);
+            if(!commande.isRecu()) throw new NotTakeCLientException("la commande n'a pas encore était reçu par le client");
+            if(!commande.isRetour()) throw new NotReturnException("la commande n'a pas encore était retourné par le client");
+            List<CommandeStock> commandeStock = this.find(commande,session);
+            Client client = this.findClient(commande, session);
+            this.initStock(commandeStock, session);
+            BonReception facture = new BonReception(client,commande,commandeStock,servletRequest);
+            
+        } catch( NullPointerException npe) {
+            throw new Exception("Les données de la commande sont vide");
+        } catch ( NotTakeCLientException e) {
+            throw e;
+        } catch ( NotReturnException e) {
+            throw e;
+        } catch( ConnexionException | HibernateException ce) {
+            throw new Exception("Probleme de connexion à la base de donnée");
+        }catch( Exception e){
+            throw e;
+        }finally { 
+            if(session!=null) session.close();
+        }
+    }
+    public void generatPdfQuotient(long idCommande,HttpServletRequest servletRequest) throws Exception {
+        Session session = null; 
+        try {
+            session = this.hibernateDao.getSessionFactory().openSession(); 
+            Commande commande = this.find(idCommande, session);
+            if(!commande.isRecu()) throw new NotTakeCLientException("la commande n'a pas encore était reçu par le client");
+            if(!commande.isRetour()) throw new NotReturnException("la commande n'a pas encore était retourné par le client");
+            List<CommandeStock> commandeStock = this.find(commande,session);
+            Facture factureF = this.findFacture(commande, session);
+            Client client = this.findClient(commande, session);
+            this.initStock(commandeStock, session);
+            FactureQuotient facture = new FactureQuotient(client,commande,commandeStock,factureF,servletRequest);
+            
+        } catch( NullPointerException npe) {
+            throw new Exception("Les données de la commande sont vide");
+        } catch(NotFacturedException e){
+            throw new Exception("La commande n'est pas payé / facturé");
+        }catch ( NotTakeCLientException e) {
+            throw e;
+        } catch ( NotReturnException e) {
+            throw e;
+        } catch( ConnexionException | HibernateException ce) {
+            throw new Exception("Probleme de connexion à la base de donnée");
+        }catch( Exception e){
+            throw e;
+        }finally { 
+            if(session!=null) session.close();
+        }
     }
 }

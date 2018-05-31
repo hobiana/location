@@ -21,6 +21,7 @@ public class Reference {
     public static final String FACTURE = "FAC";
     public static final String ENTREE = "ETS";
     public static final String SORTIE = "SRS";
+    public static final String CLIENT = "CLT";
      public static Class getClass(String reference)throws Exception{
         if(reference.compareToIgnoreCase(Reference.COMMANDE)==0)return Commande.class;
         if(reference.compareToIgnoreCase(Reference.STOCK)==0)return Stock.class;

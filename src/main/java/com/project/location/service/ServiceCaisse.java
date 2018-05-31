@@ -157,6 +157,7 @@ public class ServiceCaisse extends BaseService {
             this.addCaisse(caisse, session);
             this.addEntree(vola, session);
         }catch(Exception e){
+            e.printStackTrace();
             throw new Exception("Impossible de sauvegarder l'argent dans la caisse cause "+e.getMessage());
         }
     }

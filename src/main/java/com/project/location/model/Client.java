@@ -5,6 +5,7 @@
  */
 package com.project.location.model;
 
+import com.project.location.reference.Reference;
 import com.project.location.util.Test;
 import java.util.Date;
 
@@ -82,8 +83,11 @@ public class Client extends BaseModel {
         
     }
     
-    public Client(){}
+    public Client(){
+        super.setReference(Reference.CLIENT);
+    }
     public Client(long id){
+        super.setReference(Reference.CLIENT);
         this.setId(id);
     }
     
