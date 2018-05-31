@@ -70,7 +70,7 @@ public class Facture extends BaseModel {
         this.remise = remise;
     }
     public Facture(){
-        this.reference = Reference.FACTURE;
+        super.reference = Reference.FACTURE;
     }
     public Facture(long id){
         super.id = id;

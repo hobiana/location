@@ -44,6 +44,6 @@ Contributor(s):
     <id column="idcaisse" name="id" type="long">
       <generator class="increment"/>
     </id>
-    <property column="volam" name="volaM" type="double"/>
+    <property column="vola" name="volaM" type="double"/>
   </class>
 </hibernate-mapping>

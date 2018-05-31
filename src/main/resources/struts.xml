@@ -271,7 +271,12 @@
                 <param name="actionName">fichecommande</param>
                 <param name="idCommande">${idCommande}</param>
            </result>
-           <result name="error">index.jsp</result>
+           <result name="error" type="redirectAction">
+                <param name="actionName">fichecommande</param>
+                <param name="idCommande">${idCommande}</param>
+                <param name="linkError">${linkError}</param>
+                <param name="messageError">${messageError}</param>
+           </result>
         </action>
 		
         <action name="retourcommande" method="retourcommande" class="com.project.location.action.ActionCommande">
@@ -288,7 +293,20 @@
                 <param name="messageError">${messageError}</param>
            </result>
         </action>
-        
+        <action name="updateEtat" method="updateEtat" class="com.project.location.action.ActionCommande">
+           <result name="success" type="redirectAction">
+                <param name="actionName">fichecommande</param>
+                <param name="idCommande">${idCommande}</param>
+                <param name="dateDebut">${linkSuccess}</param>
+                <param name="dateFin">${messageSuccess}</param>
+           </result>
+          <result name="error" type="redirectAction">
+                <param name="actionName">fichecommande</param>
+                <param name="idCommande">${idCommande}</param>
+                <param name="dateDebut">${linkError}</param>
+                <param name="dateFin">${messageError}</param>
+           </result>
+        </action>
         <action name="caisse" method="caisse" class="com.project.location.action.ActionCaisse">
            <result name="success">caisse.jsp</result>
            <result name="login" type="redirect">index</result>
@@ -379,7 +397,57 @@
                 <param name="bufferSize">1024</param>
             </result>
             <result name="login" type="redirect">index</result> 
-            <result name="error" type="redirect">index</result> 
+            <result name="error" type="redirectAction">
+                <param name="actionName">fichecommande</param>
+                <param name="idCommande">${idCommande}</param>
+                <param name="linkError">${linkError}</param>
+                <param name="messageError">${messageError}</param>
+           </result>
+        </action>
+        <action name="downloadBS" class="com.project.location.action.ActionCommande" method="generateBS">
+            <result name="success" type="stream">
+                <param name="contentDisposition">attachment;filename=${fileName}</param>
+                <param name="contentType">application/vnd.ms-excel</param>
+                <param name="inputName">fileInputStream</param>
+                <param name="bufferSize">1024</param>
+            </result>
+            <result name="login" type="redirect">index</result> 
+            <result name="error" type="redirectAction">
+                <param name="actionName">fichecommande</param>
+                <param name="idCommande">${idCommande}</param>
+                <param name="linkError">${linkError}</param>
+                <param name="messageError">${messageError}</param>
+           </result>
+        </action>
+        <action name="downloadBR" class="com.project.location.action.ActionCommande" method="generateBR">
+            <result name="success" type="stream">
+                <param name="contentDisposition">attachment;filename=${fileName}</param>
+                <param name="contentType">application/vnd.ms-excel</param>
+                <param name="inputName">fileInputStream</param>
+                <param name="bufferSize">1024</param>
+            </result>
+            <result name="login" type="redirect">index</result> 
+            <result name="error" type="redirectAction">
+                <param name="actionName">fichecommande</param>
+                <param name="idCommande">${idCommande}</param>
+                <param name="linkError">${linkError}</param>
+                <param name="messageError">${messageError}</param>
+           </result>
+        </action>
+        <action name="downloadQuotient" class="com.project.location.action.ActionCommande" method="generatPdfQuotient">
+            <result name="success" type="stream">
+                <param name="contentDisposition">attachment;filename=${fileName}</param>
+                <param name="contentType">application/vnd.ms-excel</param>
+                <param name="inputName">fileInputStream</param>
+                <param name="bufferSize">1024</param>
+            </result>
+            <result name="login" type="redirect">index</result> 
+            <result name="error" type="redirectAction">
+                <param name="actionName">fichecommande</param>
+                <param name="idCommande">${idCommande}</param>
+                <param name="linkError">${linkError}</param>
+                <param name="messageError">${messageError}</param>
+           </result>
         </action>
     </package>
 </struts>

@@ -22,6 +22,7 @@ import com.project.location.util.Test;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -96,6 +97,10 @@ public class ActionCommande extends BaseAction {
     
     public double getTotal() {
         return total;
+    }
+    public String getTotalS() {
+        BigDecimal d = new BigDecimal(this.total);
+        return d.toPlainString();
     }
 
     public InputStream getFileInputStream() {
@@ -414,11 +419,24 @@ public class ActionCommande extends BaseAction {
     }
     
     public String retourcommande(){
-        boolean recuB  = this.recu!=null;
-        boolean annuleB = this.annule!=null;
         try{
             this.serviceCommande.retour(listProduitRetour);
             this.serviceCommande.updateEtat(idCommande);
+            this.linkSuccess = ReferenceErreur.VISIBLE;
+            this.messageSuccess = "mise à jour effectué avec succes";
+            return Action.SUCCESS;
+        }catch(Exception e){
+            this.linkError=ReferenceErreur.VISIBLE;
+            this.messageError = e.getMessage();
+            return Action.ERROR;
+        }
+        
+    }
+    public String updateEtat(){
+        boolean recuB  = this.recu!=null;
+        boolean annuleB = this.annule!=null;
+        try{
+            this.serviceCommande.updateEtat(idCommande, recuB, annuleB);
             this.linkSuccess = ReferenceErreur.VISIBLE;
             this.messageSuccess = "mise à jour effectué avec succes";
             return Action.SUCCESS;
@@ -433,6 +451,48 @@ public class ActionCommande extends BaseAction {
         try {
             this.serviceCommande.generatPdfFacture(idCommande,this.servletRequest);
             File fileToDownload = new File(this.servletRequest.getSession().getServletContext().getRealPath("/")+PathData.PATH_PDF_FACTURE);
+            fileName = fileToDownload.getName();
+            fileInputStream = new FileInputStream(fileToDownload);
+            return Action.SUCCESS;
+        }catch (Exception e ) {
+            e.printStackTrace();
+            this.linkError=ReferenceErreur.VISIBLE;
+            this.messageError = e.getMessage();
+            return Action.ERROR;
+        }
+    }
+    public String generateBS() {
+        try {
+            this.serviceCommande.generatPdfBS(idCommande,this.servletRequest);
+            File fileToDownload = new File(this.servletRequest.getSession().getServletContext().getRealPath("/")+PathData.PATH_PDF_BON_SORTIE);
+            fileName = fileToDownload.getName();
+            fileInputStream = new FileInputStream(fileToDownload);
+            return Action.SUCCESS;
+        }catch (Exception e ) {
+            e.printStackTrace();
+            this.linkError=ReferenceErreur.VISIBLE;
+            this.messageError = e.getMessage();
+            return Action.ERROR;
+        }
+    }
+    public String generateBR() {
+        try {
+            this.serviceCommande.generatPdfBR(idCommande,this.servletRequest);
+            File fileToDownload = new File(this.servletRequest.getSession().getServletContext().getRealPath("/")+PathData.PATH_PDF_BON_RECEPTION);
+            fileName = fileToDownload.getName();
+            fileInputStream = new FileInputStream(fileToDownload);
+            return Action.SUCCESS;
+        }catch (Exception e ) {
+            e.printStackTrace();
+            this.linkError=ReferenceErreur.VISIBLE;
+            this.messageError = e.getMessage();
+            return Action.ERROR;
+        }
+    }
+    public String generatPdfQuotient() {
+        try {
+            this.serviceCommande.generatPdfQuotient(idCommande,this.servletRequest);
+            File fileToDownload = new File(this.servletRequest.getSession().getServletContext().getRealPath("/")+PathData.PATH_PDF_BON_QUOTIENT);
             fileName = fileToDownload.getName();
             fileInputStream = new FileInputStream(fileToDownload);
             return Action.SUCCESS;
@@ -458,7 +518,15 @@ public class ActionCommande extends BaseAction {
     }
     
     public String payerCommande() throws Exception{
-        this.serviceCaisse.payerCommande(idCommande, quotient);
-        return Action.SUCCESS;
+        try{
+            this.serviceCaisse.payerCommande(idCommande, quotient);
+            return Action.SUCCESS;
+        }catch(Exception e){
+             this.linkError=ReferenceErreur.VISIBLE;
+            this.messageError = e.getMessage();
+            return Action.ERROR;
+        }
+        
+        
     }
 }
