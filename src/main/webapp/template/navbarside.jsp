@@ -1,7 +1,8 @@
 <%@taglib  prefix="s" uri="/struts-tags"%>
 <div class="navbar-default sidebar" role="navigation">
     <div class="sidebar-nav navbar-collapse">
-        <ul class="nav" id="side-menu">            
+        <ul class="nav" id="side-menu">   
+            <s:if test="%{getSessionUser().nom!='stock'}">
             <li>
                 <a><i class="fa fa-money fa-fw"></i> Caisse et quotient<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
@@ -33,6 +34,7 @@
             <li>
                 <a href="indexUsers"><i class="fa fa-user fa-fw"></i> Gestions utilisateurs</a>
             </li>
+            </s:if>
             <li>
                 <a><i class="fa fa-database fa-fw"></i> Stocks<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">

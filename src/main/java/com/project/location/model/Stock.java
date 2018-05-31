@@ -27,9 +27,7 @@ public class Stock extends BaseModel {
     }
     
 
-    public Stock() {
-        this.reference = Reference.STOCK;
-    }
+    public Stock() { }
     public String quantite(){
         return NumberTest.toMoney(quantite);
     }
@@ -68,5 +66,15 @@ public class Stock extends BaseModel {
         super.setId(id);
         super.reference = Reference.STOCK;
     }
+
+    public String getReference() {
+        return reference;
+    }
+
+    public void setReference(String reference) {
+        super.reference = reference;
+    }
+    
+    
     
 }

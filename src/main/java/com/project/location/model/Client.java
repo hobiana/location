@@ -17,7 +17,16 @@ public class Client extends BaseModel {
     private String prenom; 
     private String CIN; 
     private String adresse;
+    private String telephone;
     private boolean blackListe; 
+
+    public String getTelephone() {
+        return telephone;
+    }
+
+    public void setTelephone(String telephone) {
+        this.telephone = telephone;
+    }
 
     public String getNom() {
         return nom;

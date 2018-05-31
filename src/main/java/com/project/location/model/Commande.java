@@ -24,8 +24,17 @@ public class Commande extends BaseModel {
     private boolean retour;
     private boolean recu;
     private boolean paye; 
+    private double prixLivraison;
     private Client client;
     private List<CommandeStock> commandeStock;
+
+    public double getPrixLivraison() {
+        return prixLivraison;
+    }
+
+    public void setPrixLivraison(double prixLivraison) {
+        this.prixLivraison = prixLivraison;
+    }
 
     public List<CommandeStock> getCommandeStock() {
         return commandeStock;

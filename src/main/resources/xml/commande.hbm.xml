@@ -47,6 +47,7 @@ Contributor(s):
     <property column="datecommande" name="dateCommande" type="date"/>
     <property column="dateacquisition" name="dateAcquisition" type="date"/>
     <property column="dateretour" name="dateRetour" type="date"/>
+    <property column="prixlivraison" name="prixLivraison" type="double"/>
     <property column="datedebut" name="dateDebut" type="date"/>
     <property column="datefin" name="dateFin" type="date"/>
     <property column="annule" name="annule" type="boolean"/>

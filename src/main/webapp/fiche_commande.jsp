@@ -51,7 +51,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Durée en jour(s)</label>
-                                    <input class="form-control" value="<s:property value="commande.getNombreDeJour()"/>" readonly>
+                                    <input class="form-control" value="<s:property value="commande.nombreJour()"/>" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label>Etat :</label>
@@ -220,6 +220,7 @@
                                             <th>Désignation</th>
                                             <th>Qte.</th>
                                             <th>PU/jrs</th>
+                                            <th>Prix de casse</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -229,6 +230,7 @@
                                                 <td> <s:property value="getStock().getDesignation()"/> </td>
                                                 <td><span class="pull-right"> <s:property value="quantiteCommande()"/> </span></td> 
                                                 <td><span class="pull-right"><s:property value="getStringPrixLocation()"/> </span></td>
+                                                <td><span class="pull-right"><s:property value="prixCasse()"/> </span></td>
                                             </tr>
                                         </s:iterator>
                                     </tbody>

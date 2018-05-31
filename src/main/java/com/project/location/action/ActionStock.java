@@ -29,6 +29,7 @@ public class ActionStock extends BaseAction {
     
     private int idStock;
     
+    private String reference;
     private String designation; 
     private int prixAchat; 
     private int prixLocation; 
@@ -56,6 +57,14 @@ public class ActionStock extends BaseAction {
     private String description; 
     
     // getters setters
+    public String getReference() {
+        return reference;
+    }
+    
+    public void setReference(String reference) {    
+        this.reference = reference;
+    }
+
     public String getDescription() {
         return description;
     }
@@ -274,7 +283,7 @@ public class ActionStock extends BaseAction {
             return Action.LOGIN;
         }
         this.titre="Stock";
-        listeStock = serviceStock.find(designation, quantiteMin, quantiteMax, prixLocationMin, prixLocationMax);
+        listeStock = serviceStock.find(reference,designation, quantiteMin, quantiteMax, prixLocationMin, prixLocationMax);
         return Action.SUCCESS;
     }
     
@@ -309,6 +318,7 @@ public class ActionStock extends BaseAction {
     
     public String newStock() throws Exception{
         Stock stock = new Stock();
+        stock.setReference(reference);
         stock.setPrixLocation(prixLocation);
         stock.setDesignation(designation);
         stock.setQuantite(quantite);
@@ -338,6 +348,8 @@ public class ActionStock extends BaseAction {
         Stock stock=serviceStock.find(idStock);
         stock.setDesignation(designation);
         stock.setPrixLocation(prixLocation);
+        stock.setPrixCasse(prixCasse);
+        stock.setReference(reference);
         serviceStock.update(stock);
         return Action.SUCCESS;
     }

@@ -36,6 +36,10 @@
                             <div class="panel-body">
                                 <form role="form" action="stock">
                                     <div class="form-group">
+                                        <label>Référence</label>
+                                        <input name="reference" class="form-control" placeholder="Référence" value="<s:property value="reference"/>">
+                                    </div>
+                                    <div class="form-group">
                                         <label>Désignation</label>
                                         <input name="designation" class="form-control" placeholder="Désignation" value="<s:property value="getDesignation()"/>">
                                     </div>
@@ -80,12 +84,14 @@
                             <div class="panel-body">
                                 <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
                                     <thead>
-                                    <a 
-                                        class="btn btn-default" 
-                                        style="margin-bottom:15px"
-                                        href="#ajoutClient" data-toggle="modal">
-                                        Ajouter le stock
-                                    </a>
+                                    <s:if test="%{getSessionUser().nom!='stock'}">
+                                        <a 
+                                            class="btn btn-default" 
+                                            style="margin-bottom:15px"
+                                            href="#ajoutClient" data-toggle="modal">
+                                            Ajouter le stock
+                                        </a>
+                                    </s:if>
                                     <%@include file="/template/Success.jsp" %>
                                     <%@include file="/template/Erreur.jsp" %>
                                     <div class="modal fade" id="ajoutClient" role="dialog">
@@ -99,6 +105,10 @@
                                                     </div>
                                                     <div class="modal-body">
                                                         <div class="form-group">
+                                                            <div class="form-group">
+                                                            <label>Référence</label>
+                                                            <input name="reference" class="form-control" placeholder="Référence">
+                                                        </div>
                                                             <label>Désignation</label>
                                                             <input name="designation" class="form-control" placeholder="Désignation">
                                                         </div>
@@ -134,13 +144,15 @@
                                         <th>Qte</th>
                                         <th>Entrée</th>
                                         <th>Sortie</th>
+                                        <s:if test="%{getSessionUser().nom!='stock'}">
                                         <th>Modifier</th>
+                                        </s:if>
                                     </tr>
                                     </thead>
                                     <tbody>
                                         <s:iterator value="listeStock">
                                             <tr class="odd gradeX">
-                                                <td> <s:property value="getRef()"  /> </td>
+                                                <td> <s:property value="reference"  /> </td>
                                                 <td> <s:property value="designation"  /> </td> 
                                                 <td><span class="pull-right"><s:property value="getPL()"  /></span></td>
                                                 <td><span class="pull-right"><s:property value="quantite()"  /></span></td>
@@ -158,6 +170,7 @@
                                                         <i class="fa fa-sign-out"></i>
                                                     </a>
                                                 </td>
+                                                <s:if test="%{getSessionUser().nom!='stock'}">
                                                 <td>
                                                     <a type="button" 
                                                        class="btn btn-default center-block" 
@@ -165,6 +178,7 @@
                                                         <i class="fa fa-edit"></i>
                                                     </a>
                                                 </td>
+                                                </s:if>
                                             </tr>
                                         </s:iterator>
                                     </tbody>

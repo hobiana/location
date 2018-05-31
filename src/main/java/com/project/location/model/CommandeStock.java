@@ -46,6 +46,9 @@ public class CommandeStock extends BaseModel {
         this.description = description;
     }
 
+    public String prixCasse(){
+        return NumberTest.toMoney(prixCasse);
+    }
     
     public String quantiteCommande(){
         return NumberTest.toMoney(quantiteCommande);

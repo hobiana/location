@@ -74,6 +74,14 @@
                                                     <input id="dateRetour" name="dateRetour" class="form-control"  type="date" value="<s:property value="dateRetour"/>">
                                                 </div>
                                             </div>
+                                                <div class="form-group">
+                                                <div class="col-md-12">
+                                                    <label>* Prix de livraison (0 si pas de livraison) </label>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <input id="prixLivraison" name="prixLivraison" class="form-control"  type="number" value="0">
+                                                </div>
+                                            </div>
                                             <input name="idClient" type="hidden" value="<s:property value="idClient"/>" />
                                             <input name="action" type="hidden" value="<s:property value="action"/>" />
                                             <button style="margin-top: 10px;margin-right: 15px" type="submit" class="btn btn-warning pull-right">Vérifier la commande selon les dates</button>
@@ -162,8 +170,9 @@
                 var dateRetour = document.getElementById("dateRetour").value;
                 var dateD = document.getElementById("dateDebut").value;
                 var dateF = document.getElementById("dateFin").value;
+                var prixLivraison = document.getElementById("prixLivraison").value;
                 if (dateD != "" && dateF != "" && dateAquisition != "" && dateRetour != "") {
-                    window.location.replace("modifCommande?idClient=<s:property value="idClient"/>&dateDebut=" + dateD + "&dateFin=" + dateF + "&dateAquisition=" + dateAquisition + "&dateRetour=" + dateRetour + "&quantite=" + document.getElementById("qte" + this.getAttribute('id')).value + "&idCommandeStock=" + document.getElementById(this.getAttribute('id')).value + "&action=<s:property value="action"/>")
+                    window.location.replace("modifCommande?idClient=<s:property value="idClient"/>&dateDebut=" + dateD + "&dateFin=" + dateF + "&dateAquisition=" + dateAquisition + "&dateRetour=" + dateRetour + "&prixLivraison=" + prixLivraison + "&quantite=" + document.getElementById("qte" + this.getAttribute('id')).value + "&idCommandeStock=" + document.getElementById(this.getAttribute('id')).value + "&action=<s:property value="action"/>")
                 }
             });
 
@@ -174,9 +183,10 @@
                 console.log(dateRetour);
                 var dateD = document.getElementById("dateDebut").value;
                 var dateF = document.getElementById("dateFin").value;
+                var prixLivraison = document.getElementById("prixLivraison").value;
                 var id = this.getAttribute('id');
                 if (dateD != "" && dateF != "" && dateAquisition != "" && dateRetour != "") {
-                    window.location.replace("addCommande?idClient=<s:property value="idClient"/>&dateDebut=" + dateD + "&dateFin=" + dateF + "&dateAquisition=" + dateAquisition + "&dateRetour=" + dateRetour + "&quantite=" + document.getElementById("addQte" + id).value + "&idStock=" + id + "&action=<s:property value="action"/>")
+                    window.location.replace("addCommande?idClient=<s:property value="idClient"/>&dateDebut=" + dateD + "&dateFin=" + dateF + "&dateAquisition=" + dateAquisition + "&dateRetour=" + dateRetour + "&prixLivraison=" + prixLivraison + "&quantite=" + document.getElementById("addQte" + id).value + "&idStock=" + id + "&action=<s:property value="action"/>")
                 }
             });
 
@@ -186,10 +196,11 @@
                 var dateRetour = document.getElementById("dateRetour").value;
                 var dateD = document.getElementById("dateDebut").value;
                 var dateF = document.getElementById("dateFin").value;
+                var prixLivraison = document.getElementById("prixLivraison").value;
                 var id = this.getAttribute('id');
                 var idCommandeStock = id.substring(3, id.length);
                 if (dateD != "" && dateF != "" && dateAquisition != "" && dateRetour != "") {
-                    window.location.replace("deleteCommande?idClient=<s:property value="idClient"/>&dateDebut=" + dateD + "&dateFin=" + dateF + "&dateAquisition=" + dateAquisition + "&dateRetour=" + dateRetour + "&idCommandeStock=" + idCommandeStock + "&action=<s:property value="action"/>")
+                    window.location.replace("deleteCommande?idClient=<s:property value="idClient"/>&dateDebut=" + dateD + "&dateFin=" + dateF + "&dateAquisition=" + dateAquisition + "&dateRetour=" + dateRetour + "&prixLivraison=" + prixLivraison + "&idCommandeStock=" + idCommandeStock + "&action=<s:property value="action"/>")
                 }
             });
 
@@ -199,11 +210,12 @@
                 var dateRetour = document.getElementById("dateRetour").value;
                 var dateD = document.getElementById("dateDebut").value;
                 var dateF = document.getElementById("dateFin").value;
+                var prixLivraison = document.getElementById("prixLivraison").value;
                 if (dateD != "" && dateF != "" && dateAquisition != "" && dateRetour != "") {
                     if (action == 'save') {
-                        window.location.replace("validerCommandeClient?idClient=<s:property value="idClient"/>&dateDebut=" + dateD + "&dateFin=" + dateF + "&dateAquisition=" + dateAquisition + "&dateRetour=" + dateRetour + "&action=<s:property value="action"/>")
+                        window.location.replace("validerCommandeClient?idClient=<s:property value="idClient"/>&dateDebut=" + dateD + "&dateFin=" + dateF + "&dateAquisition=" + dateAquisition + "&dateRetour=" + dateRetour + "&prixLivraison=" + prixLivraison + "&action=<s:property value="action"/>")
                     } else if (action == 'modif') {
-                        window.location.replace("validerCommandeUpdate?idClient=<s:property value="idClient"/>&dateDebut=" + dateD + "&dateFin=" + dateF + "&dateAquisition=" + dateAquisition + "&dateRetour=" + dateRetour + "&action=<s:property value="action"/>")
+                        window.location.replace("validerCommandeUpdate?idClient=<s:property value="idClient"/>&dateDebut=" + dateD + "&dateFin=" + dateF + "&dateAquisition=" + dateAquisition + "&dateRetour=" + dateRetour + "&prixLivraison=" + prixLivraison + "&action=<s:property value="action"/>")
                     }
                 }
             });

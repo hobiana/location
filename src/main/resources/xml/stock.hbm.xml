@@ -45,6 +45,7 @@ Contributor(s):
       <generator class="increment"/>
     </id>
     <property column="designation" name="designation" type="string"/>
+    <property column="reference" name="reference" type="string"/>
     <property column="prixlocation" name="prixLocation" type="integer"/>
     <property column="prixcasse" name="prixCasse" type="integer"/>
     <property column="quantite" name="quantite" type="integer"/>

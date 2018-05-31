@@ -92,6 +92,7 @@ public class ServiceClient extends BaseService{
             HibernateDao.update(client,session);
             tr.commit();
         }catch(Exception e){
+            e.printStackTrace();
             if(tr!=null)tr.rollback();
             throw new Exception("impossible de modifier le client cause "+e.getMessage());
         }finally{

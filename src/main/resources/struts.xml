@@ -9,7 +9,7 @@
         </action>
         
         <action name="index" class="com.project.location.action.ActionClient" method="load">
-            <!--<result name="error" type="redirect">accueil</result>-->
+            <result name="error" type="redirectAction">dashboard</result>
             <result name="success">login.jsp</result>
         </action>
         
@@ -24,6 +24,11 @@
                 <param name="linkError">${linkError}</param>
                 <param name="messageError">${messageError}</param>
             </result> 
+        </action>
+        
+        <action name="logout" method="logout" class="com.project.location.action.ActionClient">
+            <result name="success" type="redirectAction">index</result>
+            <result name="error">index.jsp</result>
         </action>
         
         <action name="client" method="listclient" class="com.project.location.action.ActionClient">
@@ -65,6 +70,7 @@
                 <param name="prenom">${prenom}</param>
                 <param name="cin">${cin}</param>
                 <param name="adresse">${adresse}</param>
+                <param name="telephone">${telephone}</param>
                 <param name="blacklist">${blacklist}</param>
                 <param name="idClient">${idClient}</param>
                 
@@ -185,6 +191,7 @@
                 <param name="dateFin">${dateFin}</param>
                 <param name="dateAquisition">${dateAquisition}</param>
                 <param name="dateRetour">${dateRetour}</param>
+                <param name="prixLivraison">${prixLivraison}</param>
                 <param name="action">${action}</param>
            </result>
            <result name="error">index.js</result>
@@ -198,6 +205,7 @@
                 <param name="dateFin">${dateFin}</param>
                 <param name="dateAquisitiont">${dateAquisition}</param>
                 <param name="dateRetour">${dateRetour}</param>
+                <param name="prixLivraison">${prixLivraison}</param>
                 <param name="action">${action}</param>
            </result>
            <result name="error">index.js</result>
@@ -211,6 +219,7 @@
                 <param name="dateFin">${dateFin}</param>
                 <param name="dateAquisitiont">${dateAquisition}</param>
                 <param name="dateRetour">${dateRetour}</param>
+                <param name="prixLivraison">${prixLivraison}</param>
                 <param name="action">${action}</param>
            </result>
            <result name="error">index.js</result>
@@ -224,6 +233,7 @@
                 <param name="dateFin">${dateFin}</param>
                 <param name="dateAquisition">${dateAquisition}</param>
                 <param name="dateRetour">${dateRetour}</param>
+                <param name="prixLivraison">${prixLivraison}</param>
                 <param name="action">${action}</param>
            </result>
            <result name="error">index.js</result>
@@ -238,6 +248,7 @@
                 <param name="dateFin">${dateFin}</param>
                 <param name="dateAquisition">${dateAquisition}</param>
                 <param name="dateRetour">${dateRetour}</param>
+                <param name="prixLivraison">${prixLivraison}</param>
                 <param name="action">${action}</param>
            </result>
         </action>

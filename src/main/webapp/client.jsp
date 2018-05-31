@@ -114,6 +114,7 @@
                                         <th>Prenom</th>
                                         <th>CIN</th>
                                         <th>adresse</th>
+                                        <th>telephone</th>
                                         <th>Blacklist / Whitelist</th>
                                         <th>Commande</th>
                                         <th>Modifier</th>
@@ -126,11 +127,16 @@
                                                 <td><s:property value="prenom"  /></td> 
                                                 <td><s:property value="CIN"  /></td>
                                                 <td><s:property value="adresse"  /></td>
+                                                <td><s:property value="telephone"  /></td>
                                                 <td class="center">
                                                     <s:if test="blackListe==true"><button type="button" class="btn btn-sm btn-danger btn-circle center-block"><i class="fa fa-times"></i> <span style="display: none">blacklist</span></button></s:if>
                                                     <s:else><button type="button" class="btn btn-sm btn-success btn-circle center-block"><i class="fa fa-check"></i> <span style="display: none">whitelist</span></button></s:else>
                                                 </td>
-                                                <td><a class="btn btn-circle btn-default center-block" href="commande?idClient=<s:property value="id"  />&action=save"><i class="fa fa-shopping-cart"></i></a></td>
+                                                <td>
+                                                    <s:if test="blackListe==false">
+                                                        <a class="btn btn-circle btn-default center-block" href="commande?idClient=<s:property value="id"  />&action=save"><i class="fa fa-shopping-cart"></i></a>
+                                                    </s:if>
+                                                </td>
                                                 <td><a type="button" class="btn btn-default center-block" href="modifclient?idClient=<s:property value="id"  />"><i class="fa fa-edit"></i></a></td>
                                             </tr>
                                         </s:iterator>
