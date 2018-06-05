@@ -444,7 +444,7 @@ public class ServiceCommande extends BaseService{
         }
     }
     
-    public List<Commande> getCommande(String client, Date debut, Date fin, Date dateCommandeD, Date dateCommandeF, boolean recu, boolean retour, boolean annule)throws Exception{
+    public List<Commande> getCommande(String client, Date debut, Date fin, Date dateCommandeD, Date dateCommandeF, boolean recu, boolean retour, boolean annule, boolean paye)throws Exception{
         Session session = null;
         List<Commande> reponse = null;
         try{
@@ -474,6 +474,7 @@ public class ServiceCommande extends BaseService{
             criteria.add(Restrictions.eq("commande.retour", retour));
             criteria.add(Restrictions.eq("commande.annule", annule));
             criteria.add(Restrictions.eq("commande.recu", recu));
+            criteria.add(Restrictions.eq("commande.paye", paye));
             
             reponse = criteria.list();
             this.populateClient(reponse, session);
@@ -541,7 +542,7 @@ public class ServiceCommande extends BaseService{
         }
     }
     
-    public List<Commande> getCommande(String client, String debut, String fin, String dateCommandeD, String dateCommandeF, boolean recu, boolean retour, boolean annule)throws Exception{
+    public List<Commande> getCommande(String client, String debut, String fin, String dateCommandeD, String dateCommandeF, boolean recu, boolean retour, boolean annule, boolean paye)throws Exception{
        Date debutDate = null; 
        Date finDate = null; 
        Date dateCommandeDDate = null; 
@@ -552,7 +553,7 @@ public class ServiceCommande extends BaseService{
        if(!Test.argmumentNull(dateCommandeD)) dateCommandeDDate = DateUtil.convert(dateCommandeD); 
        if(!Test.argmumentNull(dateCommandeF)) dateCommandeFDate = DateUtil.convert(dateCommandeF); 
        
-       return this.getCommande(client, debutDate, finDate, dateCommandeDDate, dateCommandeFDate, recu, retour, annule);
+       return this.getCommande(client, debutDate, finDate, dateCommandeDDate, dateCommandeFDate, recu, retour, annule,paye);
     }
     
     public List<Commande> getCommande(String client,String dateAcquisition, String dateRetour, String debut, String fin, String dateCommandeD, String dateCommandeF, boolean recu, boolean retour, boolean annule, boolean paye)throws Exception{
