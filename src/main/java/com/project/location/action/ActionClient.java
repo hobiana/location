@@ -167,7 +167,7 @@ public class ActionClient extends BaseAction {
         }
         try {
             this.user = this.clientService.login(email, password);
-            this.
+            this.serviceUsers.findAcces(user);
             HttpSession session = ServletActionContext.getRequest().getSession();
             
             session.setAttribute(ReferenceSession.USER, this.user);
