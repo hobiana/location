@@ -12,6 +12,10 @@ package com.project.location.model;
 public class Acces extends BaseModel {
     private String acces; 
 
+    public Acces(long acces) {
+        super.setId(acces);
+    }
+
     public String getAcces() {
         return acces;
     }

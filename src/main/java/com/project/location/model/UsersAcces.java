@@ -13,6 +13,15 @@ public class UsersAcces extends BaseModel {
     private Users user; 
     private Acces acces; 
 
+    public UsersAcces(Users user, Acces acces) {
+        this.user = user;
+        this.acces = acces;
+    }
+    public UsersAcces(long user, long acces) {
+        this.user = new Users(user);
+        this.acces = new Acces(acces);
+    }
+
     public Users getUser() {
         return user;
     }

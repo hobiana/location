@@ -5,6 +5,9 @@
  */
 package com.project.location.model;
 
+import java.util.List;
+import javax.persistence.Access;
+
 /**
  *
  * @author Diary
@@ -16,7 +19,18 @@ public class Users extends BaseModel {
     private String adresse; 
     private String pseudo;
     private String mdp;
+    private List<UsersAcces> userAccess;
 
+    public List<UsersAcces> getUserAccess() {
+        return userAccess;
+    }
+
+    public void setUserAccess(List<UsersAcces> userAccess) {
+        this.userAccess = userAccess;
+    }
+
+    
+    
     public String getNom() {
         return nom;
     }
@@ -66,7 +80,7 @@ public class Users extends BaseModel {
     }
     public Users(){}
     public Users(long id){
-        this.setId(id);
+        super.setId(id);
     }
     
     
