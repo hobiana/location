@@ -11,6 +11,7 @@ import com.project.location.model.Users;
 import com.project.location.reference.ReferenceErreur;
 import com.project.location.reference.ReferenceSession;
 import com.project.location.service.ServiceClient;
+import com.project.location.service.ServiceUsers;
 import com.project.location.util.DateUtil;
 import com.project.location.util.Test;
 import java.sql.Timestamp;
@@ -28,6 +29,7 @@ import org.apache.struts2.ServletActionContext;
 public class ActionClient extends BaseAction {
 
     private ServiceClient clientService;
+    private ServiceUsers serviceUsers;
     private String email;
     private String password;
 
@@ -41,6 +43,15 @@ public class ActionClient extends BaseAction {
     private String blacklist;
 
     private Client client;
+
+    public ServiceUsers getServiceUsers() {
+        return serviceUsers;
+    }
+
+    public void setServiceUsers(ServiceUsers serviceUsers) {
+        this.serviceUsers = serviceUsers;
+    }
+    
 
     public Client getClient() {
         return client;
@@ -156,6 +167,7 @@ public class ActionClient extends BaseAction {
         }
         try {
             this.user = this.clientService.login(email, password);
+            this.
             HttpSession session = ServletActionContext.getRequest().getSession();
             
             session.setAttribute(ReferenceSession.USER, this.user);

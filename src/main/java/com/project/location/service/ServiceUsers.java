@@ -211,6 +211,25 @@ public class ServiceUsers extends BaseService{
             throw he;
         }
     }
+    public void findAcces(Users user) throws HibernateException {
+        Session session = null;
+        try{
+            session = this.hibernateDao.getSessionFactory().openSession();
+            String sql = "SELECT usersAccess FROM UsersAcces usersAccess join usersAccess.user user WHERE user.id = :id";
+            Query query = session.createQuery(sql); 
+            query.setParameter("id", user.getId()); 
+            user.setUserAccess((List<UsersAcces>)(Object)query.list());
+        } catch(HibernateException he) {
+            throw he;
+        } finally{
+            if(session!=null) session.close();
+        }
+    }
+    public Users findAcces(long idUser) throws HibernateException {
+       Users users = new Users(idUser);
+       this.findAcces(users);
+       return users;
+    }
     public static void clearAccess(Users user, Session session) throws HibernateException {
         try{
             String sql = "DELETE FROM UsersAcces usersAccess join usersAccess.user user WHERE user.id = :id";

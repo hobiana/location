@@ -20,6 +20,7 @@
     </bean>
     <bean id="clientAction" class="com.project.location.action.ActionClient">
         <property name="clientService" ref="clientService" />
+        <property name="serviceUsers" ref="serviceUsers" />
     </bean>
     <bean id="usersAction" class="com.project.location.action.ActionUsers">
         <property name="serviceUsers" ref="serviceUsers" />

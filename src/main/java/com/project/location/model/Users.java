@@ -29,7 +29,9 @@ public class Users extends BaseModel {
         this.userAccess = userAccess;
     }
 
-    
+    public boolean hasAccess(UsersAcces userAccess){
+        return this.userAccess.contains(userAccess);
+    }
     
     public String getNom() {
         return nom;
