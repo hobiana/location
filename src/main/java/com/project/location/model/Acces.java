@@ -23,5 +23,8 @@ public class Acces extends BaseModel {
     public void setAcces(String acces) {
         this.acces = acces;
     }
+
+    public Acces() {
+    }
     
 }

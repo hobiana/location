@@ -44,7 +44,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label>Pseudo</label>
-                                        <input name="pseudo" class="form-control" placeholder="Pseudo" type="number">
+                                        <input name="pseudo" class="form-control" placeholder="Pseudo">
                                     </div>
                                     <div class="form-group">
                                         <label>Adresse</label>
@@ -115,27 +115,27 @@
                                                             <label>Accès aux liens</label>
                                                             <div class="checkbox">
                                                                 <label>
-                                                                    <input type="checkbox" value="">Caisse et quotient
+                                                                    <input name="boolCaisseQuotient" type="checkbox" value="true">Caisse et quotient
                                                                 </label>
                                                             </div>
                                                             <div class="checkbox">
                                                                 <label>
-                                                                    <input type="checkbox" value="">Clients
+                                                                    <input name="boolClients" type="checkbox" value="true">Clients
                                                                 </label>
                                                             </div>
                                                             <div class="checkbox">
                                                                 <label>
-                                                                    <input type="checkbox" value="">Commande
+                                                                    <input name="boolCommande" type="checkbox" value="true">Commande
                                                                 </label>
                                                             </div>
                                                             <div class="checkbox">
                                                                 <label>
-                                                                    <input type="checkbox" value="">Stocks
+                                                                    <input name="boolStock" type="checkbox" value="true">Stocks
                                                                 </label>
                                                             </div>
                                                             <div class="checkbox">
                                                                 <label>
-                                                                    <input type="checkbox" value="">Utilisateurs
+                                                                    <input name="boolUser" type="checkbox" value="true">Utilisateurs
                                                                 </label>
                                                             </div>
                                                         </div>

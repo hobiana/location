@@ -81,6 +81,7 @@ public class ServiceUsers extends BaseService{
             tr.commit();
         }catch(Exception e){
             if(tr!=null)tr.rollback();
+            e.printStackTrace();
             throw new Exception("impossible d'enregistrer l'utilisateur dans la base de donnée cause"+e.getMessage());
         }finally{
             if(session!=null)session.close();
@@ -160,6 +161,7 @@ public class ServiceUsers extends BaseService{
             tr.commit();
         }catch(Exception e){
             if(tr!=null)tr.rollback();
+            e.printStackTrace();
             throw new Exception("impossible de metrre à jour l'utilisateur cause "+e.getMessage());
         }finally{
             if(session!=null)session.close();
@@ -206,18 +208,34 @@ public class ServiceUsers extends BaseService{
             String sql = "SELECT usersAccess FROM UsersAcces usersAccess join usersAccess.user user WHERE user.id = :id";
             Query query = session.createQuery(sql); 
             query.setParameter("id", user.getId()); 
-            user.setUserAccess((List<UsersAcces>)(Object)query.list());
+            if(!query.list().isEmpty()){
+                user.setUserAccess((List<UsersAcces>)(Object)query.list());
+            }
+            
         } catch(HibernateException he) {
             throw he;
         }
     }
-    public static void clearAccess(Users user, Session session) throws HibernateException {
+    public void findAcces(Users user) throws HibernateException {
+        Session session = null;
         try{
-            String sql = "DELETE FROM UsersAcces usersAccess join usersAccess.user user WHERE user.id = :id";
+            session = hibernateDao.getSessionFactory().openSession();
+            ServiceUsers.findAcces(user, session);
+        }catch(Exception ex){
+            throw ex;
+        }finally{
+            if(session!=null) session.close();
+        }
+    }
+    public static void clearAccess(Users user, Session session) throws HibernateException, Exception {
+        try{
+            String sql = "DELETE FROM UsersAcces usersAcces WHERE usersAcces.user.id = :id"; 
             Query query = session.createQuery(sql); 
-            query.setParameter("id", user.getId()); 
-            user.setUserAccess((List<UsersAcces>)(Object)query.list());
+            query.setParameter("id", user.getId());
+            query.executeUpdate();
+            
         } catch(HibernateException he) {
+            he.printStackTrace();
             throw he;
         }
     }
@@ -231,8 +249,8 @@ public class ServiceUsers extends BaseService{
     }
     public static void insertAccess(List<UsersAcces> userAcces, Session session) throws HibernateException {
         try{
-            for (int i = 0; i < userAcces.size(); i++) {
-                ServiceUsers.insertAccess(userAcces, session);
+            for (UsersAcces userA : userAcces) {
+                ServiceUsers.insertAccess(userA, session);
             }
         } catch(HibernateException he) {
             throw he;

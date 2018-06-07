@@ -37,6 +37,9 @@ public class UsersAcces extends BaseModel {
     public void setAcces(Acces acces) {
         this.acces = acces;
     }
+
+    public UsersAcces() {
+    }
     
     
 }

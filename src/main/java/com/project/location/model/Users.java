@@ -5,6 +5,7 @@
  */
 package com.project.location.model;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Access;
 
@@ -78,9 +79,11 @@ public class Users extends BaseModel {
     public void setMdp(String mdp) {
         this.mdp = mdp;
     }
-    public Users(){}
+    public Users(){
+        this.userAccess = new ArrayList();}
     public Users(long id){
         super.setId(id);
+        this.userAccess = new ArrayList();
     }
     
     
