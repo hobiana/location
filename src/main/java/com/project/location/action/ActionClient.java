@@ -11,6 +11,7 @@ import com.project.location.model.Users;
 import com.project.location.reference.ReferenceErreur;
 import com.project.location.reference.ReferenceSession;
 import com.project.location.service.ServiceClient;
+import com.project.location.service.ServiceUsers;
 import com.project.location.util.DateUtil;
 import com.project.location.util.Test;
 import java.sql.Timestamp;
@@ -28,6 +29,7 @@ import org.apache.struts2.ServletActionContext;
 public class ActionClient extends BaseAction {
 
     private ServiceClient clientService;
+    private ServiceUsers serviceUsers;
     private String email;
     private String password;
 
@@ -42,6 +44,15 @@ public class ActionClient extends BaseAction {
     private String blacklist;
 
     private Client client;
+
+    public ServiceUsers getServiceUsers() {
+        return serviceUsers;
+    }
+
+    public void setServiceUsers(ServiceUsers serviceUsers) {
+        this.serviceUsers = serviceUsers;
+    }
+    
 
     public Client getClient() {
         return client;
@@ -164,22 +175,11 @@ public class ActionClient extends BaseAction {
             return Action.ERROR;
         }
         try {
-            if(email.equals("stock")&&password.equals("stock")){
-                this.user = new Users();
-                this.user.setNom("stock");
-                this.user.setPrenom("stock");
-                this.user.setPseudo("stock");
-                
-                HttpSession session = ServletActionContext.getRequest().getSession();
-
-                session.setAttribute(ReferenceSession.USER, this.user);
-            }
-            else{
-                this.user = this.clientService.login(email, password);
-                HttpSession session = ServletActionContext.getRequest().getSession();
-
-                session.setAttribute(ReferenceSession.USER, this.user);
-            }
+            this.user = this.clientService.login(email, password);
+            HttpSession session = ServletActionContext.getRequest().getSession();
+            this.user = this.clientService.login(email, password);
+            this.serviceUsers.findAcces(user);
+            session.setAttribute(ReferenceSession.USER, this.user);
         } catch (Exception e) {
             e.printStackTrace();
             this.linkError = ReferenceErreur.VISIBLE;
@@ -221,6 +221,7 @@ public class ActionClient extends BaseAction {
             e.setPrenom(prenom);
             e.setAdresse(adresse);
             e.setCIN(cin);
+            e.setTelephone(telephone);
             clientService.saveClient(e);
 
             this.linkSuccess = ReferenceErreur.VISIBLE;

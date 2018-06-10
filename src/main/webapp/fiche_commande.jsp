@@ -31,7 +31,7 @@
                     <div class="col-lg-12">
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                Fiche de la commande <s:property value="commande.getRef()"/>
+                                Fiche de la commande <s:property value="commande.getRef2()"/>
                             </div>
                             <!-- /.panel-heading -->
                             <div class="panel-body">
@@ -238,7 +238,18 @@
                                         </s:iterator>
                                     </tbody>
                                 </table>
-                                        <p class="text-right h4"><strong class="">Total :</strong> <s:property value="total"/> Ar </p>
+                                    <div class="col-md-12">
+                                        <div class="col-md-10"><p class="text-right h3"><strong class="">Total :</strong></p></div>
+                                        <div class="col-md-2"><p class="text-right h3"><s:property value="total"/> Ar </p></div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="col-md-10">
+                                            <p class="text-right h3"><strong class="">Prix de Livraison :</strong></p>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <p class="text-right h3"><s:property value="commande.getPrixLivraison()"/> Ar </p>
+                                        </div>
+                                    </div>
                             </div>
                             <!-- /.panel-body -->
                         </div>

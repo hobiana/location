@@ -41,7 +41,7 @@ Contributor(s):
 -->
 <hibernate-mapping>
   <class name="com.project.location.model.Quotient" table="quotient">
-    <id column="idcaisse2" name="id" type="long">
+    <id column="idquotient" name="id" type="long">
       <generator class="increment"/>
     </id>
     <property column="vola" name="volaM" type="double"/>

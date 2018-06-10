@@ -879,7 +879,7 @@ public class ServiceCommande extends BaseService{
         return reponse;
     }
     
-    public boolean saveCommande(long idClient, Date debut, Date fin, Date acquisition, Date retour) throws Exception{
+    public boolean saveCommande(long idClient, Date debut, Date fin, Date acquisition, Date retour, double prixLivraison) throws Exception{
         boolean reponse = true;
         Commande commande = new Commande(); 
         Client client = new Client(idClient);
@@ -892,6 +892,7 @@ public class ServiceCommande extends BaseService{
         commande.setDateAcquisition(acquisition);
         commande.setDateRetour(retour);
         commande.setDateCommande(Calendar.getInstance().getTime());
+        commande.setPrixLivraison(prixLivraison);
        
         List<CommandeStock> commandes = this.getCommande();
         int size = commandes.size();
@@ -930,12 +931,12 @@ public class ServiceCommande extends BaseService{
         return reponse;
     }
     
-    public boolean saveCommande(long idClient, String debut, String fin, String acquisition ,String retour) throws Exception{
+    public boolean saveCommande(long idClient, String debut, String fin, String acquisition ,String retour, double prixLivraison) throws Exception{
         Date debutD = DateUtil.convert(debut);
         Date finD = DateUtil.convert(fin);
         Date acquisitionD = DateUtil.convert(acquisition);
         Date retourD = DateUtil.convert(retour);
-        return this.saveCommande(idClient,debutD, finD, acquisitionD, retourD);
+        return this.saveCommande(idClient,debutD, finD, acquisitionD, retourD, prixLivraison);
     }
     
     public void clearSession(){

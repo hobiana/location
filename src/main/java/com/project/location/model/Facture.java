@@ -17,12 +17,7 @@ public class Facture extends BaseModel {
     private Commande commande; 
     private Date dateFacture; 
     private double quotient; 
-    private double TVA; 
-    private double remise; 
 
-    public String remise(){
-        return NumberTest.toMoney(remise);
-    }
     public String quotient(){
         return NumberTest.toMoney(quotient);
     }
@@ -52,23 +47,6 @@ public class Facture extends BaseModel {
         this.quotient = quotient;
     }
 
-    public double getTVA() {
-        return TVA;
-    }
-
-    public void setTVA(double TVA) throws Exception{
-        if(TVA>100|TVA<0) throw new Exception("TVA invalide, veuillez vérifier que le TVA ne dépasse les 100% ou ne soit pas inférieure à 0%");
-        this.TVA = TVA;
-    }
-
-    public double getRemise() {
-        return remise;
-    }
-
-    public void setRemise(double remise) throws Exception {
-        if(remise>100|remise<0) throw new Exception("remise invalide, veuillez vérifier que la remise ne dépasse les 100% ou ne soit pas inférieure à 0%");
-        this.remise = remise;
-    }
     public Facture(){
         super.reference = Reference.FACTURE;
     }

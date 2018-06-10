@@ -79,7 +79,7 @@
                                                     <label>* Prix de livraison (0 si pas de livraison) </label>
                                                 </div>
                                                 <div class="col-md-12">
-                                                    <input id="prixLivraison" name="prixLivraison" class="form-control"  type="number" value="0">
+                                                    <input id="prixLivraison" name="prixLivraison" class="form-control"  type="number" value="<s:property value="prixLivraison"/>">
                                                 </div>
                                             </div>
                                             <input name="idClient" type="hidden" value="<s:property value="idClient"/>" />

@@ -10,6 +10,7 @@ import com.project.location.model.Acces;
 import com.project.location.model.HistoriqueUser;
 import com.project.location.model.Users;
 import com.project.location.model.UsersAcces;
+import com.project.location.reference.ReferenceAccesUser;
 import com.project.location.reference.ReferenceErreur;
 import com.project.location.security.Cryptage;
 import com.project.location.service.ServiceHistoriqueUser;
@@ -251,8 +252,8 @@ public class ActionUsers extends BaseAction {
             if(Test.argmumentNull(adresse)) this.setAdresse(utilisateur.getAdresse());
             
             this.serviceUsers.findAcces(utilisateur);
-            
-            if(this.utilisateur.getUserAccess().size()==5){
+            long idroot = this.utilisateur.getUserAccess().get(0).getAcces().getId();
+            if(this.utilisateur.getUserAccess().size()==1&&idroot==ReferenceAccesUser.ROOT){
                 boolCaisseQuotient = true;
                 boolClients = true;
                 boolCommande = true;
@@ -263,19 +264,19 @@ public class ActionUsers extends BaseAction {
                 for (UsersAcces acces : this.utilisateur.getUserAccess()) {
                     long id = acces.getAcces().getId();
                     switch(Integer.parseInt(String.valueOf(id))){
-                        case 1: 
+                        case ReferenceAccesUser.CAISSEQUOTIENT: 
                             boolCaisseQuotient = true;
                             break;
-                        case 2: 
+                        case ReferenceAccesUser.CLIENT: 
                             boolClients = true;
                             break;
-                        case 3: 
+                        case ReferenceAccesUser.COMMANDE: 
                             boolCommande = true;
                             break;
-                        case 4: 
+                        case ReferenceAccesUser.USER: 
                             boolUser = true;
                             break;
-                        case 5: 
+                        case ReferenceAccesUser.STOCK: 
                             boolStock = true;
                             break;
                     }
@@ -302,12 +303,12 @@ public class ActionUsers extends BaseAction {
             }
             
             List<Integer> listAccess = new ArrayList();
-            if(this.boolCaisseQuotient) listAccess.add(1);;
-            if(this.boolClients)listAccess.add(2);
-            if(this.boolCommande)listAccess.add(3);
-            if(this.boolUser)listAccess.add(4);
-            if(this.boolStock)listAccess.add(5);
-            if(listAccess.size()>4)listAccess.add(6);
+            if(this.boolCaisseQuotient) listAccess.add(ReferenceAccesUser.CAISSEQUOTIENT);;
+            if(this.boolClients)listAccess.add(ReferenceAccesUser.CLIENT);
+            if(this.boolCommande)listAccess.add(ReferenceAccesUser.COMMANDE);
+            if(this.boolUser)listAccess.add(ReferenceAccesUser.USER);
+            if(this.boolStock)listAccess.add(ReferenceAccesUser.STOCK);
+            if(listAccess.size()==5)listAccess.clear(); listAccess.add(ReferenceAccesUser.ROOT);
             
             this.serviceUsers.updateUsers(user, listAccess);
             this.linkSuccess = ReferenceErreur.VISIBLE;
@@ -335,12 +336,12 @@ public class ActionUsers extends BaseAction {
             if(this.mdp.compareTo(confirmation)!=0)throw new Exception("Les mots de passe sont differents");
             
             List<Integer> listAccess = new ArrayList();
-            if(this.boolCaisseQuotient) listAccess.add(1);;
-            if(this.boolClients)listAccess.add(2);
-            if(this.boolCommande)listAccess.add(3);
-            if(this.boolUser)listAccess.add(4);
-            if(this.boolStock)listAccess.add(5);
-            if(listAccess.size()>4)listAccess.add(6);
+            if(this.boolCaisseQuotient) listAccess.add(ReferenceAccesUser.CAISSEQUOTIENT);;
+            if(this.boolClients)listAccess.add(ReferenceAccesUser.CLIENT);
+            if(this.boolCommande)listAccess.add(ReferenceAccesUser.COMMANDE);
+            if(this.boolUser)listAccess.add(ReferenceAccesUser.USER);
+            if(this.boolStock)listAccess.add(ReferenceAccesUser.STOCK);
+            if(listAccess.size()==5)listAccess.clear(); listAccess.add(ReferenceAccesUser.ROOT);
             
             this.serviceUsers.saveUsers(user, listAccess);
             this.linkSuccess = ReferenceErreur.VISIBLE;

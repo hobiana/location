@@ -289,8 +289,6 @@ public class ServiceCaisse extends BaseService {
         Facture facture = new Facture();
         facture.setCommande(commande);
         facture.setQuotient(quotient);
-        facture.setRemise(0);
-        facture.setTVA(0);
         Date now = Calendar.getInstance().getTime();
         facture.setDateFacture(now);
         

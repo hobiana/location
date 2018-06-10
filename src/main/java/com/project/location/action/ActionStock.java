@@ -290,7 +290,7 @@ public class ActionStock extends BaseAction {
     public String inStock() throws Exception {
         this.titre="Entrée de Stock";        
         this.stock= serviceStock.find(idStock);
-        this.title_page="Ajout du stock "+stock.getRef();
+        this.title_page="Ajout du stock "+stock.getReference();
         this.title_panel="Ajout du stock > "+this.stock.getDesignation();
         this.action="ajoutStock";// ex addStock
         return Action.SUCCESS;
@@ -299,7 +299,7 @@ public class ActionStock extends BaseAction {
     public String outStock() throws Exception {
         this.titre="Sortie de Stock";
         this.stock= serviceStock.find(idStock);
-        this.title_page="Sortie du stock "+stock.getRef();
+        this.title_page="Sortie du stock "+stock.getReference();
         this.title_panel="Sortie du stock > "+this.stock.getDesignation();
         this.action="sortieStock";// ex addStock
         return Action.SUCCESS;

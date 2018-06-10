@@ -45,7 +45,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label>CIN</label>
-                                        <input name="cin" class="form-control" placeholder="CIN" type="number">
+                                        <input name="cin" class="form-control" placeholder="CIN" type="text" maxlength="12">
                                     </div>
                                     <div class="form-group">
                                         <label>Adresse</label>
@@ -94,16 +94,20 @@
                                                         </div>
                                                         <div class="form-group">
                                                             <label>CIN</label>
-                                                            <input name="cin" class="form-control" placeholder="CIN" type="string">
+                                                            <input name="cin" class="form-control" placeholder="CIN" type="text" maxlength="12">
                                                         </div>
                                                         <div class="form-group">
                                                             <label>Adresse</label>
                                                             <input name="adresse" class="form-control" placeholder="Adresse">
                                                         </div>
+                                                        <div class="form-group">
+                                                            <label>Téléphone</label>
+                                                            <input name="telephone" class="form-control" placeholder="Téléphone">
+                                                        </div>
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Annuler</button>
-                                                        <button class="btn base-background pull-right">Ajouter</button>
+                                                        <button class="btn btn-default pull-right">Ajouter</button>
                                                     </div>
                                                 </form>
                                             </div>

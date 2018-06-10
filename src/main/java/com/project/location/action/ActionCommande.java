@@ -52,6 +52,7 @@ public class ActionCommande extends BaseAction {
     private int idStock;
     private int idClient;
     private int quantite;
+    private double prixLivraison;
 
     private String dateDebut;
     private String dateFin;
@@ -70,6 +71,14 @@ public class ActionCommande extends BaseAction {
     private double quotient;
     private InputStream fileInputStream;
     private String fileName;
+
+    public double getPrixLivraison() {
+        return prixLivraison;
+    }
+
+    public void setPrixLivraison(double prixLivraison) {
+        this.prixLivraison = prixLivraison;
+    }
 
     public List<ProduitRetour> getListProduitRetour() {
         return listProduitRetour;
@@ -360,6 +369,9 @@ public class ActionCommande extends BaseAction {
             session.setAttribute(ReferenceSession.IDCOMMANDE,idCommandeSession);
             dateDebut = DateUtil.convert(commande.getDateDebut()); 
             dateFin = DateUtil.convert(commande.getDateFin());
+            dateAquisition = DateUtil.convert(commande.getDateAcquisition());
+            dateRetour = DateUtil.convert(commande.getDateRetour());
+            prixLivraison = commande.getPrixLivraison();
             this.serviceCommande.setCommande(this.serviceCommande.find(commande)); 
         }
         listeCommandeStock = serviceCommande.getCommande();
@@ -390,7 +402,7 @@ public class ActionCommande extends BaseAction {
     public String validerSessionCommande() throws Exception {
         if (action.equals("save")) {
             if (
-                serviceCommande.saveCommande(idClient, dateDebut, dateFin,this.dateAquisition,this.dateRetour)) {
+                serviceCommande.saveCommande(idClient, dateDebut, dateFin,this.dateAquisition,this.dateRetour,this.prixLivraison)) {
                 return Action.SUCCESS;
             }
         }

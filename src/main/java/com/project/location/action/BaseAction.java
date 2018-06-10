@@ -8,6 +8,8 @@ package com.project.location.action;
 import com.opensymphony.xwork2.ActionSupport;
 import com.project.location.model.HistoriqueUser;
 import com.project.location.model.Users;
+import com.project.location.model.UsersAcces;
+import com.project.location.reference.ReferenceAccesUser;
 import com.project.location.reference.ReferenceSession;
 import java.sql.Timestamp;
 import java.util.Calendar;
@@ -91,5 +93,51 @@ public class BaseAction extends ActionSupport implements ServletRequestAware{
     public void setServletRequest(HttpServletRequest request) {
         this.servletRequest = request;
     }
-    
+    public boolean getAccesCaisseQuotient() throws Exception{
+        Users user = this.getSessionUser();
+        for (UsersAcces acces : user.getUserAccess()) {
+            if(acces.getAcces().getId()==ReferenceAccesUser.CAISSEQUOTIENT)
+                return true;
+        }
+        return false;
+    }
+    public boolean getAccesClient() throws Exception{
+        Users user = this.getSessionUser();
+        for (UsersAcces acces : user.getUserAccess()) {
+            if(acces.getAcces().getId()==ReferenceAccesUser.CLIENT)
+                return true;
+        }
+        return false;
+    }
+    public boolean getAccesCommande() throws Exception{
+        Users user = this.getSessionUser();
+        for (UsersAcces acces : user.getUserAccess()) {
+            if(acces.getAcces().getId()==ReferenceAccesUser.COMMANDE)
+                return true;
+        }
+        return false;
+    }
+    public boolean getAccesUser() throws Exception{
+        Users user = this.getSessionUser();
+        for (UsersAcces acces : user.getUserAccess()) {
+            if(acces.getAcces().getId()==ReferenceAccesUser.USER)
+                return true;
+        }
+        return false;
+    }
+    public boolean getAccesStock() throws Exception{
+        Users user = this.getSessionUser();
+        for (UsersAcces acces : user.getUserAccess()) {
+            if(acces.getAcces().getId()==ReferenceAccesUser.STOCK)
+                return true;
+        }
+        return false;
+    }
+    public boolean getAccesRoot() throws Exception{
+        Users user = this.getSessionUser();
+        long idroot = user.getUserAccess().get(0).getAcces().getId();
+        if(user.getUserAccess().size()==1&&idroot==ReferenceAccesUser.ROOT)
+            return true;
+        return false;
+    }
 }

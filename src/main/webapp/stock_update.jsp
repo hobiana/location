@@ -46,7 +46,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label>Prix de Location unitaire (Ariary)</label>
-                                        <input name="prixLocation" type="number" min="2000" class="form-control" placeholder="Prix de Location" value="<s:property value="stock.prixLocation" />">
+                                        <input name="prixLocation" type="number" class="form-control" placeholder="Prix de Location" value="<s:property value="stock.prixLocation" />">
                                     </div>
                                     <div class="form-group">
                                         <label>Prix de casse unitaire (Ariary)</label>
