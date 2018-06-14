@@ -18,7 +18,7 @@
     <body>
         <div id="wrapper">
             <%@include file="/template/header.jsp" %>
-            
+
             <div id="page-wrapper">
                 <div class="row">
                     <div class="col-lg-12">
@@ -58,35 +58,35 @@
                                     <label class="checkbox-inline">
                                         <s:if test="commande.isRecu()==false">
                                             <button type="button" class="btn btn-default btn-sm btn-circle"><i class="fa fa-times"></i></button> Non reçu par le client
-                                        </s:if>
-                                        <s:else>
+                                            </s:if>
+                                            <s:else>
                                             <button type="button" class="btn btn-default btn-sm btn-circle"><i class="fa fa-check"></i></button> Reçu par le client
-                                        </s:else>
-                                         
+                                            </s:else>
+
                                     </label>
                                     <label class="checkbox-inline">
                                         <s:if test="commande.isAnnule()==false">
                                             <button type="button" class="btn btn-default btn-sm btn-circle"><i class="fa fa-times"></i></button> Non annulé
-                                        </s:if>
-                                        <s:else>
+                                            </s:if>
+                                            <s:else>
                                             <button type="button" class="btn btn-default btn-sm btn-circle"><i class="fa fa-check"></i></button> Annulé
-                                        </s:else>
+                                            </s:else>
                                     </label>
                                     <label class="checkbox-inline">
                                         <s:if test="commande.isRetour()==false">
                                             <button type="button" class="btn btn-default btn-sm btn-circle"><i class="fa fa-times"></i></button> Non retour au stock
-                                        </s:if>
-                                        <s:else>
+                                            </s:if>
+                                            <s:else>
                                             <button type="button" class="btn btn-default btn-sm btn-circle"><i class="fa fa-check"></i></button> Retour au stock
-                                        </s:else>
+                                            </s:else>
                                     </label>
                                     <label class="checkbox-inline">
                                         <s:if test="commande.isPaye()==false">
                                             <button type="button" class="btn btn-default btn-sm btn-circle"><i class="fa fa-times"></i></button> Non payé
-                                        </s:if>
-                                        <s:else>
+                                            </s:if>
+                                            <s:else>
                                             <button type="button" class="btn btn-default btn-sm btn-circle"><i class="fa fa-check"></i></button> Payé
-                                        </s:else>
+                                            </s:else>
                                     </label>
                                 </div>
                                 <a class="btn btn-default pull-left" href="#retour" data-toggle="modal">Retour en stock</a>
@@ -116,9 +116,9 @@
                                                                     <td> <s:property value="getStock().getDesignation()"/> </td>
                                                                     <td><span class="pull-right"> <s:property value="quantiteCommande()"/></span></td>
                                                                     <td><input class="form-control input-sm pull-right" id="cmd<s:property value="%{#status.index}"/>" ></td>
-                                                                    <s:hidden name="listProduitRetour[%{#status.index}].idProduit" value="%{id}"/> 
-                                                                    <s:hidden name="listProduitRetour[%{#status.index}].valueProduitRetour"/>
-                                                                    
+                                                                        <s:hidden name="listProduitRetour[%{#status.index}].idProduit" value="%{id}"/> 
+                                                                        <s:hidden name="listProduitRetour[%{#status.index}].valueProduitRetour"/>
+
                                                                 </tr>
                                                             </s:iterator>
                                                         </tbody>
@@ -152,72 +152,72 @@
                                                                 </div>
                                                                 <div class="col-md-3">
                                                                     <input type="checkbox" name="recu" data-toggle="toggle" data-on="Oui" data-off="Non" <s:if test="commande.isRecu()==true">checked</s:if>>
+                                                                    </div>
                                                                 </div>
-                                                            </div>
-                                                            <div class="col-md-6">
-                                                                <div class="col-md-12">
-                                                                    <label>Annulée : </label>
-                                                                </div>
-                                                                <div class="col-md-12">
-                                                                    <input type="checkbox" name="annule" data-toggle="toggle" data-on="Oui" data-off="Non" <s:if test="commande.isAnnule()==true">checked</s:if>>
+                                                                <div class="col-md-6">
+                                                                    <div class="col-md-12">
+                                                                        <label>Annulée : </label>
+                                                                    </div>
+                                                                    <div class="col-md-12">
+                                                                        <input type="checkbox" name="annule" data-toggle="toggle" data-on="Oui" data-off="Non" <s:if test="commande.isAnnule()==true">checked</s:if>>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <input type="hidden" name="idCommande" value="<s:property value="idCommande"/>" />
+                                                    <div class="modal-footer">
+                                                        <input type="hidden" name="idCommande" value="<s:property value="idCommande"/>" />
                                                     <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Annuler</button>
                                                     <button class="btn btn-default base-background pull-right">Modifier</button>
                                                 </div>
                                             </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                <a style='margin-left: 10px;' href="downloadPDF?idCommande=<s:property value="idCommande"/>" class="btn btn-default pull-left" >Facture</a>
+                                <a style='margin-left: 10px;' href="downloadBS?idCommande=<s:property value="idCommande"/>" class="btn btn-default pull-left" >Bon de Sortie</a>
+                                <a style='margin-left: 10px;' href="downloadBR?idCommande=<s:property value="idCommande"/>" class="btn btn-default pull-left" >Bon de Reception</a>
+                                <a style='margin-left: 10px;' href="downloadQuotient?idCommande=<s:property value="idCommande"/>" class="btn btn-default pull-left" >Facture Quotient</a>
+                                <s:if test="commande.isPaye()==false">
+                                    <a class="btn btn-success pull-right" href="#payer" data-toggle="modal">Payer la commande</a>
+                                    <div class="modal fade" id="payer" role="dialog">
+                                        <div class="modal-dialog modal-md">
+                                            <!-- Modal content-->
+                                            <div class="modal-content">
+                                                <form method="POST" action="payerCommande">
+                                                    <div class="modal-header backg-brw">
+                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                        <h4 class="modal-title">Payer la commande</h4>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div class="form-group">
+                                                            <label>Quotient</label>
+                                                            <input name="quotient" type="number" class="form-control" placeholder="Quotient">
+                                                            <input name="idCommande" type="hidden" value="<s:property value="idCommande"/>">
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Annuler</button>
+                                                        <button class="btn btn-success base-background pull-right">Payer</button>
+                                                    </div>
+                                                </form>
                                             </div>
                                         </div>
                                     </div>
-                                    <a style='margin-left: 10px;' href="downloadPDF?idCommande=<s:property value="idCommande"/>" class="btn btn-default pull-left" >Facture</a>
-                                    <a style='margin-left: 10px;' href="downloadBS?idCommande=<s:property value="idCommande"/>" class="btn btn-default pull-left" >Bon de Sortie</a>
-                                    <a style='margin-left: 10px;' href="downloadBR?idCommande=<s:property value="idCommande"/>" class="btn btn-default pull-left" >Bon de Reception</a>
-                                    <a style='margin-left: 10px;' href="downloadQuotient?idCommande=<s:property value="idCommande"/>" class="btn btn-default pull-left" >Facture Quotient</a>
-                                    <s:if test="commande.isPaye()==false">
-                                        <a class="btn btn-success pull-right" href="#payer" data-toggle="modal">Payer la commande</a>
-                                        <div class="modal fade" id="payer" role="dialog">
-                                            <div class="modal-dialog modal-md">
-                                                <!-- Modal content-->
-                                                <div class="modal-content">
-                                                    <form method="POST" action="payerCommande">
-                                                        <div class="modal-header backg-brw">
-                                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                            <h4 class="modal-title">Payer la commande</h4>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            <div class="form-group">
-                                                                <label>Quotient</label>
-                                                                <input name="quotient" type="number" class="form-control" placeholder="Quotient">
-                                                                <input name="idCommande" type="hidden" value="<s:property value="idCommande"/>">
-                                                            </div>
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Annuler</button>
-                                                            <button class="btn btn-success base-background pull-right">Payer</button>
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </s:if>
-                                </div>
-                                <!-- /.panel-body -->
+                                </s:if>
                             </div>
-                            <!-- /.panel -->
+                            <!-- /.panel-body -->
+                        </div>
+                        <!-- /.panel -->
 
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <span>Liste des commandes</span>
-                                </div>
-                                <!-- /.panel-heading -->
-                                <div class="panel-body">
-                                    <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
-                                        <thead>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <span>Liste des commandes</span>
+                            </div>
+                            <!-- /.panel-heading -->
+                            <div class="panel-body">
+                                <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
+                                    <thead>
                                         <tr>
                                             <th>R&eacute;f.</th>
                                             <th>Désignation</th>
@@ -238,18 +238,30 @@
                                         </s:iterator>
                                     </tbody>
                                 </table>
-                                    <div class="col-md-12">
-                                        <div class="col-md-10"><p class="text-right h3"><strong class="">Total :</strong></p></div>
-                                        <div class="col-md-2"><p class="text-right h3"><s:property value="total"/> Ar </p></div>
+                                <div class="col-md-12">
+                                    <div class="col-md-10">
+                                        <p class="text-right h3"><strong class="">Total :</strong></p>
                                     </div>
-                                    <div class="col-md-12">
-                                        <div class="col-md-10">
-                                            <p class="text-right h3"><strong class="">Prix de Livraison :</strong></p>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <p class="text-right h3"><s:property value="commande.getPrixLivraison()"/> Ar </p>
-                                        </div>
+                                    <div class="col-md-2">
+                                        <p class="text-right h3"><s:property value="total"/> Ar </p>
                                     </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="col-md-10">
+                                        <p class="text-right h3"><strong class="">Quotient :</strong></p>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <p class="text-right h3"><s:property value="quotient"/> Ar </p>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="col-md-10">
+                                        <p class="text-right h3"><strong class="">Prix de Livraison :</strong></p>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <p class="text-right h3"><s:property value="commande.getPrixLivraison()"/> Ar </p>
+                                    </div>
+                                </div>
                             </div>
                             <!-- /.panel-body -->
                         </div>
@@ -265,24 +277,24 @@
     <script src="vendor/datatables/js/dataTables.bootstrap.min.js"></script>
     <script src="js/bootstrap-toggle.min.js"></script>
     <script>
-        $(document).ready(function () {
-            $('#dataTables-example').DataTable({
-                responsive: true,
-                paging: false
-            });
-            /*
-            $("#cmd0").click(function(){
-                alert("The paragraph was clicked.");
-            });*/
-        });
-        function setValueStruts(){
-            //listProduitRetour_0__valueProduitRetour
-            var size = <s:property value="listeCommandeStock.size()"/>
-            for(var i=0;i<size;i++){
-                var val = document.getElementById('cmd'+i).value;
-                var inputStruts = document.getElementById('listProduitRetour_'+i+'__valueProduitRetour');
-                inputStruts.value = val;
-            }
-        }
+                                                $(document).ready(function () {
+                                                    $('#dataTables-example').DataTable({
+                                                        responsive: true,
+                                                        paging: false
+                                                    });
+                                                    /*
+                                                     $("#cmd0").click(function(){
+                                                     alert("The paragraph was clicked.");
+                                                     });*/
+                                                });
+                                                function setValueStruts() {
+                                                    //listProduitRetour_0__valueProduitRetour
+                                                    var size = <s:property value="listeCommandeStock.size()"/>
+                                                    for (var i = 0; i < size; i++) {
+                                                        var val = document.getElementById('cmd' + i).value;
+                                                        var inputStruts = document.getElementById('listProduitRetour_' + i + '__valueProduitRetour');
+                                                        inputStruts.value = val;
+                                                    }
+                                                }
     </script>
 </html>

@@ -31,8 +31,12 @@
     <bean id="commandeAction" class="com.project.location.action.ActionCommande">
         <property name="serviceStock" ref="serviceStock" />
         <property name="serviceCommande" ref="serviceCommande" />
+        <property name="serviceFacture" ref="serviceFacture" />
     </bean>
-    <!--service class-->   
+    <!--service class--> 
+    <bean id="serviceFacture" class="com.project.location.service.ServiceFacture">
+        <property name="hibernateDao" ref="hibernateDao" />
+    </bean>  
     <bean id="serviceCaisse" class="com.project.location.service.ServiceCaisse">
         <property name="hibernateDao" ref="hibernateDao" />
         <property name="serviceCommande" ref="serviceCommande" />
@@ -49,6 +53,7 @@
         <property name="hibernateDao" ref="hibernateDao" />
         <property name="serviceStock" ref="serviceStock" />
         <property name="serviceUtil" ref="serviceUtil" />
+        <property name="serviceFacture" ref="serviceFacture" />
     </bean>
     <bean id="serviceEntree" class="com.project.location.service.ServiceEntree">
         <property name="hibernateDao" ref="hibernateDao" />

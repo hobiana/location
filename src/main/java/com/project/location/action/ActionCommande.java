@@ -9,6 +9,7 @@ import com.opensymphony.xwork2.Action;
 import com.project.location.data.PathData;
 import com.project.location.model.Commande;
 import com.project.location.model.CommandeStock;
+import com.project.location.model.Facture;
 import com.project.location.model.ProduitRetour;
 import com.project.location.model.Stock;
 import com.project.location.model.Users;
@@ -16,6 +17,7 @@ import com.project.location.reference.ReferenceErreur;
 import com.project.location.reference.ReferenceSession;
 import com.project.location.service.ServiceCaisse;
 import com.project.location.service.ServiceCommande;
+import com.project.location.service.ServiceFacture;
 import com.project.location.service.ServiceStock;
 import com.project.location.util.DateUtil;
 import com.project.location.util.Test;
@@ -40,6 +42,7 @@ public class ActionCommande extends BaseAction {
     private ServiceStock serviceStock;
     private ServiceCommande serviceCommande;
     private ServiceCaisse serviceCaisse;
+    private ServiceFacture serviceFacture;
     private List<Commande> listeCommande;
     private Commande commande;
     
@@ -71,6 +74,14 @@ public class ActionCommande extends BaseAction {
     private double quotient;
     private InputStream fileInputStream;
     private String fileName;
+
+    public ServiceFacture getServiceFacture() {
+        return serviceFacture;
+    }
+
+    public void setServiceFacture(ServiceFacture serviceFacture) {
+        this.serviceFacture = serviceFacture;
+    }
 
     public double getPrixLivraison() {
         return prixLivraison;
@@ -372,6 +383,8 @@ public class ActionCommande extends BaseAction {
             dateAquisition = DateUtil.convert(commande.getDateAcquisition());
             dateRetour = DateUtil.convert(commande.getDateRetour());
             prixLivraison = commande.getPrixLivraison();
+            Facture facture = this.serviceFacture.factureByCommande(commande.getId());
+            quotient = facture.getQuotient();
             this.serviceCommande.setCommande(this.serviceCommande.find(commande)); 
         }
         listeCommandeStock = serviceCommande.getCommande();
@@ -402,13 +415,13 @@ public class ActionCommande extends BaseAction {
     public String validerSessionCommande() throws Exception {
         if (action.equals("save")) {
             if (
-                serviceCommande.saveCommande(idClient, dateDebut, dateFin,this.dateAquisition,this.dateRetour,this.prixLivraison)) {
+                serviceCommande.saveCommande(idClient, dateDebut, dateFin,this.dateAquisition,this.dateRetour,this.prixLivraison,this.quotient)) {
                 return Action.SUCCESS;
             }
         }
         else if(!action.equals("save")){
             // ito fonction update ito ilay ataon la
-            if (serviceCommande.updateCommande(dateDebut, dateFin)) {
+            if (serviceCommande.updateCommande(dateDebut, dateFin, this.dateAquisition,this.dateRetour,this.prixLivraison, this.quotient)) {
                 return Action.SUCCESS;
             }
         }
@@ -525,6 +538,8 @@ public class ActionCommande extends BaseAction {
         commande = this.serviceCommande.find(idCommande);
         this.total = this.serviceCommande.getTotal(idCommande);
         this.listeCommandeStock = this.serviceCommande.find(commande);
+        Facture facture = this.serviceFacture.factureByCommande(idCommande);
+        quotient = facture.getQuotient();
         this.titre = "Fiche Commande";
         return Action.SUCCESS;
     }

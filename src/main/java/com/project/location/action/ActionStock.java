@@ -6,14 +6,18 @@
 package com.project.location.action;
 
 import com.opensymphony.xwork2.Action;
+import com.project.location.model.Commande;
+import com.project.location.model.CommandeStock;
 import com.project.location.model.Entree;
 import com.project.location.model.Sortie;
 import com.project.location.model.Stock;
 import com.project.location.model.Users;
+import com.project.location.service.ServiceCommande;
 import com.project.location.service.ServiceEntree;
 import com.project.location.service.ServiceSortie;
 import com.project.location.service.ServiceStock;
 import com.project.location.util.DateUtil;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -26,6 +30,7 @@ public class ActionStock extends BaseAction {
     private ServiceStock serviceStock;
     private ServiceEntree serviceEntree;
     private ServiceSortie serviceSortie;
+    private ServiceCommande serviceCommande;
     
     private int idStock;
     
@@ -43,12 +48,18 @@ public class ActionStock extends BaseAction {
     private int prixAchatMax;
     private int prixCasse; 
     
+    private Commande commande;
+    
     private List<Stock> listeStock;
     private List<Entree> listeEntree;
     private List<Sortie> listeSortie;
+    private List<Commande> listeCommande;
+    private List<CommandeStock> listeCommandeStock;
     private String dateMin;
     private String dateMax;
     private Stock stock;
+    
+    private int idCommande;
     
     private String title_page;
     private String title_panel;
@@ -57,6 +68,46 @@ public class ActionStock extends BaseAction {
     private String description; 
     
     // getters setters
+    public ServiceCommande getServiceCommande() {
+        return serviceCommande;
+    }
+
+    public void setServiceCommande(ServiceCommande serviceCommande) {
+        this.serviceCommande = serviceCommande;
+    }
+
+    public Commande getCommande() {
+        return commande;
+    }
+
+    public void setCommande(Commande commande) {
+        this.commande = commande;
+    }
+
+    public List<Commande> getListeCommande() {
+        return listeCommande;
+    }
+
+    public void setListeCommande(List<Commande> listeCommande) {
+        this.listeCommande = listeCommande;
+    }
+
+    public List<CommandeStock> getListeCommandeStock() {
+        return listeCommandeStock;
+    }
+
+    public void setListeCommandeStock(List<CommandeStock> listeCommandeStock) {
+        this.listeCommandeStock = listeCommandeStock;
+    }
+
+    public int getIdCommande() {
+        return idCommande;
+    }
+
+    public void setIdCommande(int idCommande) {    
+        this.idCommande = idCommande;
+    }
+
     public String getReference() {
         return reference;
     }
@@ -373,6 +424,29 @@ public class ActionStock extends BaseAction {
         }
         this.titre="Liste sortie de Stock";
         listeSortie= serviceSortie.find(designation, quantiteMin, quantiteMax, dateMin, dateMax);
+        return Action.SUCCESS;
+    }
+    
+    public String commandedujour() throws Exception {
+        try {
+            Users u=this.getSessionUser();
+        } catch (Exception ex) {
+            return Action.LOGIN;
+        }
+        this.titre="Commande du jour";
+        this.listeCommande = serviceCommande.find("", Calendar.getInstance().getTime(), null, false, false, false, false);
+        return Action.SUCCESS;
+    }
+    
+    public String fichecommandestock() throws Exception {
+        try {
+            Users u=this.getSessionUser();
+        } catch (Exception ex) {
+            return Action.LOGIN;
+        }
+        this.commande = this.serviceCommande.find(idCommande);
+        this.listeCommandeStock = this.serviceCommande.find(commande);
+        this.titre = "Fiche Commande";
         return Action.SUCCESS;
     }
 }

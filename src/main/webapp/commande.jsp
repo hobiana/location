@@ -43,7 +43,6 @@
                                             <div class="form-group">
                                                 <div class="col-md-12">
                                                     <label>Dates de début de la location</label>
-                                                    <label>Date de début de la location</label>
                                                 </div>
                                                 <div class="col-md-12">
                                                     <input id="dateDebut" name="dateDebut" class="form-control" placeholder="Date Min" type="date" value="<s:property value="dateDebut"/>">
@@ -51,8 +50,7 @@
                                             </div>
                                             <div class="form-group">
                                                 <div class="col-md-12">
-                                                    <label>Dates de fin de la location</label
-                                                    <label>Date de fin de la location</label>
+                                                    <label>Dates de fin de la location</label>
                                                 </div>
                                                 <div class="col-md-12">
                                                     <input id="dateFin" name="dateFin" class="form-control" placeholder="Date Max" type="date" value="<s:property value="dateFin"/>">
@@ -74,7 +72,15 @@
                                                     <input id="dateRetour" name="dateRetour" class="form-control"  type="date" value="<s:property value="dateRetour"/>">
                                                 </div>
                                             </div>
-                                                <div class="form-group">
+                                            <div class="form-group">
+                                                <div class="col-md-12">
+                                                    <label>Quotient </label>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <input id="quotient" name="quotient" class="form-control"  type="number" value="<s:property value="quotient"/>">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
                                                 <div class="col-md-12">
                                                     <label>* Prix de livraison (0 si pas de livraison) </label>
                                                 </div>
@@ -171,8 +177,9 @@
                 var dateD = document.getElementById("dateDebut").value;
                 var dateF = document.getElementById("dateFin").value;
                 var prixLivraison = document.getElementById("prixLivraison").value;
+                var quotient = document.getElementById("quotient").value;
                 if (dateD != "" && dateF != "" && dateAquisition != "" && dateRetour != "") {
-                    window.location.replace("modifCommande?idClient=<s:property value="idClient"/>&dateDebut=" + dateD + "&dateFin=" + dateF + "&dateAquisition=" + dateAquisition + "&dateRetour=" + dateRetour + "&prixLivraison=" + prixLivraison + "&quantite=" + document.getElementById("qte" + this.getAttribute('id')).value + "&idCommandeStock=" + document.getElementById(this.getAttribute('id')).value + "&action=<s:property value="action"/>")
+                    window.location.replace("modifCommande?idClient=<s:property value="idClient"/>&dateDebut=" + dateD + "&dateFin=" + dateF + "&dateAquisition=" + dateAquisition + "&dateRetour=" + dateRetour + "&prixLivraison=" + prixLivraison + "&quotient=" + quotient + "&quantite=" + document.getElementById("qte" + this.getAttribute('id')).value + "&idCommandeStock=" + document.getElementById(this.getAttribute('id')).value + "&action=<s:property value="action"/>")
                 }
             });
 
@@ -184,9 +191,10 @@
                 var dateD = document.getElementById("dateDebut").value;
                 var dateF = document.getElementById("dateFin").value;
                 var prixLivraison = document.getElementById("prixLivraison").value;
+                var quotient = document.getElementById("quotient").value;
                 var id = this.getAttribute('id');
                 if (dateD != "" && dateF != "" && dateAquisition != "" && dateRetour != "") {
-                    window.location.replace("addCommande?idClient=<s:property value="idClient"/>&dateDebut=" + dateD + "&dateFin=" + dateF + "&dateAquisition=" + dateAquisition + "&dateRetour=" + dateRetour + "&prixLivraison=" + prixLivraison + "&quantite=" + document.getElementById("addQte" + id).value + "&idStock=" + id + "&action=<s:property value="action"/>")
+                    window.location.replace("addCommande?idClient=<s:property value="idClient"/>&dateDebut=" + dateD + "&dateFin=" + dateF + "&dateAquisition=" + dateAquisition + "&dateRetour=" + dateRetour + "&prixLivraison=" + prixLivraison + "&quotient=" + quotient + "&quantite=" + document.getElementById("addQte" + id).value + "&idStock=" + id + "&action=<s:property value="action"/>")
                 }
             });
 
@@ -197,10 +205,11 @@
                 var dateD = document.getElementById("dateDebut").value;
                 var dateF = document.getElementById("dateFin").value;
                 var prixLivraison = document.getElementById("prixLivraison").value;
+                var quotient = document.getElementById("quotient").value;
                 var id = this.getAttribute('id');
                 var idCommandeStock = id.substring(3, id.length);
                 if (dateD != "" && dateF != "" && dateAquisition != "" && dateRetour != "") {
-                    window.location.replace("deleteCommande?idClient=<s:property value="idClient"/>&dateDebut=" + dateD + "&dateFin=" + dateF + "&dateAquisition=" + dateAquisition + "&dateRetour=" + dateRetour + "&prixLivraison=" + prixLivraison + "&idCommandeStock=" + idCommandeStock + "&action=<s:property value="action"/>")
+                    window.location.replace("deleteCommande?idClient=<s:property value="idClient"/>&dateDebut=" + dateD + "&dateFin=" + dateF + "&dateAquisition=" + dateAquisition + "&dateRetour=" + dateRetour + "&prixLivraison=" + prixLivraison + "&quotient=" + quotient + "&idCommandeStock=" + idCommandeStock + "&action=<s:property value="action"/>")
                 }
             });
 
@@ -211,11 +220,12 @@
                 var dateD = document.getElementById("dateDebut").value;
                 var dateF = document.getElementById("dateFin").value;
                 var prixLivraison = document.getElementById("prixLivraison").value;
+                var quotient = document.getElementById("quotient").value;
                 if (dateD != "" && dateF != "" && dateAquisition != "" && dateRetour != "") {
                     if (action == 'save') {
-                        window.location.replace("validerCommandeClient?idClient=<s:property value="idClient"/>&dateDebut=" + dateD + "&dateFin=" + dateF + "&dateAquisition=" + dateAquisition + "&dateRetour=" + dateRetour + "&prixLivraison=" + prixLivraison + "&action=<s:property value="action"/>")
+                        window.location.replace("validerCommandeClient?idClient=<s:property value="idClient"/>&dateDebut=" + dateD + "&dateFin=" + dateF + "&dateAquisition=" + dateAquisition + "&quotient=" + quotient + "&dateRetour=" + dateRetour + "&prixLivraison=" + prixLivraison + "&action=<s:property value="action"/>")
                     } else if (action == 'modif') {
-                        window.location.replace("validerCommandeUpdate?idClient=<s:property value="idClient"/>&dateDebut=" + dateD + "&dateFin=" + dateF + "&dateAquisition=" + dateAquisition + "&dateRetour=" + dateRetour + "&prixLivraison=" + prixLivraison + "&action=<s:property value="action"/>")
+                        window.location.replace("validerCommandeUpdate?idClient=<s:property value="idClient"/>&dateDebut=" + dateD + "&dateFin=" + dateF + "&dateAquisition=" + dateAquisition + "&quotient=" + quotient + "&dateRetour=" + dateRetour + "&prixLivraison=" + prixLivraison + "&action=<s:property value="action"/>")
                     }
                 }
             });

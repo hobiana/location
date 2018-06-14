@@ -46,6 +46,9 @@
                         </li>
                         <li>
                             <a href="listOutStock"><i class="fa fa-sign-out fa-fw"></i>Listes des sorties de stocks</a>
+                        </li>   
+                        <li>
+                            <a href="commandedujour"><i class="fa fa-shopping-cart fa-fw"></i>Commande du jour</a>
                         </li>
                     </ul>
                 </li>
@@ -102,6 +105,9 @@
                         </li>
                         <li>
                             <a href="listOutStock"><i class="fa fa-sign-out fa-fw"></i>Listes des sorties de stocks</a>
+                        </li>
+                        <li>
+                            <a href="commandedujour"><i class="fa fa-shopping-cart fa-fw"></i>Commande du jour</a>
                         </li>
                     </ul>
                 </li>

@@ -192,6 +192,7 @@
                 <param name="dateAquisition">${dateAquisition}</param>
                 <param name="dateRetour">${dateRetour}</param>
                 <param name="prixLivraison">${prixLivraison}</param>
+                <param name="quotient">${quotient}</param>
                 <param name="action">${action}</param>
            </result>
            <result name="error">index.js</result>
@@ -206,6 +207,7 @@
                 <param name="dateAquisitiont">${dateAquisition}</param>
                 <param name="dateRetour">${dateRetour}</param>
                 <param name="prixLivraison">${prixLivraison}</param>
+                <param name="quotient">${quotient}</param>
                 <param name="action">${action}</param>
            </result>
            <result name="error">index.js</result>
@@ -220,6 +222,7 @@
                 <param name="dateAquisitiont">${dateAquisition}</param>
                 <param name="dateRetour">${dateRetour}</param>
                 <param name="prixLivraison">${prixLivraison}</param>
+                <param name="quotient">${quotient}</param>
                 <param name="action">${action}</param>
            </result>
            <result name="error">index.js</result>
@@ -234,6 +237,7 @@
                 <param name="dateAquisition">${dateAquisition}</param>
                 <param name="dateRetour">${dateRetour}</param>
                 <param name="prixLivraison">${prixLivraison}</param>
+                <param name="quotient">${quotient}</param>
                 <param name="action">${action}</param>
            </result>
            <result name="error">index.js</result>
@@ -459,6 +463,16 @@
                 <param name="linkError">${linkError}</param>
                 <param name="messageError">${messageError}</param>
            </result>
+        </action>
+        <action name="commandedujour" method="commandedujour" class="com.project.location.action.ActionStock">
+           <result name="success">liste_commande_stock.jsp</result>
+           <result name="login" type="redirect">index</result>
+           <result name="error">index.jsp</result>
+        </action>
+        <action name="fichecommandestock" method="fichecommandestock" class="com.project.location.action.ActionStock">
+           <result name="success">fiche_commande_stock.jsp</result>
+           <result name="login" type="redirect">index</result>
+           <result name="error">index.jsp</result>
         </action>
     </package>
 </struts>
