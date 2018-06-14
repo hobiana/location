@@ -178,33 +178,8 @@
                                 <a style='margin-left: 10px;' href="downloadBS?idCommande=<s:property value="idCommande"/>" class="btn btn-default pull-left" >Bon de Sortie</a>
                                 <a style='margin-left: 10px;' href="downloadBR?idCommande=<s:property value="idCommande"/>" class="btn btn-default pull-left" >Bon de Reception</a>
                                 <a style='margin-left: 10px;' href="downloadQuotient?idCommande=<s:property value="idCommande"/>" class="btn btn-default pull-left" >Facture Quotient</a>
-                                <s:if test="commande.isPaye()==false">
-                                    <a class="btn btn-success pull-right" href="#payer" data-toggle="modal">Payer la commande</a>
-                                    <div class="modal fade" id="payer" role="dialog">
-                                        <div class="modal-dialog modal-md">
-                                            <!-- Modal content-->
-                                            <div class="modal-content">
-                                                <form method="POST" action="payerCommande">
-                                                    <div class="modal-header backg-brw">
-                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                        <h4 class="modal-title">Payer la commande</h4>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <div class="form-group">
-                                                            <label>Quotient</label>
-                                                            <input name="quotient" type="number" class="form-control" placeholder="Quotient">
-                                                            <input name="idCommande" type="hidden" value="<s:property value="idCommande"/>">
-                                                        </div>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Annuler</button>
-                                                        <button class="btn btn-success base-background pull-right">Payer</button>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </s:if>
+                                <a class="btn btn-success pull-right" href="paiement?idCommande=<s:property value="idCommande" />">Paiement</a>
+
                             </div>
                             <!-- /.panel-body -->
                         </div>

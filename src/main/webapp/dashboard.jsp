@@ -269,6 +269,7 @@
                             </div>
                             <!-- /.panel-body -->
                         </div>
+                    </div>
                         <!-- /.panel -->
                     <!-- /.col-lg-4 -->
                 </div>
@@ -277,7 +278,7 @@
        </div>
     </body>
     <%@include file="/template/footer.jsp" %>
-    <script src="vendor/chart/Chart.js"></script>
+    <script src="vendor/chart/Chart.js" ></script>
     <script>
         var ctx = $("#myChart");
         var bar = new Chart(ctx, {
@@ -361,6 +362,5 @@
                 ]
             }
         });
-</script>
     </script>
 </html>

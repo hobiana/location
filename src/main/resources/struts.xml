@@ -14,7 +14,7 @@
         </action>
         
         <action name="dashboard" method="dashboard" class="com.project.location.action.ActionClient">
-            <result name="success">template.jsp</result>
+            <result name="success">dashboard.jsp</result>
         </action>
         
         <action name="login" method="login" class="com.project.location.action.ActionClient">
@@ -471,6 +471,16 @@
         </action>
         <action name="fichecommandestock" method="fichecommandestock" class="com.project.location.action.ActionStock">
            <result name="success">fiche_commande_stock.jsp</result>
+           <result name="login" type="redirect">index</result>
+           <result name="error">index.jsp</result>
+        </action>
+        <action name="paiement" method="toPaiement" class="com.project.location.action.ActionPaiement">
+           <result name="success">paiement.jsp</result>
+           <result name="login" type="redirect">index</result>
+           <result name="error">index.jsp</result>
+        </action>
+        <action name="payer" method="payer" class="com.project.location.action.ActionPaiement">
+           <result name="success">paiement.jsp</result>
            <result name="login" type="redirect">index</result>
            <result name="error">index.jsp</result>
         </action>
