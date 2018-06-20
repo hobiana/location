@@ -14,4 +14,5 @@ public class PathData {
     public static final String PATH_PDF_BON_SORTIE = "data/PDF/bs_generate.pdf";
     public static final String PATH_PDF_BON_RECEPTION = "data/PDF/br_generate.pdf";
     public static final String PATH_PDF_BON_QUOTIENT = "data/PDF/quotient_generate.pdf";
+    public static final String PATH_PDF_FACTURE_FILLE = "data/PDF/paiement_generate.pdf";
 }

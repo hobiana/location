@@ -23,6 +23,7 @@
                         <h1 class="page-header">Paiement</h1>
                     </div>
                 </div>
+                <%@include file="/template/Erreur.jsp" %>
                 <div class="row">
                     <div class="col-md-4"></div>
                     <div class="col-md-4">
@@ -33,7 +34,7 @@
                                         <i class="fa fa-money fa-5x"></i>
                                     </div>
                                     <div class="col-xs-10 text-center">
-                                        <div class="huge">13 Ar</div>
+                                        <div class="huge"><s:property value="totalToPaye"/></div>
                                         <div>Total à payer</div>
                                     </div>
                                 </div>
@@ -52,7 +53,7 @@
                                         <i class="fa fa-money fa-5x"></i>
                                     </div>
                                     <div class="col-xs-10 text-center">
-                                        <div class="huge">13 Ar</div>
+                                        <div class="huge"><s:property value="reste"/></div>
                                         <div>Reste à payer</div>
                                     </div>
                                 </div>
@@ -67,7 +68,7 @@
                                         <i class="fa fa-money fa-5x"></i>
                                     </div>
                                     <div class="col-xs-10 text-center">
-                                        <div class="huge">13 Ar</div>
+                                        <div class="huge"><s:property value="totalPaye"/></div>
                                         <div>Payé</div>
                                     </div>
                                 </div>
@@ -89,6 +90,7 @@
                                         <tr>
                                             <th>Date de paiement</th>
                                             <th>Valeur</th>
+                                            <th>Facture</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -96,6 +98,8 @@
                                             <tr class="odd gradeX">
                                                 <td> <s:property value="date"  /> </td> 
                                                 <td><span class="pull-right"><s:property value="valeur"  /></span></td>
+                                                <td> <a class="btn btn-circle btn-default center-block" href="downloadPaiement?idCommande=<s:property value="idCommande"  />&idFactureFille=<s:property value="id"/>"><i class="fa fa-download"></i></a> </td>
+                                                
                                             </tr>
                                         </s:iterator>
                                     </tbody>
@@ -117,7 +121,7 @@
                                             <label>Dates de paiement</label>
                                         </div>
                                         <div class="col-md-12">
-                                            <input name="datePaiement" class="form-control" type="date" value="<s:property value="datepaiement"/>" />
+                                            <input name="datepaiement" class="form-control" type="date" value="<s:property value="datepaiement"/>" />
                                         </div>
                                     </div>
                                     <div class="form-group">

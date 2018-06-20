@@ -35,14 +35,16 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  *
- * @author diary
+ * @author Diary
  */
-public class FactureGenerator {
+public class FactureFilleGenerator {
     private Commande commande;
     private List<CommandeStock> commandeStock;
     private int nombreJour;
     private Client client;
     private Facture facture;
+    private double readyPaye;
+    private double paye;
     
     private static final Font boltTableFont = new Font(Font.FontFamily.TIMES_ROMAN, 10, Font.BOLD);
     private static final Font normalBoldTableFont = new Font(Font.FontFamily.TIMES_ROMAN, 9, Font.BOLD);
@@ -59,6 +61,23 @@ public class FactureGenerator {
     private static Font extraSmallFont = new Font(Font.FontFamily.TIMES_ROMAN, 7, Font.BOLD);
     private static Font smallFontBold = new Font(Font.FontFamily.TIMES_ROMAN, 9, Font.BOLD);
 
+    public double getReadyPaye() {
+        return readyPaye;
+    }
+
+    public void setReadyPaye(double readyPaye) {
+        this.readyPaye = readyPaye;
+    }
+
+    public double getPaye() {
+        return paye;
+    }
+
+    public void setPaye(double paye) {
+        this.paye = paye;
+    }
+
+    
     public Commande getCommande() {
         return commande;
     }
@@ -106,14 +125,16 @@ public class FactureGenerator {
 //        FactureGenerator g = new FactureGenerator();
     }
 
-    public FactureGenerator(Client client,Commande commande,List<CommandeStock> commandeStocks,Facture facture,HttpServletRequest servletRequest) throws Exception {
+    public FactureFilleGenerator(Client client,Commande commande,List<CommandeStock> commandeStocks,Facture facture, double readyPaye, double paye,HttpServletRequest servletRequest) throws Exception {
         this.setCommande(commande);
         this.setCommandeStock(commandeStocks);
         this.setNombreJour(this.commande.nombreJour());
         this.setClient(client);
         this.setFacture(facture);
+        this.setReadyPaye(readyPaye);
+        this.setPaye(paye);
         Document document = new Document();
-        PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(servletRequest.getSession().getServletContext().getRealPath("/")+PathData.PATH_PDF_FACTURE));
+        PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(servletRequest.getSession().getServletContext().getRealPath("/")+PathData.PATH_PDF_FACTURE_FILLE));
         document.open();
         addMetaData(document);
         addContent(document,writer);
@@ -291,6 +312,7 @@ public class FactureGenerator {
         table.addCell(c1);
         
          // end
+        
         c1 = new PdfPCell();
         c1.setHorizontalAlignment(Element.ALIGN_LEFT);
         c1.setBorder(Rectangle.NO_BORDER);
@@ -318,6 +340,7 @@ public class FactureGenerator {
         table.addCell(c1);
         
          // end
+        
         c1 = new PdfPCell();
         c1.setHorizontalAlignment(Element.ALIGN_LEFT);
         c1.setBorder(Rectangle.NO_BORDER);
@@ -369,7 +392,83 @@ public class FactureGenerator {
         c1.setHorizontalAlignment(Element.ALIGN_RIGHT);
         c1.setVerticalAlignment(Element.ALIGN_MIDDLE);
         table.addCell(c1);
-         
+        //end  
+        
+        c1 = new PdfPCell();
+        c1.setHorizontalAlignment(Element.ALIGN_LEFT);        
+        c1.setBorder(Rectangle.NO_BORDER);
+        table.addCell(c1);
+        
+        c1 = new PdfPCell();
+        c1.setHorizontalAlignment(Element.ALIGN_LEFT);        
+        c1.setBorder(Rectangle.NO_BORDER);
+        table.addCell(c1);
+        
+        c1 = new PdfPCell();
+        c1.setHorizontalAlignment(Element.ALIGN_LEFT);        
+        c1.setBorder(Rectangle.NO_BORDER);
+        table.addCell(c1);
+        
+         c1 = new PdfPCell(new Phrase("Total payé auparavant", boldFont));
+        c1.setHorizontalAlignment(Element.ALIGN_RIGHT);        
+        c1.setBorder(Rectangle.NO_BORDER);
+        table.addCell(c1);
+        
+        c1 = new PdfPCell(new Phrase(UtilConvert.toMoney(this.getReadyPaye()), boldFont));       
+        c1.setHorizontalAlignment(Element.ALIGN_RIGHT);
+        c1.setVerticalAlignment(Element.ALIGN_MIDDLE);
+        table.addCell(c1);
+        //end  
+        c1 = new PdfPCell();
+        c1.setHorizontalAlignment(Element.ALIGN_LEFT);        
+        c1.setBorder(Rectangle.NO_BORDER);
+        table.addCell(c1);
+        
+        c1 = new PdfPCell();
+        c1.setHorizontalAlignment(Element.ALIGN_LEFT);        
+        c1.setBorder(Rectangle.NO_BORDER);
+        table.addCell(c1);
+        
+        c1 = new PdfPCell();
+        c1.setHorizontalAlignment(Element.ALIGN_LEFT);        
+        c1.setBorder(Rectangle.NO_BORDER);
+        table.addCell(c1);
+        
+         c1 = new PdfPCell(new Phrase("Payé", boldFont));
+        c1.setHorizontalAlignment(Element.ALIGN_RIGHT);        
+        c1.setBorder(Rectangle.NO_BORDER);
+        table.addCell(c1);
+        
+        c1 = new PdfPCell(new Phrase(UtilConvert.toMoney(this.getPaye()), boldFont));       
+        c1.setHorizontalAlignment(Element.ALIGN_RIGHT);
+        c1.setVerticalAlignment(Element.ALIGN_MIDDLE);
+        table.addCell(c1);
+        //end  
+        c1 = new PdfPCell();
+        c1.setHorizontalAlignment(Element.ALIGN_LEFT);        
+        c1.setBorder(Rectangle.NO_BORDER);
+        table.addCell(c1);
+        
+        c1 = new PdfPCell();
+        c1.setHorizontalAlignment(Element.ALIGN_LEFT);        
+        c1.setBorder(Rectangle.NO_BORDER);
+        table.addCell(c1);
+        
+        c1 = new PdfPCell();
+        c1.setHorizontalAlignment(Element.ALIGN_LEFT);        
+        c1.setBorder(Rectangle.NO_BORDER);
+        table.addCell(c1);
+        
+         c1 = new PdfPCell(new Phrase("Reste à payer", boldFont));
+        c1.setHorizontalAlignment(Element.ALIGN_RIGHT);        
+        c1.setBorder(Rectangle.NO_BORDER);
+        table.addCell(c1);
+        
+        c1 = new PdfPCell(new Phrase(UtilConvert.toMoney(((this.nombreJour*somme)+this.facture.getQuotient())-this.getPaye()-this.getReadyPaye()), boldFont));       
+        c1.setHorizontalAlignment(Element.ALIGN_RIGHT);
+        c1.setVerticalAlignment(Element.ALIGN_MIDDLE);
+        table.addCell(c1);
+        //end  
         
         document.add(table);
         

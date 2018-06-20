@@ -543,17 +543,4 @@ public class ActionCommande extends BaseAction {
         this.titre = "Fiche Commande";
         return Action.SUCCESS;
     }
-    
-    public String payerCommande() throws Exception{
-        try{
-            this.serviceCaisse.payerCommande(idCommande, quotient);
-            return Action.SUCCESS;
-        }catch(Exception e){
-             this.linkError=ReferenceErreur.VISIBLE;
-            this.messageError = e.getMessage();
-            return Action.ERROR;
-        }
-        
-        
-    }
 }

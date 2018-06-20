@@ -5,6 +5,7 @@
  */
 package com.project.location.model;
 
+import com.project.location.reference.Reference;
 import java.util.Date;
 
 /**
@@ -38,6 +39,12 @@ public class FactureFille extends BaseModel{
 
     public void setDate(Date date) {
         this.date = date;
+    }
+    public FactureFille(){
+        super.setReference(Reference.FACTURE_FILLE);
+    }
+    public FactureFille(long id) {
+        super.setId(id);
     }
     
 }

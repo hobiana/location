@@ -45,7 +45,7 @@ Contributor(s):
       <generator class="increment"/>
     </id>
     <property column="action" name="action" type="string"/>
-    <property column="datehu" name="dateHU" type="date"/>
+    <property column="datehu" name="dateHU" type="timestamp"/>
     <many-to-one class="com.project.location.model.Users" fetch="select" name="user">
       <column name="idusers" not-null="true"/>
     </many-to-one>

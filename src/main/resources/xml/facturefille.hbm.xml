@@ -40,12 +40,12 @@ made subject to such option by the copyright holder.
 Contributor(s):
 -->
 <hibernate-mapping>
-  <class name="com.project.location.model.Facture" table="facture">
-    <id column="idfacture" name="id" type="long">
+  <class name="com.project.location.model.FactureFille" table="facture_fille">
+    <id column="idfacture_fille" name="id" type="long">
       <generator class="increment"/>
     </id>
-    <property column="datefacture" name="dateFacture" type="date"/>
-    <property column="quotient" name="quotient" type="double"/>
+    <property column="date" name="date" type="date"/>
+    <property column="valeur" name="valeur" type="double"/>
     <many-to-one class="com.project.location.model.Commande" fetch="select" name="commande">
       <column name="idcommande" not-null="true"/>
     </many-to-one>

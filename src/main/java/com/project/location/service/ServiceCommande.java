@@ -142,7 +142,7 @@ public class ServiceCommande extends BaseService{
         try{
             session = this.hibernateDao.getSessionFactory().openSession();
             Commande commande = new Commande(idCommande); 
-            this.hibernateDao.findById(commande,session);
+            HibernateDao.findById(commande,session);
             this.populateClient(commande, session);
             return commande;
         }catch(Exception e){
@@ -175,20 +175,7 @@ public class ServiceCommande extends BaseService{
             throw new Exception("impossible d'extraire le stock de la commande");
         }
     }
-    public  Facture findFacture(Commande commande, Session session) throws NotFacturedException, ConnexionException{
-        Query query = null; 
-        try{
-            String sql = "SELECT facture FROM Facture facture join facture.commande commande where commande.id = :id";
-            query = session.createQuery(sql);
-            query.setParameter("id", commande.getId());
-            return (Facture)query.list().get(0);
-            
-        }catch(IndexOutOfBoundsException out){
-            throw new NotFacturedException();
-        }catch(HibernateException hibernate) {
-            throw new ConnexionException(hibernate.getMessage());
-        }
-    }
+    
     
     public void initStock(List<CommandeStock> commandeStock, Session session) throws Exception{
         try{
@@ -372,7 +359,7 @@ public class ServiceCommande extends BaseService{
         }
     }
     
-    private Client findClient(Commande commande, Session session )throws Exception{
+    public Client findClient(Commande commande, Session session )throws Exception{
         try{
             String sql = "SELECT client FROM Commande commande join commande.client client where commande.id = :id ";
             Query query = session.createQuery(sql); 
@@ -1043,7 +1030,7 @@ public class ServiceCommande extends BaseService{
             Commande commande = this.find(idCommande, session);
             List<CommandeStock> commandeStock = this.find(commande,session);
             Client client = this.findClient(commande, session);
-            Facture factureF = this.findFacture(commande, session);
+            Facture factureF = ServiceFacture.findFacture(commande, session);
             this.initStock(commandeStock, session);
             FactureGenerator facture = new FactureGenerator(client,commande,commandeStock, factureF,servletRequest);
             
@@ -1061,6 +1048,7 @@ public class ServiceCommande extends BaseService{
         }
          
     }
+    
     public void generatPdfBS(long idCommande,HttpServletRequest servletRequest) throws Exception {
         Session session = null; 
         try {
@@ -1085,6 +1073,7 @@ public class ServiceCommande extends BaseService{
             if(session!=null) session.close();
         }
     }
+    
     public void generatPdfBR(long idCommande,HttpServletRequest servletRequest) throws Exception {
         Session session = null; 
         try {
@@ -1111,6 +1100,7 @@ public class ServiceCommande extends BaseService{
             if(session!=null) session.close();
         }
     }
+    
     public void generatPdfQuotient(long idCommande,HttpServletRequest servletRequest) throws Exception {
         Session session = null; 
         try {
@@ -1119,7 +1109,7 @@ public class ServiceCommande extends BaseService{
             if(!commande.isRecu()) throw new NotTakeCLientException("la commande n'a pas encore était reçu par le client");
             if(!commande.isRetour()) throw new NotReturnException("la commande n'a pas encore était retourné par le client");
             List<CommandeStock> commandeStock = this.find(commande,session);
-            Facture factureF = this.findFacture(commande, session);
+            Facture factureF = ServiceFacture.findFacture(commande, session);
             Client client = this.findClient(commande, session);
             this.initStock(commandeStock, session);
             FactureQuotient facture = new FactureQuotient(client,commande,commandeStock,factureF,servletRequest);

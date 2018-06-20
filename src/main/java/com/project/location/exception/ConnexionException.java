@@ -13,4 +13,8 @@ public class ConnexionException extends Exception{
     public ConnexionException(String error) {
         super(error);
     }
+    
+    public ConnexionException(){
+        super("probleme lors de la connexion à la base de donnée");
+    }
 }

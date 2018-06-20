@@ -11,12 +11,12 @@
         
     <!--Action class-->
     <bean id="quotientAction" class="com.project.location.action.ActionQuotient">
-        <property name="ServiceCaisse" ref="serviceCaisse" />
-        <property name="ServiceCaisseQuotient" ref="serviceCaisseQuotient" />
+        <property name="serviceCaisse" ref="serviceCaisse" />
+        <property name="serviceCaisseQuotient" ref="serviceCaisseQuotient" />
     </bean>
     <bean id="caisseAction" class="com.project.location.action.ActionCaisse">
         <property name="serviceCaisse" ref="serviceCaisse" />
-        <property name="ServiceCaisseQuotient" ref="serviceCaisseQuotient" />
+        <property name="serviceCaisseQuotient" ref="serviceCaisseQuotient" />
     </bean>
     <bean id="clientAction" class="com.project.location.action.ActionClient">
         <property name="clientService" ref="clientService" />
@@ -30,6 +30,10 @@
     </bean>
     <bean id="commandeAction" class="com.project.location.action.ActionCommande">
         <property name="serviceStock" ref="serviceStock" />
+        <property name="serviceCommande" ref="serviceCommande" />
+        <property name="serviceFacture" ref="serviceFacture" />
+    </bean>
+    <bean id="paiementAction" class="com.project.location.action.ActionPaiement">
         <property name="serviceCommande" ref="serviceCommande" />
         <property name="serviceFacture" ref="serviceFacture" />
     </bean>

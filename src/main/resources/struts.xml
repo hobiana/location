@@ -464,6 +464,21 @@
                 <param name="messageError">${messageError}</param>
            </result>
         </action>
+        <action name="downloadPaiement" class="com.project.location.action.ActionPaiement" method="generatPdf">
+            <result name="success" type="stream">
+                <param name="contentDisposition">attachment;filename=${fileName}</param>
+                <param name="contentType">application/vnd.ms-excel</param>
+                <param name="inputName">fileInputStream</param>
+                <param name="bufferSize">1024</param>
+            </result>
+            <result name="login" type="redirect">index</result> 
+            <result name="error" type="redirectAction">
+                <param name="actionName">paiement</param>
+                <param name="idCommande">${idCommande}</param>
+                <param name="linkError">${linkError}</param>
+                <param name="messageError">${messageError}</param>
+           </result>
+        </action>
         <action name="commandedujour" method="commandedujour" class="com.project.location.action.ActionStock">
            <result name="success">liste_commande_stock.jsp</result>
            <result name="login" type="redirect">index</result>
@@ -480,9 +495,17 @@
            <result name="error">index.jsp</result>
         </action>
         <action name="payer" method="payer" class="com.project.location.action.ActionPaiement">
-           <result name="success">paiement.jsp</result>
+           <result name="success" type="redirectAction">
+               <param name="actionName">paiement</param>
+                <param name="idCommande">${idCommande}</param>
+           </result>
            <result name="login" type="redirect">index</result>
-           <result name="error">index.jsp</result>
+          <result name="error" type="redirectAction">
+                <param name="actionName">paiement</param>
+                <param name="idCommande">${idCommande}</param>
+                <param name="linkError">${linkError}</param>
+                <param name="messageError">${messageError}</param>
+           </result>
         </action>
     </package>
 </struts>
