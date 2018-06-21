@@ -54,6 +54,7 @@ Contributor(s):
     <property column="retour" name="retour" type="boolean"/>
     <property column="recu" name="recu" type="boolean"/>
     <property column="paye" name="paye" type="boolean"/>
+    <property column="prepare" name="prepare" type="boolean"/>
     <many-to-one class="com.project.location.model.Client" fetch="select" name="client">
       <column name="idclient" not-null="true"/>
     </many-to-one>

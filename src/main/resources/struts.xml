@@ -296,30 +296,16 @@
 		
         <action name="retourcommande" method="retourcommande" class="com.project.location.action.ActionCommande">
            <result name="success" type="redirectAction">
-                <param name="actionName">fichecommande</param>
+                <param name="actionName">fichecommandestock</param>
                 <param name="idCommande">${idCommande}</param>
                 <param name="linkSuccess">${linkSuccess}</param>
                 <param name="messageSuccess">${messageSuccess}</param>
            </result>
           <result name="error" type="redirectAction">
-                <param name="actionName">fichecommande</param>
+                <param name="actionName">fichecommandestock</param>
                 <param name="idCommande">${idCommande}</param>
                 <param name="linkError">${linkError}</param>
                 <param name="messageError">${messageError}</param>
-           </result>
-        </action>
-        <action name="updateEtat" method="updateEtat" class="com.project.location.action.ActionCommande">
-           <result name="success" type="redirectAction">
-                <param name="actionName">fichecommande</param>
-                <param name="idCommande">${idCommande}</param>
-                <param name="dateDebut">${linkSuccess}</param>
-                <param name="dateFin">${messageSuccess}</param>
-           </result>
-          <result name="error" type="redirectAction">
-                <param name="actionName">fichecommande</param>
-                <param name="idCommande">${idCommande}</param>
-                <param name="dateDebut">${linkError}</param>
-                <param name="dateFin">${messageError}</param>
            </result>
         </action>
         <action name="caisse" method="caisse" class="com.project.location.action.ActionCaisse">
@@ -480,7 +466,7 @@
            </result>
         </action>
         <action name="commandedujour" method="commandedujour" class="com.project.location.action.ActionStock">
-           <result name="success">liste_commande_stock.jsp</result>
+           <result name="success">liste_commande_du_jour.jsp</result>
            <result name="login" type="redirect">index</result>
            <result name="error">index.jsp</result>
         </action>
@@ -506,6 +492,35 @@
                 <param name="linkError">${linkError}</param>
                 <param name="messageError">${messageError}</param>
            </result>
+        </action>
+        <action name="commandeprepare" method="commandeprepare" class="com.project.location.action.ActionStock">
+           <result name="success" type="redirectAction">
+               <param name="actionName">fichecommandestock</param>               
+                <param name="idCommande">${idCommande}</param>
+           </result>
+           <result name="login" type="redirect">index</result>
+          <result name="error"></result>
+        </action>
+        <action name="recuparclient" method="recuparclient" class="com.project.location.action.ActionStock">
+           <result name="success" type="redirectAction">
+               <param name="actionName">fichecommandestock</param>
+                <param name="idCommande">${idCommande}</param>
+           </result>
+           <result name="login" type="redirect">index</result>
+          <result name="error"></result>
+        </action>
+        <action name="annulecommande" method="annulecommande" class="com.project.location.action.ActionCommande">
+           <result name="success" type="redirectAction">
+               <param name="actionName">fichecommande</param>
+                <param name="idCommande">${idCommande}</param>
+           </result>
+           <result name="login" type="redirect">index</result>
+          <result name="error"></result>
+        </action>
+        <action name="listcommandestock" method="listcommandestock" class="com.project.location.action.ActionStock">
+           <result name="success">liste_commande_stock.jsp</result>
+           <result name="login" type="redirect">index</result>
+           <result name="error">index.jsp</result>
         </action>
     </package>
 </struts>

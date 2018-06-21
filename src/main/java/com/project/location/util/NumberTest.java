@@ -13,7 +13,7 @@ import java.text.DecimalFormat;
  */
 public class NumberTest {
     public static double referenceToNumber(String ref) throws Exception{
-        String number = ref.substring(3,ref.length()-1);
+        String number = ref.substring(3,ref.length());
         double reponse = 0;
         try{
             reponse = Double.parseDouble(number);

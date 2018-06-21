@@ -50,6 +50,9 @@
                         <li>
                             <a href="commandedujour"><i class="fa fa-shopping-cart fa-fw"></i>Commande du jour</a>
                         </li>
+                        <li>
+                            <a href="listcommandestock"><i class="fa fa-shopping-cart fa-fw"></i>Commande</a>
+                        </li>
                     </ul>
                 </li>
             </s:if>
@@ -108,6 +111,9 @@
                         </li>
                         <li>
                             <a href="commandedujour"><i class="fa fa-shopping-cart fa-fw"></i>Commande du jour</a>
+                        </li>
+                        <li>
+                            <a href="listcommandestock"><i class="fa fa-shopping-cart fa-fw"></i>Commande</a>
                         </li>
                     </ul>
                 </li>

@@ -70,10 +70,19 @@ public class ActionCommande extends BaseAction {
     private String retour; 
     private String annule;
     private String paye;
+    private String prepare;
     private String reference; 
     private double quotient;
     private InputStream fileInputStream;
     private String fileName;
+
+    public String getPrepare() {
+        return prepare;
+    }
+
+    public void setPrepare(String prepare) {
+        this.prepare = prepare;
+    }
 
     public ServiceFacture getServiceFacture() {
         return serviceFacture;
@@ -435,7 +444,7 @@ public class ActionCommande extends BaseAction {
             return Action.LOGIN;
         }
         try{
-            this.listeCommande = this.serviceCommande.getCommande(client,dateDebutCommande,dateFinCommande,this.dateDebut, this.dateFin,!Test.argmumentNull(recu),!Test.argmumentNull(retour),!Test.argmumentNull(annule),!Test.argmumentNull(paye));
+            this.listeCommande = this.serviceCommande.getCommande(client,dateDebutCommande,dateFinCommande,this.dateDebut, this.dateFin,!Test.argmumentNull(recu),!Test.argmumentNull(retour),!Test.argmumentNull(annule),!Test.argmumentNull(paye),!Test.argmumentNull(prepare));
         }catch(Exception e){
             e.printStackTrace();
         }
@@ -447,21 +456,6 @@ public class ActionCommande extends BaseAction {
         try{
             this.serviceCommande.retour(listProduitRetour);
             this.serviceCommande.updateEtat(idCommande);
-            this.linkSuccess = ReferenceErreur.VISIBLE;
-            this.messageSuccess = "mise à jour effectué avec succes";
-            return Action.SUCCESS;
-        }catch(Exception e){
-            this.linkError=ReferenceErreur.VISIBLE;
-            this.messageError = e.getMessage();
-            return Action.ERROR;
-        }
-        
-    }
-    public String updateEtat(){
-        boolean recuB  = this.recu!=null;
-        boolean annuleB = this.annule!=null;
-        try{
-            this.serviceCommande.updateEtat(idCommande, recuB, annuleB);
             this.linkSuccess = ReferenceErreur.VISIBLE;
             this.messageSuccess = "mise à jour effectué avec succes";
             return Action.SUCCESS;
@@ -541,6 +535,17 @@ public class ActionCommande extends BaseAction {
         Facture facture = this.serviceFacture.factureByCommande(idCommande);
         quotient = facture.getQuotient();
         this.titre = "Fiche Commande";
+        return Action.SUCCESS;
+    }
+    public String annulecommande() throws Exception {
+        try {
+            Users u = this.getSessionUser();
+        } catch (Exception ex) {
+            return Action.LOGIN;
+        }
+        this.commande = this.serviceCommande.find(idCommande);
+        boolean annulee = annule.equals("true");
+        this.serviceCommande.updateEtatAnnulee(idCommande, annulee);
         return Action.SUCCESS;
     }
 }

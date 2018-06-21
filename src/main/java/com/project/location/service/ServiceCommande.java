@@ -111,6 +111,73 @@ public class ServiceCommande extends BaseService{
             if(session!=null)session.close();
         }
     }
+    
+    public void updateEtatPreparee(long id, boolean isprepare)throws Exception{
+        Commande commande = null; 
+        Session session = null; 
+        Transaction tr = null; 
+        try{
+            session = this.hibernateDao.getSessionFactory().openSession(); 
+            tr = session.beginTransaction();
+            commande = this.find(id, session); 
+            commande.setPrepare(isprepare);
+            ServiceHistoriqueUser.save("mise à jour de l'etat prepare de la commande "+commande.getRef(), session);
+            HibernateDao.update(commande, session);
+            tr.commit();
+           
+        }catch(Exception e){
+            if(tr!=null)tr.rollback();
+            throw new Exception("Impossible de changer l'etat de la commande "+commande.getRef());
+            
+        }finally{
+            if(session!=null)session.close();
+        }
+    }
+    
+    public void updateEtatRecuParClient(long id, boolean isrecu)throws Exception{
+        Commande commande = null; 
+        Session session = null; 
+        Transaction tr = null; 
+        try{
+            session = this.hibernateDao.getSessionFactory().openSession(); 
+            tr = session.beginTransaction();
+            commande = this.find(id, session); 
+            commande.setRecu(isrecu);
+            ServiceHistoriqueUser.save("mise à jour de l'etat recu par le client de la commande "+commande.getRef(), session);
+            HibernateDao.update(commande, session);
+            tr.commit();
+           
+        }catch(Exception e){
+            if(tr!=null)tr.rollback();
+            throw new Exception("Impossible de changer l'etat de la commande "+commande.getRef());
+            
+        }finally{
+            if(session!=null)session.close();
+        }
+    }
+    
+    public void updateEtatAnnulee(long id, boolean annule)throws Exception{
+        Commande commande = null; 
+        Session session = null; 
+        Transaction tr = null; 
+        try{
+            session = this.hibernateDao.getSessionFactory().openSession(); 
+            tr = session.beginTransaction();
+            commande = this.find(id, session); 
+            commande.setAnnule(annule);
+            ServiceHistoriqueUser.save("mise à jour de l'etat annulee de la commande "+commande.getRef(), session);
+            HibernateDao.update(commande, session);
+            tr.commit();
+           
+        }catch(Exception e){
+            if(tr!=null)tr.rollback();
+            throw new Exception("Impossible de changer l'etat de la commande "+commande.getRef());
+            
+        }finally{
+            if(session!=null)session.close();
+        }
+    }
+    
     public void updateEtat(long id)throws Exception{
         Commande commande = null; 
         Session session = null; 
@@ -305,14 +372,14 @@ public class ServiceCommande extends BaseService{
         
 //        date init 
         Object[] date = Test.instance(3); 
-        date[0] = "dateCommande";
+        date[0] = "dateAcquisition";
         if(dateMin==null&&dateMax!=null){
             date = Test.instance(2);
-            date[0] = "dateCommande";
+            date[0] = "dateAcquisition";
             date[1] = dateMax;
         }else if(dateMax==null&&dateMin!=null){
             date = Test.instance(2);
-            date[0] = "dateCommande";
+            date[0] = "dateAcquisition";
             date[1] = dateMin;
         }else if(dateMax==null&&dateMin==null){
             date = null;
@@ -325,7 +392,7 @@ public class ServiceCommande extends BaseService{
             date[2] = dateMin;    
         }else{
             date = Test.instance(2);
-            date[0] = "dateCommande";
+            date[0] = "dateAcquisition";
             date[1] = dateMin;
         }
         Object[] annuleD = Test.instance(2); 
@@ -441,7 +508,7 @@ public class ServiceCommande extends BaseService{
         }
     }
     
-    public List<Commande> getCommande(String client, Date debut, Date fin, Date dateCommandeD, Date dateCommandeF, boolean recu, boolean retour, boolean annule, boolean paye)throws Exception{
+    public List<Commande> getCommande(String client, Date debut, Date fin, Date dateCommandeD, Date dateCommandeF, boolean recu, boolean retour, boolean annule, boolean paye, boolean prepare)throws Exception{
         Session session = null;
         List<Commande> reponse = null;
         try{
@@ -472,6 +539,7 @@ public class ServiceCommande extends BaseService{
             criteria.add(Restrictions.eq("commande.annule", annule));
             criteria.add(Restrictions.eq("commande.recu", recu));
             criteria.add(Restrictions.eq("commande.paye", paye));
+            criteria.add(Restrictions.eq("commande.prepare", prepare));
             
             reponse = criteria.list();
             this.populateClient(reponse, session);
@@ -539,7 +607,7 @@ public class ServiceCommande extends BaseService{
         }
     }
     
-    public List<Commande> getCommande(String client, String debut, String fin, String dateCommandeD, String dateCommandeF, boolean recu, boolean retour, boolean annule, boolean paye)throws Exception{
+    public List<Commande> getCommande(String client, String debut, String fin, String dateCommandeD, String dateCommandeF, boolean recu, boolean retour, boolean annule, boolean paye, boolean prepare)throws Exception{
        Date debutDate = null; 
        Date finDate = null; 
        Date dateCommandeDDate = null; 
@@ -550,7 +618,7 @@ public class ServiceCommande extends BaseService{
        if(!Test.argmumentNull(dateCommandeD)) dateCommandeDDate = DateUtil.convert(dateCommandeD); 
        if(!Test.argmumentNull(dateCommandeF)) dateCommandeFDate = DateUtil.convert(dateCommandeF); 
        
-       return this.getCommande(client, debutDate, finDate, dateCommandeDDate, dateCommandeFDate, recu, retour, annule,paye);
+       return this.getCommande(client, debutDate, finDate, dateCommandeDDate, dateCommandeFDate, recu, retour, annule,paye,prepare);
     }
     
     public List<Commande> getCommande(String client,String dateAcquisition, String dateRetour, String debut, String fin, String dateCommandeD, String dateCommandeF, boolean recu, boolean retour, boolean annule, boolean paye)throws Exception{
