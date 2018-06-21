@@ -153,7 +153,7 @@ public class FactureGenerator {
         
         information.add(new Phrase("Object : Facture de la commande N° "+ this.commande.getRef(),boldFont));
         addEmptyLine(information,1);
-        information.add(new Phrase("N° Facture "+ this.facture.getRef(),boldFont));
+        information.add(new Phrase("N° Facture : "+ this.facture.getRef(),boldFont));
         addEmptyLine(information,2);
             
        
@@ -344,6 +344,32 @@ public class FactureGenerator {
         c1.setVerticalAlignment(Element.ALIGN_MIDDLE);
         table.addCell(c1);
         // end
+        c1 = new PdfPCell();
+        c1.setHorizontalAlignment(Element.ALIGN_LEFT);
+        c1.setBorder(Rectangle.NO_BORDER);
+        table.addCell(c1);
+        
+        c1 = new PdfPCell();
+        c1.setHorizontalAlignment(Element.ALIGN_LEFT);     
+        c1.setBorder(Rectangle.NO_BORDER);
+        table.addCell(c1);
+        
+        c1 = new PdfPCell();
+        c1.setHorizontalAlignment(Element.ALIGN_LEFT);       
+        c1.setBorder(Rectangle.NO_BORDER);
+        table.addCell(c1);
+        
+        c1 = new PdfPCell(new Phrase("Prix de livraison", boldFont));       
+        c1.setBorder(Rectangle.NO_BORDER);
+        c1.setHorizontalAlignment(Element.ALIGN_RIGHT);
+        c1.setVerticalAlignment(Element.ALIGN_MIDDLE);     
+        table.addCell(c1);
+        
+        c1 = new PdfPCell(new Phrase(String.valueOf(this.commande.getPrixLivraison()), boldFont));        
+        c1.setHorizontalAlignment(Element.ALIGN_RIGHT);
+        c1.setVerticalAlignment(Element.ALIGN_MIDDLE);
+        table.addCell(c1);
+        // end
         
         c1 = new PdfPCell();
         c1.setHorizontalAlignment(Element.ALIGN_LEFT);        
@@ -365,7 +391,7 @@ public class FactureGenerator {
         c1.setBorder(Rectangle.NO_BORDER);
         table.addCell(c1);
         
-        c1 = new PdfPCell(new Phrase(UtilConvert.toMoney((this.nombreJour*somme)+this.facture.getQuotient()), boldFont));       
+        c1 = new PdfPCell(new Phrase(UtilConvert.toMoney((this.nombreJour*somme)+this.facture.getQuotient()+this.commande.getPrixLivraison()), boldFont));       
         c1.setHorizontalAlignment(Element.ALIGN_RIGHT);
         c1.setVerticalAlignment(Element.ALIGN_MIDDLE);
         table.addCell(c1);

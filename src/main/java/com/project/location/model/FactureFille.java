@@ -45,6 +45,7 @@ public class FactureFille extends BaseModel{
     }
     public FactureFille(long id) {
         super.setId(id);
+        super.setReference(Reference.FACTURE_FILLE);
     }
     
 }
