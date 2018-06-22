@@ -305,7 +305,7 @@ public class ServiceFacture extends BaseService {
                 totaPaye+=factFille.getValeur();
             }
             
-            FactureFilleGenerator facture = new FactureFilleGenerator(client,commande,commandeStock,factureF ,totaPaye,factureFille.getValeur(), servletRequest);
+            FactureFilleGenerator facture = new FactureFilleGenerator(client,commande,commandeStock,factureF ,totaPaye,factureFille.getValeur(),factureFille.getRef(), servletRequest);
             
         } catch( NullPointerException npe) {
             npe.printStackTrace();

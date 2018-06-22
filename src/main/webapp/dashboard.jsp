@@ -34,7 +34,7 @@
                                         <i class="fa fa-money fa-5x"></i>
                                     </div>
                                     <div class="col-xs-10 text-center">
-                                        <div class="huge">13</div>
+                                        <div class="huge"><s:property value="caisseMoney"/></div>
                                         <div>Soldes Caisse</div>
                                     </div>
                                 </div>
@@ -49,7 +49,7 @@
                                         <i class="fa fa-money fa-5x"></i>
                                     </div>
                                     <div class="col-xs-10 text-center">
-                                        <div class="huge">13</div>
+                                        <div class="huge"><s:property value="quotientMoney"/></div>
                                         <div>Soldes Quotient</div>
                                     </div>
                                 </div>
@@ -68,7 +68,7 @@
                                         <i class="fa fa-database fa-5x"></i>
                                     </div>
                                     <div class="col-xs-9 text-right">
-                                        <div class="huge">26</div>
+                                        <div class="huge"><s:property value="stockCount"/></div>
                                         <div>Produits en stocks</div>
                                     </div>
                                 </div>
@@ -90,7 +90,7 @@
                                         <i class="fa fa-user fa-5x"></i>
                                     </div>
                                     <div class="col-xs-9 text-right">
-                                        <div class="huge">12</div>
+                                        <div class="huge"><s:property value="clientCount"/></div>
                                         <div>Clients</div>
                                     </div>
                                 </div>
@@ -112,7 +112,7 @@
                                         <i class="fa fa-shopping-cart fa-5x"></i>
                                     </div>
                                     <div class="col-xs-9 text-right">
-                                        <div class="huge">124</div>
+                                        <div class="huge"><s:property value="commandeCount"/></div>
                                         <div>Commandes</div>
                                     </div>
                                 </div>
@@ -284,10 +284,18 @@
         var bar = new Chart(ctx, {
             type: 'bar',
             data: {
-                labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+                labels: [
+            <s:iterator value="label" var="Output" status="incr">
+                  "<s:property value="#Output"/>",
+            </s:iterator>
+                ],
                 datasets: [{
                     label: '# of Votes',
-                    data: [12, 19, 3, 5, 2, 3],
+                    data: [
+                        <s:iterator value="data" var="Output" status="incr">
+                                "<s:property value="#Output"/>",
+                         </s:iterator>
+                    ],
                     backgroundColor: [
                         'rgba(255, 99, 132, 0.2)',
                         'rgba(54, 162, 235, 0.2)',

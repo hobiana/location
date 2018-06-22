@@ -19,6 +19,7 @@
         <property name="serviceCaisseQuotient" ref="serviceCaisseQuotient" />
     </bean>
     <bean id="clientAction" class="com.project.location.action.ActionClient">
+        <property name="serviceStat" ref="serviceStat" />
         <property name="clientService" ref="clientService" />
         <property name="serviceUsers" ref="serviceUsers" />
     </bean>
@@ -75,6 +76,9 @@
         <property name="hibernateDao" ref="hibernateDao" />
         <property name="serviceStock" ref="serviceStock" />
         <property name="serviceUtil" ref="serviceUtil" />
+    </bean>
+    <bean id="serviceStat" class="com.project.location.service.ServiceStat">     
+        <property name="hibernateDao" ref="hibernateDao" />
     </bean>
     <bean id="serviceStock" class="com.project.location.service.ServiceStock">
         <property name="hibernateDao" ref="hibernateDao" />

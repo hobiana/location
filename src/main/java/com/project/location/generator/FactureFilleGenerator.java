@@ -45,6 +45,7 @@ public class FactureFilleGenerator {
     private Facture facture;
     private double readyPaye;
     private double paye;
+    private String refFille;
     
     private static final Font boltTableFont = new Font(Font.FontFamily.TIMES_ROMAN, 10, Font.BOLD);
     private static final Font normalBoldTableFont = new Font(Font.FontFamily.TIMES_ROMAN, 9, Font.BOLD);
@@ -125,7 +126,7 @@ public class FactureFilleGenerator {
 //        FactureGenerator g = new FactureGenerator();
     }
 
-    public FactureFilleGenerator(Client client,Commande commande,List<CommandeStock> commandeStocks,Facture facture, double readyPaye, double paye,HttpServletRequest servletRequest) throws Exception {
+    public FactureFilleGenerator(Client client,Commande commande,List<CommandeStock> commandeStocks,Facture facture, double readyPaye, double paye, String refFille,HttpServletRequest servletRequest) throws Exception {
         this.setCommande(commande);
         this.setCommandeStock(commandeStocks);
         this.setNombreJour(this.commande.nombreJour());
@@ -133,6 +134,7 @@ public class FactureFilleGenerator {
         this.setFacture(facture);
         this.setReadyPaye(readyPaye);
         this.setPaye(paye);
+        this.refFille = refFille;
         Document document = new Document();
         PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(servletRequest.getSession().getServletContext().getRealPath("/")+PathData.PATH_PDF_FACTURE_FILLE));
         document.open();
@@ -174,7 +176,9 @@ public class FactureFilleGenerator {
         
         information.add(new Phrase("Object : Facture de la commande N° "+ this.commande.getRef(),boldFont));
         addEmptyLine(information,1);
-        information.add(new Phrase("N° Facture "+ this.facture.getRef(),boldFont));
+        information.add(new Phrase("N° Facture : "+ this.facture.getRef(),boldFont));
+        addEmptyLine(information,1);
+        information.add(new Phrase("N° de Paiement : "+ this.refFille,boldFont));
         addEmptyLine(information,2);
             
        
@@ -367,7 +371,32 @@ public class FactureFilleGenerator {
         c1.setVerticalAlignment(Element.ALIGN_MIDDLE);
         table.addCell(c1);
         // end
+        c1 = new PdfPCell();
+        c1.setHorizontalAlignment(Element.ALIGN_LEFT);
+        c1.setBorder(Rectangle.NO_BORDER);
+        table.addCell(c1);
         
+        c1 = new PdfPCell();
+        c1.setHorizontalAlignment(Element.ALIGN_LEFT);     
+        c1.setBorder(Rectangle.NO_BORDER);
+        table.addCell(c1);
+        
+        c1 = new PdfPCell();
+        c1.setHorizontalAlignment(Element.ALIGN_LEFT);       
+        c1.setBorder(Rectangle.NO_BORDER);
+        table.addCell(c1);
+        
+        c1 = new PdfPCell(new Phrase("Prix de livraison", boldFont));       
+        c1.setBorder(Rectangle.NO_BORDER);
+        c1.setHorizontalAlignment(Element.ALIGN_RIGHT);
+        c1.setVerticalAlignment(Element.ALIGN_MIDDLE);     
+        table.addCell(c1);
+        
+        c1 = new PdfPCell(new Phrase(String.valueOf(this.commande.getPrixLivraison()), boldFont));        
+        c1.setHorizontalAlignment(Element.ALIGN_RIGHT);
+        c1.setVerticalAlignment(Element.ALIGN_MIDDLE);
+        table.addCell(c1);
+        // end
         c1 = new PdfPCell();
         c1.setHorizontalAlignment(Element.ALIGN_LEFT);        
         c1.setBorder(Rectangle.NO_BORDER);
@@ -387,8 +416,8 @@ public class FactureFilleGenerator {
         c1.setHorizontalAlignment(Element.ALIGN_RIGHT);        
         c1.setBorder(Rectangle.NO_BORDER);
         table.addCell(c1);
-        
-        c1 = new PdfPCell(new Phrase(UtilConvert.toMoney((this.nombreJour*somme)+this.facture.getQuotient()), boldFont));       
+        double totalPaye = (this.nombreJour*somme)+this.facture.getQuotient()+this.commande.getPrixLivraison();
+        c1 = new PdfPCell(new Phrase(UtilConvert.toMoney(totalPaye), boldFont));       
         c1.setHorizontalAlignment(Element.ALIGN_RIGHT);
         c1.setVerticalAlignment(Element.ALIGN_MIDDLE);
         table.addCell(c1);
@@ -464,7 +493,7 @@ public class FactureFilleGenerator {
         c1.setBorder(Rectangle.NO_BORDER);
         table.addCell(c1);
         
-        c1 = new PdfPCell(new Phrase(UtilConvert.toMoney(((this.nombreJour*somme)+this.facture.getQuotient())-this.getPaye()-this.getReadyPaye()), boldFont));       
+        c1 = new PdfPCell(new Phrase(UtilConvert.toMoney(totalPaye-this.getPaye()-this.getReadyPaye()), boldFont));       
         c1.setHorizontalAlignment(Element.ALIGN_RIGHT);
         c1.setVerticalAlignment(Element.ALIGN_MIDDLE);
         table.addCell(c1);

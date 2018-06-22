@@ -88,6 +88,7 @@
                                 <table width="100%" class="table table-striped table-bordered table-hover" id="listepaiement">
                                     <thead>
                                         <tr>
+                                            <th>Reference de paiement</th>
                                             <th>Date de paiement</th>
                                             <th>Valeur</th>
                                             <th>Facture</th>
@@ -96,6 +97,7 @@
                                     <tbody>
                                         <s:iterator value="listePaiement">
                                             <tr class="odd gradeX">
+                                                <td> <s:property value="getRef()"  /> </td> 
                                                 <td> <s:property value="date"  /> </td> 
                                                 <td><span class="pull-right"><s:property value="valeur"  /></span></td>
                                                 <td> <a class="btn btn-circle btn-default center-block" href="downloadPaiement?idCommande=<s:property value="idCommande"  />&idFactureFille=<s:property value="id"/>"><i class="fa fa-download"></i></a> </td>

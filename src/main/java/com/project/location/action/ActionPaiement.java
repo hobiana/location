@@ -7,6 +7,7 @@ package com.project.location.action;
 
 import com.opensymphony.xwork2.Action;
 import com.project.location.data.PathData;
+import com.project.location.model.Commande;
 import com.project.location.model.FactureFille;
 import com.project.location.model.Users;
 import com.project.location.reference.ReferenceErreur;
@@ -163,9 +164,10 @@ public class ActionPaiement extends BaseAction{
         try{
             this.datepaiement = DateUtil.convert(Calendar.getInstance().getTime());
             this.listePaiement = this.serviceFacture.factureFilleByCommande(idCommande);
+            Commande commande = this.serviceCommande.find(idCommande);
             double totalQuotient = this.serviceFacture.findByCommande(idCommande).getQuotient();
             double total = this.serviceCommande.getTotal(idCommande);
-            double somme = totalQuotient+ total;
+            double somme = totalQuotient+ total + commande.getPrixLivraison();
             double tPay = this.serviceFacture.totalPayer(idCommande);
             this.setTotalToPaye(somme);
             this.setTotalPaye(tPay);
@@ -191,7 +193,8 @@ public class ActionPaiement extends BaseAction{
         try{
             double totalQuotient = this.serviceFacture.findByCommande(idCommande).getQuotient();
             double total = this.serviceCommande.getTotal(idCommande);
-            double somme = totalQuotient+ total;
+            double prixLivraison = this.serviceCommande.find(idCommande).getPrixLivraison();
+            double somme = totalQuotient+ total + prixLivraison;
             this.serviceFacture.payement(idCommande, valeur, datepaiement, somme);
             return Action.SUCCESS;
         }catch(Exception e){
