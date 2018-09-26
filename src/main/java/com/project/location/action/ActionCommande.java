@@ -25,6 +25,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -447,6 +448,29 @@ public class ActionCommande extends BaseAction {
             this.listeCommande = this.serviceCommande.getCommande(client,dateDebutCommande,dateFinCommande,this.dateDebut, this.dateFin,!Test.argmumentNull(recu),!Test.argmumentNull(retour),!Test.argmumentNull(annule),!Test.argmumentNull(paye),!Test.argmumentNull(prepare));
         }catch(Exception e){
             e.printStackTrace();
+        }
+        this.titre = "Liste Commande";
+        return Action.SUCCESS;
+    }
+    
+    public String listCommande1() throws Exception {
+        try {
+            Users u = this.getSessionUser();
+        } catch (Exception ex) {
+            return Action.LOGIN;
+        }
+        try {
+            if (reference != null) {
+                Commande commande = new Commande();
+                long idcommande = commande.getId(reference);
+                commande = serviceCommande.find(idcommande);
+                this.listeCommande = new ArrayList<>();
+                this.listeCommande.add(commande);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            this.listeCommande = new ArrayList<>();
+            return Action.SUCCESS;
         }
         this.titre = "Liste Commande";
         return Action.SUCCESS;

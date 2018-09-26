@@ -31,6 +31,22 @@
                     <div class="col-lg-12">
                         <div class="panel panel-default">
                             <div class="panel-heading">
+                                Recherche
+                            </div>
+                            <!-- /.panel-heading -->
+                            <div class="panel-body">
+                                <form role="form" action="listcommande1">
+                                    <div class="form-group">
+                                        <label>Référence de la commande</label>
+                                        <input name="reference" class="form-control" placeholder="exemple: CMDxxxxx">
+                                    </div>
+                                    <button style="margin-top: 15px;" type="submit" class="btn btn-default">Rechercher</button>
+                                    </form>
+                                </div>
+                                <!-- /.panel-body -->
+                            </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
                                 Recherche avancée
                             </div>
                             <!-- /.panel-heading -->

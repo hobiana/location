@@ -276,6 +276,12 @@
            <result name="error">index.jsp</result>
         </action>
         
+        <action name="listcommande1" method="listCommande1" class="com.project.location.action.ActionCommande">
+           <result name="success">liste_commande.jsp</result>
+           <result name="login" type="redirect">index</result>
+           <result name="error">index.jsp</result>
+        </action>
+        
         <action name="fichecommande" method="ficheCommande" class="com.project.location.action.ActionCommande">
            <result name="success">fiche_commande.jsp</result>
            <result name="error">index.jsp</result>
@@ -414,7 +420,7 @@
             </result>
             <result name="login" type="redirect">index</result> 
             <result name="error" type="redirectAction">
-                <param name="actionName">fichecommande</param>
+                <param name="actionName">fichecommandestock</param>
                 <param name="idCommande">${idCommande}</param>
                 <param name="linkError">${linkError}</param>
                 <param name="messageError">${messageError}</param>
@@ -429,7 +435,7 @@
             </result>
             <result name="login" type="redirect">index</result> 
             <result name="error" type="redirectAction">
-                <param name="actionName">fichecommande</param>
+                <param name="actionName">fichecommandestock</param>
                 <param name="idCommande">${idCommande}</param>
                 <param name="linkError">${linkError}</param>
                 <param name="messageError">${messageError}</param>
