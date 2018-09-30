@@ -40,20 +40,15 @@ made subject to such option by the copyright holder.
 Contributor(s):
 -->
 <hibernate-mapping>
-  <class name="com.project.location.model.CommandeStock" table="commandestock">
-    <id column="idcs" name="id" type="long">
+  <class name="com.project.location.model.HorsSotck" table="hors_stock">
+    <id column="id_hors_stock" name="id" type="long">
       <generator class="increment"/>
     </id>
+    <property column="libelle" name="libelle" type="string"/>
+    <property column="quantite" name="quantite" type="integer"/>
+    <property column="montant" name="montant" type="double"/>
     <many-to-one class="com.project.location.model.Commande" fetch="select" name="commande">
       <column name="idcommande" not-null="true"/>
     </many-to-one>
-    <many-to-one class="com.project.location.model.Stock" fetch="select" name="stock">
-      <column name="idstock" not-null="true"/>
-    </many-to-one>
-    <property column="quantitecs" name="quantiteCommande" type="double"/>
-    <property column="quantiteretour" name="quantiteRetour" type="double"/>
-    <property column="prixlocation" name="prixLocation" type="integer"/>
-    <property column="prixcasse" name="prixCasse" type="integer"/>
-    <property column="remise" name="remise" type="double"/>
   </class>
 </hibernate-mapping>

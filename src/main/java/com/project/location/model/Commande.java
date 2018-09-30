@@ -25,7 +25,7 @@ public class Commande extends BaseModel {
     private boolean recu;
     private boolean paye; 
     private boolean prepare;
-    private Double prixLivraison;
+    private Double remiseGlobal;
     private Client client;
     private List<CommandeStock> commandeStock;
 
@@ -37,14 +37,14 @@ public class Commande extends BaseModel {
         this.prepare = prepare;
     }
 
-    public double getPrixLivraison() {
-        return prixLivraison;
-    }
-    public void setPrixLivraison(Double prixLivraison) {
-        if(prixLivraison==null) this.prixLivraison = 0.0; 
-        else this.prixLivraison = prixLivraison;
+    public Double getRemiseGlobal() {
+        return remiseGlobal;
     }
 
+    public void setRemiseGlobal(Double remiseGlobal) {
+        if(remiseGlobal == null) this.remiseGlobal = 0.0;
+        else this.remiseGlobal = remiseGlobal;
+    }
     public List<CommandeStock> getCommandeStock() {
         return commandeStock;
     }

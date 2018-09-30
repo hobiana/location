@@ -38,5 +38,6 @@
     <mapping resource="xml/quotient.hbm.xml"/>
     <mapping resource="xml/entreequotient.hbm.xml"/>
     <mapping resource="xml/sortiequotient.hbm.xml"/>
+    <mapping resource="xml/horstock.hbm.xml"/>
   </session-factory>
 </hibernate-configuration>

@@ -56,7 +56,7 @@ public class ActionCommande extends BaseAction {
     private int idStock;
     private int idClient;
     private int quantite;
-    private double prixLivraison;
+    private double remiseGlobal;
 
     private String dateDebut;
     private String dateFin;
@@ -93,12 +93,12 @@ public class ActionCommande extends BaseAction {
         this.serviceFacture = serviceFacture;
     }
 
-    public double getPrixLivraison() {
-        return prixLivraison;
+    public double getRemiseGlobal() {
+        return remiseGlobal;
     }
 
-    public void setPrixLivraison(double prixLivraison) {
-        this.prixLivraison = prixLivraison;
+    public void setRemiseGlobal(double remiseGlobal) {
+        this.remiseGlobal = remiseGlobal;
     }
 
     public List<ProduitRetour> getListProduitRetour() {
@@ -392,7 +392,7 @@ public class ActionCommande extends BaseAction {
             dateFin = DateUtil.convert(commande.getDateFin());
             dateAquisition = DateUtil.convert(commande.getDateAcquisition());
             dateRetour = DateUtil.convert(commande.getDateRetour());
-            prixLivraison = commande.getPrixLivraison();
+            remiseGlobal = commande.getRemiseGlobal();
             Facture facture = this.serviceFacture.factureByCommande(commande.getId());
             quotient = facture.getQuotient();
             this.serviceCommande.setCommande(this.serviceCommande.find(commande)); 
@@ -425,13 +425,13 @@ public class ActionCommande extends BaseAction {
     public String validerSessionCommande() throws Exception {
         if (action.equals("save")) {
             if (
-                serviceCommande.saveCommande(idClient, dateDebut, dateFin,this.dateAquisition,this.dateRetour,this.prixLivraison,this.quotient)) {
+                serviceCommande.saveCommande(idClient, dateDebut, dateFin,this.dateAquisition,this.dateRetour,this.remiseGlobal,this.quotient)) {
                 return Action.SUCCESS;
             }
         }
         else if(!action.equals("save")){
             // ito fonction update ito ilay ataon la
-            if (serviceCommande.updateCommande(dateDebut, dateFin, this.dateAquisition,this.dateRetour,this.prixLivraison, this.quotient)) {
+            if (serviceCommande.updateCommande(dateDebut, dateFin, this.dateAquisition,this.dateRetour,this.remiseGlobal, this.quotient)) {
                 return Action.SUCCESS;
             }
         }

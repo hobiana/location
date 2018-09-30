@@ -878,7 +878,7 @@ public class ServiceCommande extends BaseService{
         }
     }
     
-    public boolean updateCommande(Date debut, Date  fin, Date acquisition, Date retour, double prixLivraison, double quotient)throws Exception{
+    public boolean updateCommande(Date debut, Date  fin, Date acquisition, Date retour, double remiseGlobal, double quotient)throws Exception{
         boolean reponse; 
         Session session = null; 
         Transaction tr = null; 
@@ -895,7 +895,7 @@ public class ServiceCommande extends BaseService{
             commande.setDateFin(fin);
             commande.setDateAcquisition(acquisition);
             commande.setDateRetour(retour);
-            commande.setPrixLivraison(prixLivraison);
+            commande.setRemiseGlobal(remiseGlobal);
             ServiceHistoriqueUser.save("mise à jour de la commande "+commande.getRef(), session);
             HibernateDao.update(commande, session);
             for(int i=0;i<size;i++){
@@ -952,7 +952,7 @@ public class ServiceCommande extends BaseService{
         return reponse;
     }
     
-    public boolean saveCommande(long idClient, Date debut, Date fin, Date acquisition, Date retour, double prixLivraison, double quotient) throws Exception{
+    public boolean saveCommande(long idClient, Date debut, Date fin, Date acquisition, Date retour, double remiseGlobal, double quotient) throws Exception{
         boolean reponse = true;
         Commande commande = new Commande(); 
         Client client = new Client(idClient);
@@ -965,7 +965,7 @@ public class ServiceCommande extends BaseService{
         commande.setDateAcquisition(acquisition);
         commande.setDateRetour(retour);
         commande.setDateCommande(Calendar.getInstance().getTime());
-        commande.setPrixLivraison(prixLivraison);
+        commande.setRemiseGlobal(remiseGlobal);
        
         List<CommandeStock> commandes = this.getCommande();
         int size = commandes.size();
@@ -1009,12 +1009,12 @@ public class ServiceCommande extends BaseService{
         return reponse;
     }
     
-    public boolean saveCommande(long idClient, String debut, String fin, String acquisition ,String retour, double prixLivraison, double quotient) throws Exception{
+    public boolean saveCommande(long idClient, String debut, String fin, String acquisition ,String retour, double remiseGlobal, double quotient) throws Exception{
         Date debutD = DateUtil.convert(debut);
         Date finD = DateUtil.convert(fin);
         Date acquisitionD = DateUtil.convert(acquisition);
         Date retourD = DateUtil.convert(retour);
-        return this.saveCommande(idClient,debutD, finD, acquisitionD, retourD, prixLivraison, quotient);
+        return this.saveCommande(idClient,debutD, finD, acquisitionD, retourD, remiseGlobal, quotient);
     }
     
     public void clearSession(){
@@ -1022,7 +1022,7 @@ public class ServiceCommande extends BaseService{
         session.removeAttribute(ReferenceSession.COMMANDE);
     }
 
-    public boolean updateCommande(String dateDebut, String dateFin,String acquisition ,String retour, double prixLivraison, double quotient) throws Exception {
+    public boolean updateCommande(String dateDebut, String dateFin,String acquisition ,String retour, double remiseGlobal, double quotient) throws Exception {
         Date debut; 
         Date fin; 
         Date acquis;
@@ -1034,7 +1034,7 @@ public class ServiceCommande extends BaseService{
         fin = DateUtil.convert(dateFin);
         acquis = DateUtil.convert(acquisition);
         retournee = DateUtil.convert(retour);
-        return this.updateCommande(debut, fin, acquis, retournee, prixLivraison, quotient);
+        return this.updateCommande(debut, fin, acquis, retournee, remiseGlobal, quotient);
     }
     
     public CommandeStock findCommandeStockById(long idCommandeStock) throws Exception {

@@ -19,6 +19,16 @@ public class CommandeStock extends BaseModel {
     private String description;
     private int prixLocation; 
     private int prixCasse;
+    private double remise;
+
+    public double getRemise() {
+        return remise;
+    }
+
+    public void setRemise(Double remise) {
+        if(remise == null) this.remise = 0.0; 
+        else this.remise = remise;
+    }
 
     public int getPrixLocation() {
         return prixLocation;
