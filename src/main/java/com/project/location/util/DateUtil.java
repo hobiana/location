@@ -5,9 +5,13 @@
  */
 package com.project.location.util;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.List;
 
 /**
  *
@@ -32,6 +36,16 @@ public class DateUtil {
     }
     public static String convertNormal(Date date)throws Exception{
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy"); 
+        String reponse; 
+        try{
+            reponse = sdf.format(date);
+        }catch(Exception e){
+            throw new Exception("La date inserer n'est pas valide");
+        }
+        return reponse; 
+    }
+    public static String convertMonth(Date date)throws Exception{
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM"); 
         String reponse; 
         try{
             reponse = sdf.format(date);
@@ -71,9 +85,42 @@ public class DateUtil {
         Date reponse ;
         try{
             reponse = sdf.parse(date);
-        }catch(Exception e){
-            throw new Exception("Impossible d'extraire la date, veuillez utiliser le format YYYY-MM-dd (ex : 2017-01-31)");
+        }catch(ParseException e){
+            sdf = new SimpleDateFormat("yyyy-MM");
+            try{
+                reponse = sdf.parse(date);
+            } catch(ParseException ex) {
+                 throw new Exception("Impossible d'extraire la date, veuillez utiliser le format YYYY-MM-dd (ex : 2017-01-31)");
+            }
         }
         return reponse; 
+    }
+    public static List<Date> allDate(Date startDate, Date endDate) {
+        List<Date> dates = new ArrayList<Date>();
+        Calendar calendar = new GregorianCalendar();
+        calendar.setTime(startDate);
+
+        while (calendar.getTime().before(endDate))
+        {
+            Date result = calendar.getTime();
+            dates.add(result);
+            calendar.add(Calendar.DATE, 1);
+        }
+        dates.add(endDate);
+        return dates;
+    }
+    public static List<Date> allDateMonth(Date startDate, Date endDate) {
+        List<Date> dates = new ArrayList<Date>();
+        Calendar calendar = new GregorianCalendar();
+        calendar.setTime(startDate);
+
+        while (calendar.getTime().before(endDate))
+        {
+            Date result = calendar.getTime();
+            dates.add(result);
+            calendar.add(Calendar.MONTH, 1);
+        }
+        dates.add(endDate);
+        return dates;
     }
 }
