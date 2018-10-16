@@ -38,6 +38,9 @@
         <property name="serviceCommande" ref="serviceCommande" />
         <property name="serviceFacture" ref="serviceFacture" />
     </bean>
+    <bean id="webService" class="com.project.location.action.ActionWebService">
+        <property name="serviceStat" ref="serviceStat" />
+    </bean>
     <!--service class--> 
     <bean id="serviceFacture" class="com.project.location.service.ServiceFacture">
         <property name="hibernateDao" ref="hibernateDao" />

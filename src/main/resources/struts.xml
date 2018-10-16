@@ -562,4 +562,22 @@
            <result name="error">index.jsp</result>
         </action>
     </package>
+    <package name="webService" extends="json-default">
+        <action name="articlePreferer" 
+           method="getArticlePreferer" class="com.project.location.action.ActionWebService">
+            <result type="json" >
+                <param name="root">
+                    objectResult
+                </param>
+            </result>
+        </action>
+        <action name="articleCasse" 
+           method="getArticleCasse" class="com.project.location.action.ActionWebService">
+            <result type="json" >
+                <param name="root">
+                    objectResult
+                </param>
+            </result>
+        </action>
+    </package>
 </struts>
