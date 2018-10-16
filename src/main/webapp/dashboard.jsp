@@ -270,7 +270,6 @@
     </body>
     <%@include file="/template/footer.jsp" %>
     <script src="vendor/chart/Chart.js" ></script>
-    <script src="vendor/jquery/jquery.min.js" ></script>
     <script>
         var ctx = $("#myChart");
         var bar = new Chart(ctx, {
