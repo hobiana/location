@@ -32,12 +32,12 @@
     <mapping resource="xml/caisse.hbm.xml"/>
     <mapping resource="xml/commande.hbm.xml"/>
     <mapping resource="xml/commandestock.hbm.xml"/>
+    <mapping resource="xml/horstock.hbm.xml"/>
     <mapping resource="xml/entree.hbm.xml"/>
     <mapping resource="xml/entreevola.hbm.xml"/>
     <mapping resource="xml/historiquePrixStock.hbm.xml"/>
     <mapping resource="xml/quotient.hbm.xml"/>
     <mapping resource="xml/entreequotient.hbm.xml"/>
     <mapping resource="xml/sortiequotient.hbm.xml"/>
-    <mapping resource="xml/horstock.hbm.xml"/>
   </session-factory>
 </hibernate-configuration>

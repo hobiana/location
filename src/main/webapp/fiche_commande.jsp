@@ -58,10 +58,6 @@
                                     <input name="dateDebut" class="form-control" type="date" value="<s:property value="commande.dateRetour()"/>" readonly>
                                 </div>
                                 <div class="form-group">
-                                    <label>Durée en jour(s)</label>
-                                    <input class="form-control" value="<s:property value="commande.nombreJour()"/>" readonly>
-                                </div>
-                                <div class="form-group">
                                     <label>Etat :</label>
                                     <label class="checkbox-inline">
                                         <s:if test="commande.isRecu()==false">
@@ -109,6 +105,36 @@
                             <!-- /.panel-body -->
                         </div>
                         <!-- /.panel -->
+                        
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <span>Hors Stock</span>
+                            </div>
+                            <!-- /.panel-heading -->
+                            <div class="panel-body">
+                                <table width="100%" class="table table-striped table-bordered table-hover" id="hors_stock">
+                                    <thead>
+                                        <tr>
+                                            <th>Désignation</th>
+                                            <th>PU</th>
+                                            <th>Qte</th>
+                                            <th>Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <s:iterator value="listeHorsStock">
+                                            <tr class="odd gradeX">
+                                                <td> <s:property value="libelle"/> </td>
+                                                <td><span class="pull-right"> <s:property value="doubleToString(montant)"/> </span></td> 
+                                                <td><span class="pull-right"><s:property value="quantite"/> </span></td>
+                                                <td><span class="pull-right"><s:property value="doubleToString(quantite*montant)"/> </span></td>
+                                            </tr>
+                                        </s:iterator>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- /.panel-body -->
+                        </div>
 
                         <div class="panel panel-default">
                             <div class="panel-heading">
@@ -121,9 +147,12 @@
                                         <tr>
                                             <th>R&eacute;f.</th>
                                             <th>Désignation</th>
-                                            <th>Qte.</th>
-                                            <th>PU/jrs</th>
                                             <th>Prix de casse</th>
+                                            <th>Qte.</th>
+                                            <th>Remise</th>
+                                            <th>PU</th>
+                                            <th>Tot.Rem.</th>
+                                            <th>Montant</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -131,35 +160,64 @@
                                             <tr class="odd gradeX">
                                                 <td> <s:property value="getRef()"/> </td>
                                                 <td> <s:property value="getStock().getDesignation()"/> </td>
-                                                <td><span class="pull-right"> <s:property value="quantiteCommande()"/> </span></td> 
-                                                <td><span class="pull-right"><s:property value="getStringPrixLocation()"/> </span></td>
                                                 <td><span class="pull-right"><s:property value="prixCasse()"/> </span></td>
+                                                <td><span class="pull-right"> <s:property value="quantiteCommande()"/> </span></td> 
+                                                <td><span class="pull-right"> <s:property value="doubleToString(remise)"/> </span></td> 
+                                                <td><span class="pull-right"><s:property value="getStringPrixLocation()"/> </span></td>
+                                                <td><span class="pull-right"> <s:property value="doubleToString(remise*quantiteCommande)"/> </span></td> 
+                                                <td><span class="pull-right"> <s:property value="doubleToString(prixLocation*quantiteCommande)"/> </span></td> 
                                             </tr>
                                         </s:iterator>
                                     </tbody>
                                 </table>
                                 <div class="col-md-12">
-                                    <div class="col-md-10">
-                                        <p class="text-right h3"><strong class="">Total :</strong></p>
+                                    <div class="col-md-9">
+                                        <p class="text-right"><strong class="">Tot. Hors Stock :</strong></p>
                                     </div>
-                                    <div class="col-md-2">
-                                        <p class="text-right h3"><s:property value="total"/> Ar </p>
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="col-md-10">
-                                        <p class="text-right h3"><strong class="">Quotient :</strong></p>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <p class="text-right h3"><s:property value="quotient"/> Ar </p>
+                                    <div class="col-md-3">
+                                        <p class="text-right"><s:property value="doubleToString(total[3])"/> Ar </p>
+                                        <hr>
                                     </div>
                                 </div>
                                 <div class="col-md-12">
-                                    <div class="col-md-10">
-                                        <p class="text-right h3"><strong class="">Prix de Livraison :</strong></p>
+                                    <div class="col-md-9">
+                                        <p class="text-right"><strong class="">Nb. Jrs :</strong></p>
                                     </div>
-                                    <div class="col-md-2">
-                                        <p class="text-right h3"><s:property value="commande.getPrixLivraison()"/> Ar </p>
+                                    <div class="col-md-3">
+                                        <p class="text-right"><s:property value="commande.nombreJour()"/> </p>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="col-md-9">
+                                        <p class="text-right"><strong class="">Tot. brute :</strong></p>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <p class="text-right"><s:property value="doubleToString(total[1])"/> Ar </p>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="col-md-9">
+                                        <p class="text-right"><strong class="">Tot. rem. Art. :</strong></p>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <p class="text-right"><s:property value="doubleToString(total[2])"/> Ar </p>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="col-md-9">
+                                        <p class="text-right"><strong class="">Remise commande :</strong></p>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <p class="text-right"><s:property value="doubleToString(commande.getRemiseGlobal())"/> Ar </p>
+                                        <hr>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="col-md-9">
+                                        <p class="text-right"><strong class="">Tot. net :</strong></p>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <p class="text-right"><strong><s:property value="doubleToString(total[0])"/> Ar </strong></p>
                                     </div>
                                 </div>
                             </div>
@@ -182,10 +240,10 @@
                 responsive: true,
                 paging: false
             });
-            /*
-             $("#cmd0").click(function(){
-             alert("The paragraph was clicked.");
-             });*/
+            $('#hors_stock').DataTable({
+                responsive: true,
+                paging: false
+            });
         });
         function setValueStruts() {
             //listProduitRetour_0__valueProduitRetour
