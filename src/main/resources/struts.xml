@@ -538,6 +538,14 @@
                 </param>
             </result>
         </action>
+        <action name="articleCasse" 
+           method="getArticleCasse" class="com.project.location.action.ActionWebService">
+            <result type="json" >
+                <param name="root">
+                    objectResult
+                </param>
+            </result>
+        </action>
     </package>
     
     

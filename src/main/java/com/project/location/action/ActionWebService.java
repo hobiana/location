@@ -41,6 +41,19 @@ public class ActionWebService extends BaseAction{
         this.objectResult = result;
         return Action.SUCCESS;
     }
+    public String getArticleCasse(){
+        JsonResult result = null;
+        try {
+            Date debutD = DateUtil.convert(debut);
+            Date finD = DateUtil.convert(fin); 
+            Object resultQuery =  (Object)this.serviceStat.getArticleCassePerMonth(debutD, finD);
+            result = new JsonResult(true,resultQuery);        
+        } catch (Exception ex) {
+            result = new JsonResult(false, ex.getMessage());
+        } 
+        this.objectResult = result;
+        return Action.SUCCESS;
+    }
     
     public String getArcticleCasse(){
         return Action.SUCCESS;

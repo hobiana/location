@@ -391,15 +391,21 @@ public class ServiceStat extends BaseService{
             String sql = "SELECT SUM(commandeStock.quantiteCommande-commandeStock.quantiteRetour) as casse, "
                     + "commandeStock.stock.id, commandeStock.stock.designation, to_char(commandeStock.commande.dateCommande, 'YYYY-MM') as year_month "
                     + "FROM CommandeStock commandeStock "
-                    + "WHERE  (to_char(commandeStock.commande.dateCommande, 'YYYY-MM') = :month) " 
+                    + "WHERE  (to_char(commandeStock.commande.dateCommande, 'YYYY-MM') = :month) AND (commandeStock.commande.retour = true) " 
                     + "GROUP BY to_char(commandeStock.commande.dateCommande, 'YYYY-MM'),commandeStock.stock.id, commandeStock.stock.designation " 
                     + "ORDER BY SUM(commandeStock.quantiteCommande-commandeStock.quantiteRetour) DESC";
            Query query = session.createQuery(sql); 
             query.setParameter("month", DateUtil.convertMonth(month));
             List<Object> resultQuery = query.list();
             result = new ArrayList();
-            
-            for(int i=0;i<resultQuery.size();i++){
+           
+            int resultQuerySize = resultQuery.size();
+            if(resultQuerySize == 0){
+                StatModel temp = new StatModel();
+                temp.setDate(month);
+                result.add(temp);
+            }
+            for(int i=0;i<resultQuerySize;i++){
                 Object[] queryTemp = (Object[]) resultQuery.get(i);
                 StatModel temp = new StatModel();
                 double nombreDouble = (double) queryTemp[0];
@@ -417,9 +423,9 @@ public class ServiceStat extends BaseService{
         }
     }
     
-    public static List<List<StatModel>> getArticlePerMonth(Date debut, Date fin, Session session)throws ConnexionException, Exception{
+    public static List<List<StatModel>> getArticleCassePerMonth(Date debut, Date fin, Session session)throws ConnexionException, Exception{
         List<List<StatModel>> firstD = new ArrayList();
-        List<Date> months = DateUtil.allDateMonth(debut, debut);
+        List<Date> months = DateUtil.allDateMonth(debut, fin);
         int monthsSize = months.size();
         for(int i=0;i<monthsSize;i++){
             Date month = months.get(i);
@@ -428,11 +434,11 @@ public class ServiceStat extends BaseService{
         return firstD;
     }
     
-    public List<List<StatModel>> getArticlePerMonth(Date debut, Date fin)throws ConnexionException, Exception{
+    public List<List<StatModel>> getArticleCassePerMonth(Date debut, Date fin)throws ConnexionException, Exception{
        Session session = null; 
         try{
             session = this.hibernateDao.getSessionFactory().openSession();
-            return ServiceStat.getArticlePerMonth(debut, fin, session);
+            return ServiceStat.getArticleCassePerMonth(debut, fin, session);
         }catch(Exception e) {
             throw e;
         } finally{
