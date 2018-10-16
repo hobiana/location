@@ -48,6 +48,18 @@ public class ActionClient extends BaseAction {
     private String blacklist;
     private List<String> label; 
     private List<Double> data;
+    private String years;
+
+    public String getYears() {
+        return years;
+    }
+
+    public void setYears(String years) {
+        this.years = years;
+    }
+    
+    
+    
 
     public List<String> getLabel() {
         return label;
@@ -287,6 +299,8 @@ public class ActionClient extends BaseAction {
             this.setCommandeCount((int)this.serviceStat.nombreCommandeTotal());
             this.setStockCount((int)this.serviceStat.nombreProduitTotal());
             this.setClientCount((int)this.serviceStat.nombreClientTotal());
+            
+            this.years = String.valueOf(Calendar.getInstance().get(Calendar.YEAR));
             
             this.label = new ArrayList(); 
             Date now = Calendar.getInstance().getTime();

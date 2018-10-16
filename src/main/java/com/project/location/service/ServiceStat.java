@@ -331,13 +331,18 @@ public class ServiceStat extends BaseService{
                     + "FROM CommandeStock commandeStock "
                     + "WHERE  (to_char(commandeStock.commande.dateCommande, 'YYYY-MM') = :month)" 
                     + " GROUP BY to_char(commandeStock.commande.dateCommande, 'YYYY-MM'),commandeStock.stock.id, commandeStock.stock.designation " 
-                    + " ORDER BY COUNt(*) DESC";
+                    + " ORDER BY COUNT(*) DESC";
             Query query = session.createQuery(sql); 
             query.setParameter("month", DateUtil.convertMonth(month));
             List<Object> resultQuery = query.list();
             result = new ArrayList();
-            
-            for(int i=0;i<resultQuery.size();i++){
+            int resultQuerySize = resultQuery.size();
+            if(resultQuerySize == 0){
+                StatModel temp = new StatModel();
+                temp.setDate(month);
+                result.add(temp);
+            }
+            for(int i=0;i<resultQuerySize;i++){
                 Object[] queryTemp = (Object[]) resultQuery.get(i);
                 StatModel temp = new StatModel();
                 long nombreLong = (long) queryTemp[0];
@@ -359,7 +364,7 @@ public class ServiceStat extends BaseService{
     
     public static List<List<StatModel>> getPreferencePerMouth(Date debut, Date fin, Session session)throws ConnexionException, Exception{
         List<List<StatModel>> firstD = new ArrayList();
-        List<Date> months = DateUtil.allDateMonth(debut, debut);
+        List<Date> months = DateUtil.allDateMonth(debut, fin);
         int monthsSize = months.size();
         for(int i=0;i<monthsSize;i++){
             Date month = months.get(i);

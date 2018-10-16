@@ -32,7 +32,7 @@ public class ActionWebService extends BaseAction{
         try {
             Date debutD = DateUtil.convert(debut);
             Date finD = DateUtil.convert(fin); 
-            Object resultQuery =  (Object)this.serviceStat.getArticlePerMonth(debutD, finD);
+            Object resultQuery =  (Object)this.serviceStat.getPreferencePerMonth(debutD, finD);
             result = new JsonResult(true,resultQuery);
            
         } catch (Exception ex) {
