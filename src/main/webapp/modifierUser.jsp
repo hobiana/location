@@ -9,7 +9,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
-        <title><s:property value="titre" /></title>
+        <title> <s:property value="titre" /></title>
         <%@include file="/template/css.jsp" %>
         <link href="vendor/datatables/css/dataTables.bootstrap.min.css" rel="stylesheet">
     </head>
@@ -37,7 +37,7 @@
                                 <form action="updateUser">
                                     <div class="form-group">
                                         <label>Nom</label>
-                                        <input name="nom" value="<s:property value="getNom()" />"class="form-control" placeholder="Nom">
+                                        <input name="nom" value="<s:property value="getNom()" />" class="form-control" placeholder="Nom">
                                     </div>
                                     <div class="form-group">
                                         <label>Pr&eacute;nom</label>
@@ -45,7 +45,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label>Num&eacute;ro de t&eacute;l&eacute;phone</label>
-                                        <input name="phone" value="<s:property value="getPhone()" />" class="form-control" placeholder="Numéro de téléphone" type="string">
+                                        <input name="phone" value="<s:property value="getPhone()" /> " class="form-control" placeholder="Numéro de téléphone" type="text">
                                     </div>
                                     <div class="form-group">
                                         <label>Adresse</label>
@@ -67,27 +67,27 @@
                                         <label>Accès aux liens</label>
                                         <div class="checkbox">
                                             <label>
-                                                <input name="accesCaisseQuotient" type="checkbox" value="">Caisse et quotient
+                                                <input name="boolCaisseQuotient" type="checkbox" value="true" <s:if test="boolCaisseQuotient.equals(true)" >checked</s:if>>Caisse et quotient
                                             </label>
                                         </div>
                                         <div class="checkbox">
                                             <label>
-                                                <input name="accesClient" type="checkbox" value="">Clients
+                                                <input name="boolClients" type="checkbox" value="true" <s:if test="boolClients.equals(true)" >checked</s:if>>Clients
                                             </label>
                                         </div>
                                         <div class="checkbox">
                                             <label>
-                                                <input name="accesCommande" type="checkbox" value="">Commande
+                                                <input name="boolCommande" type="checkbox" value="true" <s:if test="boolCommande.equals(true)" >checked</s:if>>Commande
                                             </label>
                                         </div>
                                         <div class="checkbox">
                                             <label>
-                                                <input name="accesStock" type="checkbox" value="">Stocks
+                                                <input name="boolStock" type="checkbox" value="true" <s:if test="boolStock.equals(true)" >checked</s:if>>Stocks
                                             </label>
                                         </div>
                                         <div class="checkbox">
                                             <label>
-                                                <input name="accesUtilisateurs" type="checkbox" value="">Utilisateurs
+                                                <input name="boolUser" type="checkbox" value="true" <s:if test="boolUser.equals(true)" >checked</s:if>>Utilisateurs
                                             </label>
                                         </div>
                                     </div>

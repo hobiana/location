@@ -48,6 +48,7 @@ Contributor(s):
     <property column="prenom" name="prenom" type="string"/>
     <property column="cin" name="CIN" type="string"/>
     <property column="adresse" name="adresse" type="string"/>
+    <property column="telephone" name="telephone" type="string"/>
     <property column="blacklist" name="blackListe" type="boolean"/>
   </class>
 </hibernate-mapping>

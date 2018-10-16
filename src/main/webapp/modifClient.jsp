@@ -53,6 +53,10 @@
                                         <input name="adresse" class="form-control" placeholder="Adresse" value="<s:property value="getAdresse()" />">
                                     </div>
                                     <div class="form-group">
+                                        <label>Téléphone</label>
+                                        <input name="telephone" class="form-control" placeholder="Téléphone" value="<s:property value="getTelephone()" />">
+                                    </div>
+                                    <div class="form-group">
                                         <label class="checkbox-inline">
                                             <input name="blacklist" type="checkbox" value="true" <s:if test="getBlacklist().equals('true')">checked</s:if>> Blacklist
                                         </label>

@@ -13,6 +13,7 @@ import com.project.location.util.Test;
  */
 public class EntreeVola extends ESArgentCaisseModel{
     
+    @Override
     public void setVolaM(double volaM) throws Exception {
          Test.doubleNegatif(volaM,"La valeur de l'argent entrant ");
         this.volaM = volaM;

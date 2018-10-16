@@ -44,7 +44,10 @@ public class ServiceClient extends BaseService{
             String crypt = Cryptage.crypterHashage(password);
             query.setParameter("password",crypt);
             List<Users> list = query.list();
-            if(list.size()>0)return list.get(0);
+            if(list.size()>0){
+                ServiceUsers.findAcces(list.get(0), session);
+                return list.get(0);
+            }
             else throw new Exception("L'email ou le mot de passe est incorrect");  
         }catch(Exception e){
             throw e;
@@ -92,6 +95,7 @@ public class ServiceClient extends BaseService{
             HibernateDao.update(client,session);
             tr.commit();
         }catch(Exception e){
+            e.printStackTrace();
             if(tr!=null)tr.rollback();
             throw new Exception("impossible de modifier le client cause "+e.getMessage());
         }finally{

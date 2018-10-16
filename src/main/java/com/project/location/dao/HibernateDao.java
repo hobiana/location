@@ -56,6 +56,7 @@ public class HibernateDao {
             session = getSessionFactory().openSession();
             session.load(obj,obj.getId());
         }catch (Exception ex){
+            ex.printStackTrace();
             throw ex;
         }finally {
             if(session!=null)
@@ -67,6 +68,7 @@ public class HibernateDao {
         try{
             session.load(obj,obj.getId());
         }catch (Exception ex){
+            ex.printStackTrace();
             throw ex;
         }
     }
@@ -80,6 +82,7 @@ public class HibernateDao {
             criteria.addOrder(Order.asc("id"));
             return criteria.list();
         }catch (Exception ex){
+            ex.printStackTrace();
             throw ex;
         }finally {
             if(session!=null)

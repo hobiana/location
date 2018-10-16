@@ -11,10 +11,15 @@ import com.project.location.model.Users;
 import com.project.location.reference.ReferenceErreur;
 import com.project.location.reference.ReferenceSession;
 import com.project.location.service.ServiceClient;
+import com.project.location.service.ServiceStat;
+import com.project.location.service.ServiceUsers;
 import com.project.location.util.DateUtil;
 import com.project.location.util.Test;
+import com.project.location.util.UtilConvert;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -26,8 +31,9 @@ import org.apache.struts2.ServletActionContext;
  * @author Diary
  */
 public class ActionClient extends BaseAction {
-
+    private ServiceStat serviceStat;
     private ServiceClient clientService;
+    private ServiceUsers serviceUsers;
     private String email;
     private String password;
 
@@ -37,10 +43,108 @@ public class ActionClient extends BaseAction {
     private String prenom;
     private String cin;
     private String adresse;
+    private String telephone;
     private long idClient;
     private String blacklist;
+    private List<String> label; 
+    private List<Double> data;
+    private String years;
+
+    public String getYears() {
+        return years;
+    }
+
+    public void setYears(String years) {
+        this.years = years;
+    }
+    
+    
+    
+
+    public List<String> getLabel() {
+        return label;
+    }
+
+    public void setLabel(List<String> label) {
+        this.label = label;
+    }
+
+    public List<Double> getData() {
+        return data;
+    }
+
+    public void setData(List<Double> data) {
+        this.data = data;
+    }
+    
+    private String caisseMoney; 
+    private String quotientMoney;
+    private int commandeCount; 
+    private int clientCount; 
+    private int stockCount;
+
+    public String getCaisseMoney() {
+        return caisseMoney;
+    }
+
+    public void setCaisseMoney(String caisseMoney) {
+        this.caisseMoney = caisseMoney;
+    }
+
+    public String getQuotientMoney() {
+        return quotientMoney;
+    }
+
+    public void setQuotientMoney(String quotientMoney) {
+        this.quotientMoney = quotientMoney;
+    }
+
+    public int getCommandeCount() {
+        return commandeCount;
+    }
+
+    public void setCommandeCount(int commandeCount) {
+        this.commandeCount = commandeCount;
+    }
+
+    public int getClientCount() {
+        return clientCount;
+    }
+
+    public void setClientCount(int clientCount) {
+        this.clientCount = clientCount;
+    }
+
+    public int getStockCount() {
+        return stockCount;
+    }
+
+    public void setStockCount(int stockCount) {
+        this.stockCount = stockCount;
+    }
+    
+    
 
     private Client client;
+
+    public ServiceStat getServiceStat() {
+        return serviceStat;
+    }
+
+    public void setServiceStat(ServiceStat serviceStat) {
+        this.serviceStat = serviceStat;
+    }
+    
+    
+
+    public ServiceUsers getServiceUsers() {
+        return serviceUsers;
+    }
+
+    public void setServiceUsers(ServiceUsers serviceUsers) {
+        this.serviceUsers = serviceUsers;
+    }
+    
 
     public Client getClient() {
         return client;
@@ -48,6 +152,14 @@ public class ActionClient extends BaseAction {
 
     public void setClient(Client client) {
         this.client = client;
+    }
+
+    public String getTelephone() {
+        return telephone;
+    }
+
+    public void setTelephone(String telephone) {
+        this.telephone = telephone;
     }
 
     public String getBlacklist() {
@@ -157,7 +269,8 @@ public class ActionClient extends BaseAction {
         try {
             this.user = this.clientService.login(email, password);
             HttpSession session = ServletActionContext.getRequest().getSession();
-            
+            this.user = this.clientService.login(email, password);
+            this.serviceUsers.findAcces(user);
             session.setAttribute(ReferenceSession.USER, this.user);
         } catch (Exception e) {
             e.printStackTrace();
@@ -168,7 +281,43 @@ public class ActionClient extends BaseAction {
         return Action.SUCCESS;
     }
     
+    public String logout() {
+         HttpSession session = ServletActionContext.getRequest().getSession();
+         session.removeAttribute(ReferenceSession.USER);
+        return Action.SUCCESS;
+    }
+    
     public String dashboard(){
+        try {
+            Users u=this.getSessionUser();
+        } catch (Exception ex) {
+            return Action.LOGIN;
+        }
+        try{
+            this.setCaisseMoney(UtilConvert.toMoney(this.serviceStat.caisseArgent()));
+            this.setQuotientMoney(UtilConvert.toMoney(this.serviceStat.quotientArgent()));
+            this.setCommandeCount((int)this.serviceStat.nombreCommandeTotal());
+            this.setStockCount((int)this.serviceStat.nombreProduitTotal());
+            this.setClientCount((int)this.serviceStat.nombreClientTotal());
+            
+            this.years = String.valueOf(Calendar.getInstance().get(Calendar.YEAR));
+            
+            this.label = new ArrayList(); 
+            Date now = Calendar.getInstance().getTime();
+            for(int i=0;i<7;i++) {
+                this.label.add(0, DateUtil.convert(now));
+                now.setDate(now.getDate()-1);
+                
+            }
+            Date next = new Date();
+            next.setDate(Calendar.getInstance().getTime().getDate()+1);
+            this.setData(this.serviceStat.nombreCommandeJour(now, next));
+        }catch(Exception e){
+            e.printStackTrace();
+            this.linkError = ReferenceErreur.VISIBLE; 
+            this.messageError = e.getMessage(); 
+            return Action.ERROR;
+        }
         return Action.SUCCESS;
     }
 
@@ -194,6 +343,7 @@ public class ActionClient extends BaseAction {
             e.setPrenom(prenom);
             e.setAdresse(adresse);
             e.setCIN(cin);
+            e.setTelephone(telephone);
             clientService.saveClient(e);
 
             this.linkSuccess = ReferenceErreur.VISIBLE;
@@ -227,6 +377,9 @@ public class ActionClient extends BaseAction {
             if (Test.argmumentNull(adresse)) {
                 this.setAdresse(client.getAdresse());
             }
+            if (Test.argmumentNull(telephone)) {
+                this.setTelephone(client.getTelephone());
+            }
             if (Test.argmumentNull(blacklist)) {
                 this.setBlacklist(String.valueOf(client.isBlackListe()));
             }
@@ -248,6 +401,7 @@ public class ActionClient extends BaseAction {
             client.setPrenom(prenom);
             client.setNom(nom);
             client.setCIN(cin);
+            client.setTelephone(telephone);
             if (blacklist == null) {
                 blacklist = "false";
             }

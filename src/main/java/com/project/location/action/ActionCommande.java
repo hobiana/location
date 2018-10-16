@@ -9,6 +9,8 @@ import com.opensymphony.xwork2.Action;
 import com.project.location.data.PathData;
 import com.project.location.model.Commande;
 import com.project.location.model.CommandeStock;
+import com.project.location.model.Facture;
+import com.project.location.model.HorsSotck;
 import com.project.location.model.ProduitRetour;
 import com.project.location.model.Stock;
 import com.project.location.model.Users;
@@ -16,12 +18,16 @@ import com.project.location.reference.ReferenceErreur;
 import com.project.location.reference.ReferenceSession;
 import com.project.location.service.ServiceCaisse;
 import com.project.location.service.ServiceCommande;
+import com.project.location.service.ServiceFacture;
 import com.project.location.service.ServiceStock;
 import com.project.location.util.DateUtil;
+import com.project.location.util.NumberTest;
 import com.project.location.util.Test;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -36,21 +42,25 @@ public class ActionCommande extends BaseAction {
 
     private List<Stock> listeStock;
     private List<CommandeStock> listeCommandeStock;
+    private List<HorsSotck> listeHorsStock;
     private ServiceStock serviceStock;
     private ServiceCommande serviceCommande;
     private ServiceCaisse serviceCaisse;
+    private ServiceFacture serviceFacture;
     private List<Commande> listeCommande;
     private Commande commande;
     
     private List<ProduitRetour> listProduitRetour;
     
-    private double total;
+    private double[] total;
+    private int nombre_jour;
     
     private int idCommande;
     private int idCommandeStock;
     private int idStock;
     private int idClient;
     private int quantite;
+    private double remiseGlobal;
 
     private String dateDebut;
     private String dateFin;
@@ -65,10 +75,98 @@ public class ActionCommande extends BaseAction {
     private String retour; 
     private String annule;
     private String paye;
+    private String prepare;
     private String reference; 
     private double quotient;
     private InputStream fileInputStream;
     private String fileName;
+    
+    private String designation_HS;
+    private double prix_HS;
+    private int quantite_HS;
+    private int indiceHorsStock;
+    
+    private double remiseArticle;
+
+    public int getNombre_jour() {
+        return nombre_jour;
+    }
+
+    public void setNombre_jour(int nombre_jour) {
+        this.nombre_jour = nombre_jour;
+    }
+
+    public double getRemiseArticle() {
+        return remiseArticle;
+    }
+
+    public void setRemiseArticle(double remiseArticle) {
+        this.remiseArticle = remiseArticle;
+    }
+
+    public int getIndiceHorsStock() {
+        return indiceHorsStock;
+    }
+
+    public void setIndiceHorsStock(int indiceHorsStock) {
+        this.indiceHorsStock = indiceHorsStock;
+    }
+
+    public String getDesignation_HS() {
+        return designation_HS;
+    }
+
+    public void setDesignation_HS(String designation_HS) {
+        this.designation_HS = designation_HS;
+    }
+
+    public double getPrix_HS() {
+        return prix_HS;
+    }
+
+    public void setPrix_HS(double prix_HS) {
+        this.prix_HS = prix_HS;
+    }
+
+    public int getQuantite_HS() {
+        return quantite_HS;
+    }
+
+    public void setQuantite_HS(int quantite_HS) {
+        this.quantite_HS = quantite_HS;
+    }
+
+    public List<HorsSotck> getListeHorsStock() {
+        return listeHorsStock;
+    }
+
+    public void setListeHorsStock(List<HorsSotck> listeHorsStock) {
+        this.listeHorsStock = listeHorsStock;
+    }
+
+    public String getPrepare() {
+        return prepare;
+    }
+
+    public void setPrepare(String prepare) {
+        this.prepare = prepare;
+    }
+
+    public ServiceFacture getServiceFacture() {
+        return serviceFacture;
+    }
+
+    public void setServiceFacture(ServiceFacture serviceFacture) {
+        this.serviceFacture = serviceFacture;
+    }
+
+    public double getRemiseGlobal() {
+        return remiseGlobal;
+    }
+
+    public void setRemiseGlobal(double remiseGlobal) {
+        this.remiseGlobal = remiseGlobal;
+    }
 
     public List<ProduitRetour> getListProduitRetour() {
         return listProduitRetour;
@@ -94,8 +192,11 @@ public class ActionCommande extends BaseAction {
         this.quotient = quotient;
     }
     
-    public double getTotal() {
+    public double[] getTotal() {
         return total;
+    }
+    public String doubleToString(double n) {
+        return NumberTest.toMoney(n);
     }
 
     public InputStream getFileInputStream() {
@@ -114,7 +215,7 @@ public class ActionCommande extends BaseAction {
         this.fileName = fileName;
     }
 
-    public void setTotal(double total) {
+    public void setTotal(double[] total) {
         this.total = total;
     }
  
@@ -323,28 +424,25 @@ public class ActionCommande extends BaseAction {
         this.titre = "Commande";
         listeStock = serviceStock.find();
         if(idCommande<=0){
+            Date debut = Calendar.getInstance().getTime();
+            Date fin = new Date();
+            Calendar c = Calendar.getInstance();
+            c.setTime(fin);
+            c.add(Calendar.DATE, 1);
+            fin = c.getTime();
             if (Test.argmumentNull(dateDebut)) {
-                dateDebut = DateUtil.convert(Calendar.getInstance().getTime());
+                dateDebut = DateUtil.convert(debut);
             }
             if (Test.argmumentNull(dateFin)) {
-                Date d = new Date();
-                Calendar c = Calendar.getInstance();
-                c.setTime(d);
-                c.add(Calendar.DATE, 1);
-                d = c.getTime();
-                dateFin = DateUtil.convert(d);
+                dateFin = DateUtil.convert(fin);
             }
             if (Test.argmumentNull(dateAquisition)) {
-                dateAquisition = DateUtil.convert(Calendar.getInstance().getTime());
+                dateAquisition = DateUtil.convert(debut);
             }
             if (Test.argmumentNull(dateRetour)) {
-                Date d = new Date();
-                Calendar c = Calendar.getInstance();
-                c.setTime(d);
-                c.add(Calendar.DATE, 1);
-                d = c.getTime();
-                dateRetour = DateUtil.convert(d);
+                dateRetour = DateUtil.convert(fin);
             }
+            nombre_jour = DateUtil.nombreJ(debut, fin);
         }else{
             HttpSession session = ServletActionContext.getRequest().getSession();          
             long idCommandeSession =0;
@@ -355,15 +453,22 @@ public class ActionCommande extends BaseAction {
             session.setAttribute(ReferenceSession.IDCOMMANDE,idCommandeSession);
             dateDebut = DateUtil.convert(commande.getDateDebut()); 
             dateFin = DateUtil.convert(commande.getDateFin());
+            dateAquisition = DateUtil.convert(commande.getDateAcquisition());
+            dateRetour = DateUtil.convert(commande.getDateRetour());
+            remiseGlobal = commande.getRemiseGlobal();
+            nombre_jour = DateUtil.nombreJ(commande.getDateDebut(), commande.getDateRetour());
+            Facture facture = this.serviceFacture.factureByCommande(commande.getId());
+            quotient = facture.getQuotient();
             this.serviceCommande.setCommande(this.serviceCommande.find(commande)); 
         }
         listeCommandeStock = serviceCommande.getCommande();
-        this.total = this.serviceCommande.getTotal(dateDebut, dateFin);
+        listeHorsStock = serviceCommande.getCommandeHS();
+        this.total = this.serviceCommande.getTotal(remiseGlobal,dateDebut, dateFin);
         return Action.SUCCESS;
     }
 
     public String addSessionCommande() throws Exception {
-        serviceCommande.addCommand(idStock, quantite, dateDebut, dateFin);
+        serviceCommande.addCommand(idStock, quantite, remiseArticle, dateDebut, dateFin);
         return Action.SUCCESS;
     }
 
@@ -373,7 +478,7 @@ public class ActionCommande extends BaseAction {
     }
 
     public String modifSessionCommande() throws Exception {
-        serviceCommande.modifierCommand(idCommandeStock, quantite, dateDebut, dateFin);
+        serviceCommande.modifierCommand(idCommandeStock, quantite, remiseArticle, dateDebut, dateFin);
         return Action.SUCCESS;
     }
 
@@ -385,13 +490,13 @@ public class ActionCommande extends BaseAction {
     public String validerSessionCommande() throws Exception {
         if (action.equals("save")) {
             if (
-                serviceCommande.saveCommande(idClient, dateDebut, dateFin,this.dateAquisition,this.dateRetour)) {
+                serviceCommande.saveCommande(idClient, dateDebut, dateFin,this.dateAquisition,this.dateRetour,this.remiseGlobal,this.quotient)) {
                 return Action.SUCCESS;
             }
         }
         else if(!action.equals("save")){
             // ito fonction update ito ilay ataon la
-            if (serviceCommande.updateCommande(dateDebut, dateFin)) {
+            if (serviceCommande.updateCommande(dateDebut, dateFin, this.dateAquisition,this.dateRetour,this.remiseGlobal, this.quotient)) {
                 return Action.SUCCESS;
             }
         }
@@ -405,7 +510,7 @@ public class ActionCommande extends BaseAction {
             return Action.LOGIN;
         }
         try{
-            this.listeCommande = this.serviceCommande.getCommande(client,dateDebutCommande,dateFinCommande,this.dateDebut, this.dateFin,!Test.argmumentNull(recu),!Test.argmumentNull(retour),!Test.argmumentNull(annule));
+            this.listeCommande = this.serviceCommande.getCommande(client,dateDebutCommande,dateFinCommande,this.dateDebut, this.dateFin,!Test.argmumentNull(recu),!Test.argmumentNull(retour),!Test.argmumentNull(annule),!Test.argmumentNull(paye),!Test.argmumentNull(prepare));
         }catch(Exception e){
             e.printStackTrace();
         }
@@ -413,9 +518,30 @@ public class ActionCommande extends BaseAction {
         return Action.SUCCESS;
     }
     
+    public String listCommande1() throws Exception {
+        try {
+            Users u = this.getSessionUser();
+        } catch (Exception ex) {
+            return Action.LOGIN;
+        }
+        try {
+            if (reference != null) {
+                Commande commande = new Commande();
+                long idcommande = commande.getId(reference);
+                commande = serviceCommande.find(idcommande);
+                this.listeCommande = new ArrayList<>();
+                this.listeCommande.add(commande);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            this.listeCommande = new ArrayList<>();
+            return Action.SUCCESS;
+        }
+        this.titre = "Liste Commande";
+        return Action.SUCCESS;
+    }
+    
     public String retourcommande(){
-        boolean recuB  = this.recu!=null;
-        boolean annuleB = this.annule!=null;
         try{
             this.serviceCommande.retour(listProduitRetour);
             this.serviceCommande.updateEtat(idCommande);
@@ -443,6 +569,48 @@ public class ActionCommande extends BaseAction {
             return Action.ERROR;
         }
     }
+    public String generateBS() {
+        try {
+            this.serviceCommande.generatPdfBS(idCommande,this.servletRequest);
+            File fileToDownload = new File(this.servletRequest.getSession().getServletContext().getRealPath("/")+PathData.PATH_PDF_BON_SORTIE);
+            fileName = fileToDownload.getName();
+            fileInputStream = new FileInputStream(fileToDownload);
+            return Action.SUCCESS;
+        }catch (Exception e ) {
+            e.printStackTrace();
+            this.linkError=ReferenceErreur.VISIBLE;
+            this.messageError = e.getMessage();
+            return Action.ERROR;
+        }
+    }
+    public String generateBR() {
+        try {
+            this.serviceCommande.generatPdfBR(idCommande,this.servletRequest);
+            File fileToDownload = new File(this.servletRequest.getSession().getServletContext().getRealPath("/")+PathData.PATH_PDF_BON_RECEPTION);
+            fileName = fileToDownload.getName();
+            fileInputStream = new FileInputStream(fileToDownload);
+            return Action.SUCCESS;
+        }catch (Exception e ) {
+            e.printStackTrace();
+            this.linkError=ReferenceErreur.VISIBLE;
+            this.messageError = e.getMessage();
+            return Action.ERROR;
+        }
+    }
+    public String generatPdfQuotient() {
+        try {
+            this.serviceCommande.generatPdfQuotient(idCommande,this.servletRequest);
+            File fileToDownload = new File(this.servletRequest.getSession().getServletContext().getRealPath("/")+PathData.PATH_PDF_BON_QUOTIENT);
+            fileName = fileToDownload.getName();
+            fileInputStream = new FileInputStream(fileToDownload);
+            return Action.SUCCESS;
+        }catch (Exception e ) {
+            e.printStackTrace();
+            this.linkError=ReferenceErreur.VISIBLE;
+            this.messageError = e.getMessage();
+            return Action.ERROR;
+        }
+    }
     public String ficheCommande() throws Exception {
         try {
             Users u=this.getSessionUser();
@@ -453,12 +621,45 @@ public class ActionCommande extends BaseAction {
         commande = this.serviceCommande.find(idCommande);
         this.total = this.serviceCommande.getTotal(idCommande);
         this.listeCommandeStock = this.serviceCommande.find(commande);
+        this.listeHorsStock = serviceCommande.findListHorsStock(commande);
+        Facture facture = this.serviceFacture.factureByCommande(idCommande);
+        quotient = facture.getQuotient();
         this.titre = "Fiche Commande";
         return Action.SUCCESS;
     }
+    public String annulecommande() throws Exception {
+        try {
+            Users u = this.getSessionUser();
+        } catch (Exception ex) {
+            return Action.LOGIN;
+        }
+        this.commande = this.serviceCommande.find(idCommande);
+        boolean annulee = annule.equals("true");
+        this.serviceCommande.updateEtatAnnulee(idCommande, annulee);
+        return Action.SUCCESS;
+    }
     
-    public String payerCommande() throws Exception{
-        this.serviceCaisse.payerCommande(idCommande, quotient);
+    public String addhorsStock() throws Exception {
+        try {
+            Users u = this.getSessionUser();
+        } catch (Exception ex) {
+            return Action.LOGIN;
+        }
+        HorsSotck hs =  new HorsSotck();
+        hs.setLibelle(designation_HS);
+        hs.setQuantite(quantite_HS);
+        hs.setMontant(prix_HS);
+        serviceCommande.addHorsStockSession(hs);
+        return Action.SUCCESS;
+    }
+    
+    public String delhorsStock()throws Exception {
+        try {
+            Users u = this.getSessionUser();
+        } catch (Exception ex) {
+            return Action.LOGIN;
+        }
+        serviceCommande.deleteHorsStockSession(indiceHorsStock);
         return Action.SUCCESS;
     }
 }

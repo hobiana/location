@@ -6,10 +6,19 @@
 package com.project.location.service;
 
 import com.project.location.dao.HibernateDao;
+import com.project.location.exception.ConnexionException;
+import com.project.location.exception.NotFacturedException;
+import com.project.location.exception.NotReturnException;
+import com.project.location.exception.NotTakeCLientException;
+import com.project.location.generator.BonReception;
+import com.project.location.generator.BonSortieGenerator;
 import com.project.location.generator.FactureGenerator;
+import com.project.location.generator.FactureQuotient;
 import com.project.location.model.Client;
 import com.project.location.model.Commande;
 import com.project.location.model.CommandeStock;
+import com.project.location.model.Facture;
+import com.project.location.model.HorsSotck;
 import com.project.location.model.ProduitRetour;
 import com.project.location.model.Stock;
 import com.project.location.reference.ReferenceSession;
@@ -23,6 +32,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.apache.struts2.ServletActionContext;
 import org.hibernate.Criteria;
+import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -37,6 +47,15 @@ import org.hibernate.criterion.Restrictions;
 public class ServiceCommande extends BaseService{
     public ServiceStock serviceStock;
     public ServiceUtil serviceUtil;
+    public ServiceFacture serviceFacture;
+
+    public ServiceFacture getServiceFacture() {
+        return serviceFacture;
+    }
+
+    public void setServiceFacture(ServiceFacture serviceFacture) {
+        this.serviceFacture = serviceFacture;
+    }
 
     public ServiceUtil getServiceUtil() {
         return serviceUtil;
@@ -93,6 +112,73 @@ public class ServiceCommande extends BaseService{
             if(session!=null)session.close();
         }
     }
+    
+    public void updateEtatPreparee(long id, boolean isprepare)throws Exception{
+        Commande commande = null; 
+        Session session = null; 
+        Transaction tr = null; 
+        try{
+            session = this.hibernateDao.getSessionFactory().openSession(); 
+            tr = session.beginTransaction();
+            commande = this.find(id, session); 
+            commande.setPrepare(isprepare);
+            ServiceHistoriqueUser.save("mise à jour de l'etat prepare de la commande "+commande.getRef(), session);
+            HibernateDao.update(commande, session);
+            tr.commit();
+           
+        }catch(Exception e){
+            if(tr!=null)tr.rollback();
+            throw new Exception("Impossible de changer l'etat de la commande "+commande.getRef());
+            
+        }finally{
+            if(session!=null)session.close();
+        }
+    }
+    
+    public void updateEtatRecuParClient(long id, boolean isrecu)throws Exception{
+        Commande commande = null; 
+        Session session = null; 
+        Transaction tr = null; 
+        try{
+            session = this.hibernateDao.getSessionFactory().openSession(); 
+            tr = session.beginTransaction();
+            commande = this.find(id, session); 
+            commande.setRecu(isrecu);
+            ServiceHistoriqueUser.save("mise à jour de l'etat recu par le client de la commande "+commande.getRef(), session);
+            HibernateDao.update(commande, session);
+            tr.commit();
+           
+        }catch(Exception e){
+            if(tr!=null)tr.rollback();
+            throw new Exception("Impossible de changer l'etat de la commande "+commande.getRef());
+            
+        }finally{
+            if(session!=null)session.close();
+        }
+    }
+    
+    public void updateEtatAnnulee(long id, boolean annule)throws Exception{
+        Commande commande = null; 
+        Session session = null; 
+        Transaction tr = null; 
+        try{
+            session = this.hibernateDao.getSessionFactory().openSession(); 
+            tr = session.beginTransaction();
+            commande = this.find(id, session); 
+            commande.setAnnule(annule);
+            ServiceHistoriqueUser.save("mise à jour de l'etat annulee de la commande "+commande.getRef(), session);
+            HibernateDao.update(commande, session);
+            tr.commit();
+           
+        }catch(Exception e){
+            if(tr!=null)tr.rollback();
+            throw new Exception("Impossible de changer l'etat de la commande "+commande.getRef());
+            
+        }finally{
+            if(session!=null)session.close();
+        }
+    }
+    
     public void updateEtat(long id)throws Exception{
         Commande commande = null; 
         Session session = null; 
@@ -124,7 +210,7 @@ public class ServiceCommande extends BaseService{
         try{
             session = this.hibernateDao.getSessionFactory().openSession();
             Commande commande = new Commande(idCommande); 
-            this.hibernateDao.findById(commande,session);
+            HibernateDao.findById(commande,session);
             this.populateClient(commande, session);
             return commande;
         }catch(Exception e){
@@ -158,6 +244,49 @@ public class ServiceCommande extends BaseService{
         }
     }
     
+    /*
+    public  List<HorsSotck> findListHorsStock(Commande commande, Session session) throws Exception{
+        Query query = null; 
+        try{
+            String sql = "SELECT hs FROM HorsStock hs join hs.commande commande  where commande.id = :id";
+            query = session.createQuery(sql);
+            query.setParameter("id", commande.getId());
+            return (List<HorsSotck>)query.list();
+        }catch(Exception e){
+            e.printStackTrace();
+            throw new Exception("impossible d'extraire le stock de la commande");
+        }
+    }*/
+    
+    public  List<HorsSotck> findListHorsStock(Commande commande) throws Exception{
+        Session session = null;
+        try{
+            session = this.hibernateDao.getSessionFactory().openSession();
+            return this.findListHorsStock(commande, session);
+        }catch(Exception e){
+            e.printStackTrace();
+            throw new Exception("impossible d'extraire le stock de la commande");
+        }finally{
+            if(session!=null) session.close();
+        }
+    }
+    
+    public List<HorsSotck> findListHorsStock(Commande commande,Session session) throws Exception{
+        Query query = null;
+        List<HorsSotck> reponse = null; 
+        try{
+            String sql = "SELECT horsStock FROM HorsSotck horsStock join horsStock.commande commande WHERE commande.id = :id"; 
+            query = session.createQuery(sql); 
+            query.setParameter("id", commande.getId()); 
+            
+            reponse =  query.list();
+            return reponse;
+        }catch(Exception e){
+            e.printStackTrace();
+            throw new Exception("Impossible d'extraire les détails de la commande "+commande.getRef());
+        }
+    }
+    
     public void initStock(List<CommandeStock> commandeStock, Session session) throws Exception{
         try{
             int size = commandeStock.size(); 
@@ -170,9 +299,12 @@ public class ServiceCommande extends BaseService{
         }
     }
     
-    //Fonction getTotal principal
-    public double getTotal(List<CommandeStock> commandesStock,Date debut, Date fin)throws Exception{
-        double total=0;
+    //Fonction getTotaux principal
+    public double[] getTotal(List<CommandeStock> commandesStock,List<HorsSotck> horsStock,double remise_globale,Date debut, Date fin)throws Exception{
+        double totalNet=0;
+        double totalBrute=0;
+        double total_remise=0;
+        double prixHorsStock = 0;
         Session session=null; 
         if(debut==null||fin==null)throw new Exception("Aucune date insérée");
         int nbrJour = DateUtil.nombreJ(debut, fin); 
@@ -186,10 +318,25 @@ public class ServiceCommande extends BaseService{
                 CommandeStock temp = commandesStock.get(i); 
                 double prixL = temp.getPrixLocation();
                 double quantite = temp.getQuantiteCommande(); 
-                total+= prixL*quantite*nbrJour;      
+                double tempremise = temp.getRemise()*quantite*nbrJour;
+                total_remise+=tempremise;
+                totalBrute+= (prixL*quantite*nbrJour);      
             }
+            totalNet = totalBrute-total_remise-remise_globale;
+            for(int i =0;i<horsStock.size();i++){
+                HorsSotck temp = horsStock.get(i);
+                double prixHS = temp.getMontant()*temp.getQuantite();
+                prixHorsStock+= prixHS;
+            }
+            
+            double[] total=new double[4];
+            total[0]=totalNet;
+            total[1]=totalBrute;
+            total[2]=total_remise;
+            total[3]=prixHorsStock;
             return total;
         }catch(Exception e){
+            e.printStackTrace();
             throw new Exception("erreur fatal durant le calcula des totals cause : "+e.getMessage());
         }finally{
             if(session!=null)session.close();
@@ -198,23 +345,25 @@ public class ServiceCommande extends BaseService{
     }
     
     //Fonction getTotal des commande temporaire
-    public double getTotal(Date debut, Date fin) throws Exception{
-        List<CommandeStock> list = this.getCommande(); 
-        return this.getTotal(list, debut, fin);
+    public double[] getTotal(double remise_globale,Date debut, Date fin) throws Exception{
+        List<CommandeStock> listCS = this.getCommande(); 
+        List<HorsSotck> listHS = this.getCommandeHS(); 
+        return this.getTotal(listCS,listHS,remise_globale, debut, fin);
     }
     
     //Get total des commande temporaire avec des date en String
-    public double getTotal(String debut, String fin) throws Exception{
+    public double[] getTotal(double remise_globale,String debut, String fin) throws Exception{
         Date debutD = DateUtil.convert(debut); 
         Date finD = DateUtil.convert(fin);
-        return this.getTotal(debutD, finD);
+        return this.getTotal(remise_globale,debutD, finD);
     }
     
     //Get total des commandes dans la base de données
-    public double getTotal(long idCommande)throws Exception{
+    public double[] getTotal(long idCommande)throws Exception{
         Commande commande = this.find(idCommande); 
-        List<CommandeStock> list = this.find(commande); 
-        return this.getTotal(list, commande.getDateDebut(), commande.getDateFin());
+        List<CommandeStock> listCS = this.find(commande); 
+        List<HorsSotck> listHS = this.findListHorsStock(commande); 
+        return this.getTotal(listCS,listHS,commande.getRemiseGlobal(), commande.getDateDebut(), commande.getDateFin());
     }
      
     public int getNombreJour(long idCommande) throws Exception {
@@ -285,14 +434,14 @@ public class ServiceCommande extends BaseService{
         
 //        date init 
         Object[] date = Test.instance(3); 
-        date[0] = "dateCommande";
+        date[0] = "dateAcquisition";
         if(dateMin==null&&dateMax!=null){
             date = Test.instance(2);
-            date[0] = "dateCommande";
+            date[0] = "dateAcquisition";
             date[1] = dateMax;
         }else if(dateMax==null&&dateMin!=null){
             date = Test.instance(2);
-            date[0] = "dateCommande";
+            date[0] = "dateAcquisition";
             date[1] = dateMin;
         }else if(dateMax==null&&dateMin==null){
             date = null;
@@ -305,7 +454,7 @@ public class ServiceCommande extends BaseService{
             date[2] = dateMin;    
         }else{
             date = Test.instance(2);
-            date[0] = "dateCommande";
+            date[0] = "dateAcquisition";
             date[1] = dateMin;
         }
         Object[] annuleD = Test.instance(2); 
@@ -339,7 +488,7 @@ public class ServiceCommande extends BaseService{
         }
     }
     
-    private Client findClient(Commande commande, Session session )throws Exception{
+    public Client findClient(Commande commande, Session session )throws Exception{
         try{
             String sql = "SELECT client FROM Commande commande join commande.client client where commande.id = :id ";
             Query query = session.createQuery(sql); 
@@ -421,7 +570,7 @@ public class ServiceCommande extends BaseService{
         }
     }
     
-    public List<Commande> getCommande(String client, Date debut, Date fin, Date dateCommandeD, Date dateCommandeF, boolean recu, boolean retour, boolean annule)throws Exception{
+    public List<Commande> getCommande(String client, Date debut, Date fin, Date dateCommandeD, Date dateCommandeF, boolean recu, boolean retour, boolean annule, boolean paye, boolean prepare)throws Exception{
         Session session = null;
         List<Commande> reponse = null;
         try{
@@ -451,6 +600,8 @@ public class ServiceCommande extends BaseService{
             criteria.add(Restrictions.eq("commande.retour", retour));
             criteria.add(Restrictions.eq("commande.annule", annule));
             criteria.add(Restrictions.eq("commande.recu", recu));
+            criteria.add(Restrictions.eq("commande.paye", paye));
+            criteria.add(Restrictions.eq("commande.prepare", prepare));
             
             reponse = criteria.list();
             this.populateClient(reponse, session);
@@ -518,7 +669,7 @@ public class ServiceCommande extends BaseService{
         }
     }
     
-    public List<Commande> getCommande(String client, String debut, String fin, String dateCommandeD, String dateCommandeF, boolean recu, boolean retour, boolean annule)throws Exception{
+    public List<Commande> getCommande(String client, String debut, String fin, String dateCommandeD, String dateCommandeF, boolean recu, boolean retour, boolean annule, boolean paye, boolean prepare)throws Exception{
        Date debutDate = null; 
        Date finDate = null; 
        Date dateCommandeDDate = null; 
@@ -529,7 +680,7 @@ public class ServiceCommande extends BaseService{
        if(!Test.argmumentNull(dateCommandeD)) dateCommandeDDate = DateUtil.convert(dateCommandeD); 
        if(!Test.argmumentNull(dateCommandeF)) dateCommandeFDate = DateUtil.convert(dateCommandeF); 
        
-       return this.getCommande(client, debutDate, finDate, dateCommandeDDate, dateCommandeFDate, recu, retour, annule);
+       return this.getCommande(client, debutDate, finDate, dateCommandeDDate, dateCommandeFDate, recu, retour, annule,paye,prepare);
     }
     
     public List<Commande> getCommande(String client,String dateAcquisition, String dateRetour, String debut, String fin, String dateCommandeD, String dateCommandeF, boolean recu, boolean retour, boolean annule, boolean paye)throws Exception{
@@ -604,6 +755,14 @@ public class ServiceCommande extends BaseService{
         return restant - quantite; 
     }
     
+    public int dispoStock(long idStock, Date debut, Date fin) throws Exception{
+        return this.getStockRestant(idStock, debut, fin);
+    }
+    
+    public int dispoStock(long idStock, Date debut, Date fin, Session session) throws Exception{
+        return this.getStockRestant(idStock, debut, fin,session);
+    }
+    
     public int dispo(long idStock,int quantite, Date debut, Date fin, Session session) throws Exception{
         int restant = this.getStockRestant(idStock, debut, fin,session);
         return restant - quantite; 
@@ -614,7 +773,7 @@ public class ServiceCommande extends BaseService{
     }
     
     public boolean checkDispo(Date debut, Date fin, CommandeStock commande, Session session) throws Exception{
-        return this.dispo(commande.getStock().getId(), (int)commande.getQuantiteCommande(), debut, fin, session)>0;
+        return this.dispo(commande.getStock().getId(), (int)commande.getQuantiteCommande(), debut, fin, session)>=0;
     }
     
     public int getTotal() throws Exception{
@@ -625,7 +784,7 @@ public class ServiceCommande extends BaseService{
         return commandes.get(0).getCommande().getTotal(commandes);
     }
     
-    public void addCommand(long idStock, int quantite, Date debut, Date fin) throws Exception{
+    public void addCommand(long idStock, int quantite,double remise, Date debut, Date fin) throws Exception{
         HttpSession session = ServletActionContext.getRequest().getSession();
         List<CommandeStock> commandes = (List<CommandeStock>)(Object)session.getAttribute(ReferenceSession.COMMANDE);
         if(commandes==null){
@@ -640,12 +799,15 @@ public class ServiceCommande extends BaseService{
         commandeStock.setDescription("");
         commandeStock.setPrixCasse(stock.getPrixCasse());
         commandeStock.setPrixLocation(stock.getPrixLocation());
+        commandeStock.setRemise(remise);
         boolean test = false;
         for(int i=0;i<size;i++){
             CommandeStock temp = commandes.get(i);
             if(temp.getStock().getId()==idStock){
                 test=true; 
                 temp.setQuantiteCommande(temp.getQuantiteCommande()+quantite);
+                temp.setRemise(remise);
+                break;
             }
         }
         if(!test)commandes.add(commandeStock);  
@@ -654,17 +816,27 @@ public class ServiceCommande extends BaseService{
         this.checkAll(debut, fin);
     }
     
-    public void addCommand(long idStock, int quantite, String debut, String fin) throws Exception{
+    public void addCommand(long idStock, int quantite, double remise, String debut, String fin) throws Exception{
         Date debutD = DateUtil.convert(debut);
         Date finD = DateUtil.convert(fin); 
         
-        this.addCommand(idStock, quantite, debutD, finD);
+        this.addCommand(idStock, quantite, remise, debutD, finD);
     }
     
     public List<CommandeStock> getCommande(){
         HttpSession session = ServletActionContext.getRequest().getSession();
         
         List<CommandeStock> commandes = (List<CommandeStock>)(Object)session.getAttribute(ReferenceSession.COMMANDE);
+        if(commandes==null){
+            commandes = new ArrayList();
+        }
+        return commandes;
+    }
+    
+    public List<HorsSotck> getCommandeHS(){
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        
+        List<HorsSotck> commandes = (List<HorsSotck>)(Object)session.getAttribute(ReferenceSession.COMMANDE_HS);
         if(commandes==null){
             commandes = new ArrayList();
         }
@@ -684,19 +856,23 @@ public class ServiceCommande extends BaseService{
         
         for(int i=0; i<size;i++){
             if(i==idCommande) commandes.remove(i);
+            break;
         }
       
         session.removeAttribute(ReferenceSession.COMMANDE);
         session.setAttribute(ReferenceSession.COMMANDE, commandes);  
     }
     
-    public void modifierCommand(long idCommande, int quantite, Date debut, Date fin) throws Exception{
+    public void modifierCommand(long idCommande, int quantite, double remise, Date debut, Date fin) throws Exception{
         HttpSession session = ServletActionContext.getRequest().getSession();
         List<CommandeStock> commandes = (List<CommandeStock>)(Object)session.getAttribute(ReferenceSession.COMMANDE);
         int size = commandes.size();
         if(quantite>=1){
             for(int i=0; i<size;i++){
-                if(i==idCommande) commandes.get(i).setQuantiteCommande(quantite);
+                if(i==idCommande) {
+                    commandes.get(i).setQuantiteCommande(quantite);
+                    commandes.get(i).setRemise(remise);
+                }
             }
         }
         session.removeAttribute(ReferenceSession.COMMANDE);
@@ -704,10 +880,10 @@ public class ServiceCommande extends BaseService{
         this.checkAll(debut, fin);
     }
     
-    public void modifierCommand(long idCommande, int quantite, String debut, String fin) throws Exception{
+    public void modifierCommand(long idCommande, int quantite, double remise, String debut, String fin) throws Exception{
         Date debutD = DateUtil.convert(debut); 
         Date finD = DateUtil.convert(fin); 
-        this.modifierCommand(idCommande, quantite, debutD, finD);
+        this.modifierCommand(idCommande, quantite, remise,debutD, finD);
     }
     
     public void save(CommandeStock commandeStock)throws Exception{
@@ -751,8 +927,9 @@ public class ServiceCommande extends BaseService{
             
             for(int i=0;i<size;i++){
                 CommandeStock temp = commande.get(i);
-                boolean test = this.checkDispo(debut, fin, temp); 
-                if(!test) temp.setDescription("stock insuffisant");      
+                boolean test = this.checkDispo(debut, fin, temp,session); 
+                int valueRestant = this.dispoStock(temp.getStock().getId(), debut, fin);
+                if(!test) temp.setDescription("stock insuffisant, " + valueRestant + " restant(s)");      
                 else{
                     temp.setDescription("");
                 }
@@ -789,7 +966,7 @@ public class ServiceCommande extends BaseService{
         }
     }
     
-    public boolean updateCommande(Date debut, Date  fin)throws Exception{
+    public boolean updateCommande(Date debut, Date  fin, Date acquisition, Date retour, double remiseGlobal, double quotient)throws Exception{
         boolean reponse; 
         Session session = null; 
         Transaction tr = null; 
@@ -804,6 +981,9 @@ public class ServiceCommande extends BaseService{
             Commande commande = this.find(idCommande,session);
             commande.setDateDebut(debut);
             commande.setDateFin(fin);
+            commande.setDateAcquisition(acquisition);
+            commande.setDateRetour(retour);
+            commande.setRemiseGlobal(remiseGlobal);
             ServiceHistoriqueUser.save("mise à jour de la commande "+commande.getRef(), session);
             HibernateDao.update(commande, session);
             for(int i=0;i<size;i++){
@@ -812,6 +992,11 @@ public class ServiceCommande extends BaseService{
             }
             this.deleteCommandeStock(idCommande, session);
             reponse = this.saveCommande(commandeStocks, session); 
+            
+            Facture facture = this.serviceFacture.factureByCommande(commande.getId(),session);
+            facture.setQuotient(quotient);
+            facture.setDateFacture(Calendar.getInstance().getTime());
+            this.serviceFacture.updateFacture(facture);
             if(reponse)tr.commit();
             else tr.rollback();
             return reponse;
@@ -855,7 +1040,7 @@ public class ServiceCommande extends BaseService{
         return reponse;
     }
     
-    public boolean saveCommande(long idClient, Date debut, Date fin, Date acquisition, Date retour) throws Exception{
+    public boolean saveCommande(long idClient, Date debut, Date fin, Date acquisition, Date retour, double remiseGlobal, double quotient) throws Exception{
         boolean reponse = true;
         Commande commande = new Commande(); 
         Client client = new Client(idClient);
@@ -868,8 +1053,10 @@ public class ServiceCommande extends BaseService{
         commande.setDateAcquisition(acquisition);
         commande.setDateRetour(retour);
         commande.setDateCommande(Calendar.getInstance().getTime());
+        commande.setRemiseGlobal(remiseGlobal);
        
         List<CommandeStock> commandes = this.getCommande();
+        List<HorsSotck> hors_stock = this.getCommandeHS();
         int size = commandes.size();
         if(size==0)throw new Exception("Aucune commande n'a été effectué");
         Session session = null; 
@@ -889,6 +1076,16 @@ public class ServiceCommande extends BaseService{
                 }
                 HibernateDao.save(temp, session);
             }
+            for(int i=0;i<hors_stock.size();i++){
+                HorsSotck temp =hors_stock.get(i);
+                temp.setCommande(commande);
+                HibernateDao.save(temp, session);
+            }
+            Facture facture = new Facture();
+            facture.setQuotient(quotient);
+            facture.setDateFacture(Calendar.getInstance().getTime());
+            facture.setCommande(commande);
+            serviceFacture.newFacture(facture,session);
             if(reponse==true){
                 this.clearSession();
                 tr.commit();
@@ -906,12 +1103,12 @@ public class ServiceCommande extends BaseService{
         return reponse;
     }
     
-    public boolean saveCommande(long idClient, String debut, String fin, String acquisition ,String retour) throws Exception{
+    public boolean saveCommande(long idClient, String debut, String fin, String acquisition ,String retour, double remiseGlobal, double quotient) throws Exception{
         Date debutD = DateUtil.convert(debut);
         Date finD = DateUtil.convert(fin);
         Date acquisitionD = DateUtil.convert(acquisition);
         Date retourD = DateUtil.convert(retour);
-        return this.saveCommande(idClient,debutD, finD, acquisitionD, retourD);
+        return this.saveCommande(idClient,debutD, finD, acquisitionD, retourD, remiseGlobal, quotient);
     }
     
     public void clearSession(){
@@ -919,15 +1116,19 @@ public class ServiceCommande extends BaseService{
         session.removeAttribute(ReferenceSession.COMMANDE);
     }
 
-    public boolean updateCommande(String dateDebut, String dateFin) throws Exception {
+    public boolean updateCommande(String dateDebut, String dateFin,String acquisition ,String retour, double remiseGlobal, double quotient) throws Exception {
         Date debut; 
         Date fin; 
+        Date acquis;
+        Date retournee;
         if(Test.argmumentNull(dateDebut)|| Test.argmumentNull(dateFin)){
            throw new Exception("l'une des dates est vide");
         }
         debut = DateUtil.convert(dateDebut); 
         fin = DateUtil.convert(dateFin);
-        return this.updateCommande(debut, fin);
+        acquis = DateUtil.convert(acquisition);
+        retournee = DateUtil.convert(retour);
+        return this.updateCommande(debut, fin, acquis, retournee, remiseGlobal, quotient);
     }
     
     public CommandeStock findCommandeStockById(long idCommandeStock) throws Exception {
@@ -990,17 +1191,124 @@ public class ServiceCommande extends BaseService{
             session = this.hibernateDao.getSessionFactory().openSession(); 
             Commande commande = this.find(idCommande, session);
             List<CommandeStock> commandeStock = this.find(commande,session);
+            Client client = this.findClient(commande, session);
+            Facture factureF = ServiceFacture.findFacture(commande, session);
             this.initStock(commandeStock, session);
-            if(commandeStock != null ) {
-                FactureGenerator facture = new FactureGenerator(commande,commandeStock, servletRequest);
-            } 
-        } catch ( Exception e) {
-            e.printStackTrace();
-            throw new Exception("problème lors de la génération de la facture");
-        
-        } finally { 
+            FactureGenerator facture = new FactureGenerator(client,commande,commandeStock, factureF,servletRequest);
+            
+        } catch( NullPointerException npe) {
+            npe.printStackTrace();
+            throw new Exception("Les données de la commande sont vide");
+        } catch ( NotFacturedException e) {
+            throw new Exception("La commande n'est pas payé");
+        } catch( ConnexionException ce) {
+            throw new Exception("Probleme de connexion à la base de donnée");
+        } catch( Exception e){
+            throw e;
+        }finally { 
             if(session!=null) session.close();
         }
          
+    }
+    
+    public void generatPdfBS(long idCommande,HttpServletRequest servletRequest) throws Exception {
+        Session session = null; 
+        try {
+            session = this.hibernateDao.getSessionFactory().openSession(); 
+            Commande commande = this.find(idCommande, session);
+            if(!commande.isRecu()) throw new NotTakeCLientException("la commande n'a pas encore était reçu par le client");
+            List<CommandeStock> commandeStock = this.find(commande,session);
+            Client client = this.findClient(commande, session);
+            this.initStock(commandeStock, session);
+            BonSortieGenerator facture = new BonSortieGenerator(client,commande,commandeStock,servletRequest);
+            
+        } catch( NullPointerException npe) {
+            npe.printStackTrace();
+            throw new Exception("Les données de la commande sont vide");
+        } catch ( NotTakeCLientException e) {
+            throw e;
+        } catch( ConnexionException ce) {
+            throw new Exception("Probleme de connexion à la base de donnée");
+        } catch( Exception e){
+            throw e;
+        }finally { 
+            if(session!=null) session.close();
+        }
+    }
+    
+    public void generatPdfBR(long idCommande,HttpServletRequest servletRequest) throws Exception {
+        Session session = null; 
+        try {
+            session = this.hibernateDao.getSessionFactory().openSession(); 
+            Commande commande = this.find(idCommande, session);
+            if(!commande.isRecu()) throw new NotTakeCLientException("la commande n'a pas encore était reçu par le client");
+            if(!commande.isRetour()) throw new NotReturnException("la commande n'a pas encore était retourné par le client");
+            List<CommandeStock> commandeStock = this.find(commande,session);
+            Client client = this.findClient(commande, session);
+            this.initStock(commandeStock, session);
+            BonReception facture = new BonReception(client,commande,commandeStock,servletRequest);
+            
+        } catch( NullPointerException npe) {
+            throw new Exception("Les données de la commande sont vide");
+        } catch ( NotTakeCLientException e) {
+            throw e;
+        } catch ( NotReturnException e) {
+            throw e;
+        } catch( ConnexionException | HibernateException ce) {
+            throw new Exception("Probleme de connexion à la base de donnée");
+        }catch( Exception e){
+            throw e;
+        }finally { 
+            if(session!=null) session.close();
+        }
+    }
+    
+    public void generatPdfQuotient(long idCommande,HttpServletRequest servletRequest) throws Exception {
+        Session session = null; 
+        try {
+            session = this.hibernateDao.getSessionFactory().openSession(); 
+            Commande commande = this.find(idCommande, session);
+            if(!commande.isRecu()) throw new NotTakeCLientException("la commande n'a pas encore était reçu par le client");
+            if(!commande.isRetour()) throw new NotReturnException("la commande n'a pas encore était retourné par le client");
+            List<CommandeStock> commandeStock = this.find(commande,session);
+            Facture factureF = ServiceFacture.findFacture(commande, session);
+            Client client = this.findClient(commande, session);
+            this.initStock(commandeStock, session);
+            FactureQuotient facture = new FactureQuotient(client,commande,commandeStock,factureF,servletRequest);
+            
+        } catch( NullPointerException npe) {
+            throw new Exception("Les données de la commande sont vide");
+        } catch(NotFacturedException e){
+            throw new Exception("La commande n'est pas payé / facturé");
+        }catch ( NotTakeCLientException e) {
+            throw e;
+        } catch ( NotReturnException e) {
+            throw e;
+        } catch( ConnexionException | HibernateException ce) {
+            throw new Exception("Probleme de connexion à la base de donnée");
+        }catch( Exception e){
+            throw e;
+        }finally { 
+            if(session!=null) session.close();
+        }
+    }
+    
+    public void addHorsStockSession(HorsSotck hs){
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        List<HorsSotck> horsStock = (List<HorsSotck>)(Object)session.getAttribute(ReferenceSession.COMMANDE_HS);
+        if(horsStock==null){
+            horsStock = new ArrayList();
+        }
+        horsStock.add(hs);  
+        session.removeAttribute(ReferenceSession.COMMANDE_HS);
+        session.setAttribute(ReferenceSession.COMMANDE_HS, horsStock);
+    }
+    
+    public void deleteHorsStockSession(int indice){
+      HttpSession session = ServletActionContext.getRequest().getSession();
+        List<HorsSotck> hs = (List<HorsSotck>)(Object)session.getAttribute(ReferenceSession.COMMANDE_HS);
+        hs.remove(indice);
+        session.removeAttribute(ReferenceSession.COMMANDE_HS);
+        session.setAttribute(ReferenceSession.COMMANDE_HS, hs);  
     }
 }

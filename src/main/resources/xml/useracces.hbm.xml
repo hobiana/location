@@ -47,7 +47,7 @@ Contributor(s):
     <many-to-one class="com.project.location.model.Users" fetch="select" name="user">
       <column name="idusers" not-null="true"/>
     </many-to-one>
-    <many-to-one class="com.project.location.model.Acces" fetch="select" name="acces">
+    <many-to-one class="com.project.location.model.Acces" fetch="select" name="acces" cascade="all">
       <column name="idacces" not-null="true"/>
     </many-to-one>
   </class>

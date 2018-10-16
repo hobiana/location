@@ -6,13 +6,17 @@
 package com.project.location.action;
 
 import com.opensymphony.xwork2.Action;
+import com.project.location.model.Acces;
 import com.project.location.model.HistoriqueUser;
 import com.project.location.model.Users;
+import com.project.location.model.UsersAcces;
+import com.project.location.reference.ReferenceAccesUser;
 import com.project.location.reference.ReferenceErreur;
 import com.project.location.security.Cryptage;
 import com.project.location.service.ServiceHistoriqueUser;
 import com.project.location.service.ServiceUsers;
 import com.project.location.util.Test;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -39,6 +43,52 @@ public class ActionUsers extends BaseAction {
     private String action;
     private String dateMin;
     private String dateMax;
+    
+    private boolean boolCaisseQuotient;
+    private boolean boolClients;
+    private boolean boolCommande;
+    private boolean boolStock;
+    private boolean boolUser;
+
+    public boolean isBoolCaisseQuotient() {
+        return boolCaisseQuotient;
+    }
+
+    public void setBoolCaisseQuotient(boolean boolCaisseQuotient) {
+        this.boolCaisseQuotient = boolCaisseQuotient;
+    }
+
+    public boolean isBoolClients() {
+        return boolClients;
+    }
+
+    public void setBoolClients(boolean boolClients) {
+        this.boolClients = boolClients;
+    }
+
+    public boolean isBoolCommande() {
+        return boolCommande;
+    }
+
+    public void setBoolCommande(boolean boolCommande) {
+        this.boolCommande = boolCommande;
+    }
+
+    public boolean isBoolStock() {
+        return boolStock;
+    }
+
+    public void setBoolStock(boolean boolStock) {
+        this.boolStock = boolStock;
+    }
+
+    public boolean isBoolUser() {
+        return boolUser;
+    }
+
+    public void setBoolUser(boolean boolUser) {
+        this.boolUser = boolUser;
+    }
 
     public Users getUtilisateur() {
         return utilisateur;
@@ -201,6 +251,37 @@ public class ActionUsers extends BaseAction {
             if(Test.argmumentNull(phone)) this.setPhone(utilisateur.getPhone());
             if(Test.argmumentNull(adresse)) this.setAdresse(utilisateur.getAdresse());
             
+            this.serviceUsers.findAcces(utilisateur);
+            long idroot = this.utilisateur.getUserAccess().get(0).getAcces().getId();
+            if(this.utilisateur.getUserAccess().size()==1&&idroot==ReferenceAccesUser.ROOT){
+                boolCaisseQuotient = true;
+                boolClients = true;
+                boolCommande = true;
+                boolUser = true;
+                boolStock = true;
+            }
+            else{
+                for (UsersAcces acces : this.utilisateur.getUserAccess()) {
+                    long id = acces.getAcces().getId();
+                    switch(Integer.parseInt(String.valueOf(id))){
+                        case ReferenceAccesUser.CAISSEQUOTIENT: 
+                            boolCaisseQuotient = true;
+                            break;
+                        case ReferenceAccesUser.CLIENT: 
+                            boolClients = true;
+                            break;
+                        case ReferenceAccesUser.COMMANDE: 
+                            boolCommande = true;
+                            break;
+                        case ReferenceAccesUser.USER: 
+                            boolUser = true;
+                            break;
+                        case ReferenceAccesUser.STOCK: 
+                            boolStock = true;
+                            break;
+                    }
+                }
+            }
             return Action.SUCCESS;
         }catch(Exception e){
             this.linkError = ReferenceErreur.VISIBLE; 
@@ -210,17 +291,26 @@ public class ActionUsers extends BaseAction {
     }
     public String updateUsers(){
         try{
-            Users temp = new Users(this.getIdUsers());
-            temp.setPseudo(pseudo);
-            temp.setNom(nom);
-            temp.setPrenom(prenom);
-            temp.setPhone(phone);
-            temp.setAdresse(adresse);
+            Users user = new Users(this.getIdUsers());
+            user.setPseudo(pseudo);
+            user.setNom(nom);
+            user.setPrenom(prenom);
+            user.setPhone(phone);
+            user.setAdresse(adresse);
             if(!Test.argmumentNull(mdp)){
                 if(mdp.compareTo(this.confirmation)!=0) throw new Exception("les mots de passe sont différents");
-                temp.setMdp(Cryptage.crypterHashage(mdp));
+                user.setMdp(Cryptage.crypterHashage(mdp));
             }
-            this.serviceUsers.update(temp);
+            
+            List<Integer> listAccess = new ArrayList();
+            if(this.boolCaisseQuotient) listAccess.add(ReferenceAccesUser.CAISSEQUOTIENT);;
+            if(this.boolClients)listAccess.add(ReferenceAccesUser.CLIENT);
+            if(this.boolCommande)listAccess.add(ReferenceAccesUser.COMMANDE);
+            if(this.boolUser)listAccess.add(ReferenceAccesUser.USER);
+            if(this.boolStock)listAccess.add(ReferenceAccesUser.STOCK);
+            if(listAccess.size()==5)listAccess.clear(); listAccess.add(ReferenceAccesUser.ROOT);
+            
+            this.serviceUsers.updateUsers(user, listAccess);
             this.linkSuccess = ReferenceErreur.VISIBLE;
             this.messageSuccess = "L'utilisateur " + nom + " a été mise à jour avec succès";
             
@@ -233,19 +323,27 @@ public class ActionUsers extends BaseAction {
         }
     }
     public String saveUsers(){
-        Users e = new Users();
+        Users user = new Users();
         try {
             this.titre = "Users | Nouveau utilisateurs";
-            e.setNom(nom);
-            e.setPrenom(prenom);
-            e.setAdresse(adresse);
-            e.setPhone(phone);
-            e.setPseudo(pseudo);
-            e.setMdp(Cryptage.crypterHashage(mdp));
+            user.setNom(nom);
+            user.setPrenom(prenom);
+            user.setAdresse(adresse);
+            user.setPhone(phone);
+            user.setPseudo(pseudo);
+            user.setMdp(Cryptage.crypterHashage(mdp));
             
             if(this.mdp.compareTo(confirmation)!=0)throw new Exception("Les mots de passe sont differents");
             
-            this.serviceUsers.save(e);
+            List<Integer> listAccess = new ArrayList();
+            if(this.boolCaisseQuotient) listAccess.add(ReferenceAccesUser.CAISSEQUOTIENT);;
+            if(this.boolClients)listAccess.add(ReferenceAccesUser.CLIENT);
+            if(this.boolCommande)listAccess.add(ReferenceAccesUser.COMMANDE);
+            if(this.boolUser)listAccess.add(ReferenceAccesUser.USER);
+            if(this.boolStock)listAccess.add(ReferenceAccesUser.STOCK);
+            if(listAccess.size()==5)listAccess.clear(); listAccess.add(ReferenceAccesUser.ROOT);
+            
+            this.serviceUsers.saveUsers(user, listAccess);
             this.linkSuccess = ReferenceErreur.VISIBLE;
             this.messageSuccess = "L'utilisateur " + nom + " a été ajouté avec succès";
             

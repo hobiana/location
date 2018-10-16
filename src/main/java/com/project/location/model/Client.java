@@ -5,6 +5,7 @@
  */
 package com.project.location.model;
 
+import com.project.location.reference.Reference;
 import com.project.location.util.Test;
 import java.util.Date;
 
@@ -17,7 +18,16 @@ public class Client extends BaseModel {
     private String prenom; 
     private String CIN; 
     private String adresse;
+    private String telephone;
     private boolean blackListe; 
+
+    public String getTelephone() {
+        return telephone;
+    }
+
+    public void setTelephone(String telephone) {
+        this.telephone = telephone;
+    }
 
     public String getNom() {
         return nom;
@@ -73,8 +83,11 @@ public class Client extends BaseModel {
         
     }
     
-    public Client(){}
+    public Client(){
+        super.setReference(Reference.CLIENT);
+    }
     public Client(long id){
+        super.setReference(Reference.CLIENT);
         this.setId(id);
     }
     

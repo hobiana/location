@@ -46,8 +46,6 @@ Contributor(s):
     </id>
     <property column="datefacture" name="dateFacture" type="date"/>
     <property column="quotient" name="quotient" type="double"/>
-    <property column="tva" name="TVA" type="double"/>
-    <property column="remise" name="remise" type="double"/>
     <many-to-one class="com.project.location.model.Commande" fetch="select" name="commande">
       <column name="idcommande" not-null="true"/>
     </many-to-one>

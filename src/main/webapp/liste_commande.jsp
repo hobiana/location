@@ -31,6 +31,22 @@
                     <div class="col-lg-12">
                         <div class="panel panel-default">
                             <div class="panel-heading">
+                                Recherche
+                            </div>
+                            <!-- /.panel-heading -->
+                            <div class="panel-body">
+                                <form role="form" action="listcommande1">
+                                    <div class="form-group">
+                                        <label>Référence de la commande</label>
+                                        <input name="reference" class="form-control" placeholder="exemple: CMDxxxxx">
+                                    </div>
+                                    <button style="margin-top: 15px;" type="submit" class="btn btn-default">Rechercher</button>
+                                    </form>
+                                </div>
+                                <!-- /.panel-body -->
+                            </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
                                 Recherche avancée
                             </div>
                             <!-- /.panel-heading -->
@@ -70,7 +86,8 @@
                                     </div>
                                     <div class="form-group">
                                         <div class="col-md-12" style="margin-top: 15px;">
-                                                <div class="col-md-3">
+                                                <div class="col-md-1"></div>
+                                                <div class="col-md-2">
                                                     <div class="col-md-12">
                                                         <label>Re&ccedil;u par le client : </label>
                                                     </div>
@@ -78,15 +95,15 @@
                                                         <input type="checkbox" name="recu" data-toggle="toggle" data-on="Oui" data-off="Non" <s:if test="recu!=null">checked</s:if>>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-3">
+                                                <div class="col-md-2">
                                                     <div class="col-md-12">
-                                                        <label>Retour : </label>
+                                                        <label>Commande déjà retournée : </label>
                                                     </div>
                                                     <div class="col-md-12">
                                                         <input type="checkbox" name="retour" data-toggle="toggle" data-on="Oui" data-off="Non" <s:if test="retour!=null">checked</s:if>>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-3">
+                                                <div class="col-md-2">
                                                     <div class="col-md-12">
                                                         <label>Commande annulée : </label>
                                                     </div>
@@ -94,14 +111,23 @@
                                                         <input type="checkbox" name="annule" data-toggle="toggle" data-on="Oui" data-off="Non" <s:if test="annule!=null">checked</s:if>>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-3">
+                                                <div class="col-md-2">
                                                     <div class="col-md-12">
-                                                        <label>Commande payé : </label>
+                                                        <label>Commande payée : </label>
                                                     </div>
                                                     <div class="col-md-12">
                                                         <input type="checkbox" name="paye" data-toggle="toggle" data-on="Oui" data-off="Non" <s:if test="paye!=null">checked</s:if>>
                                                     </div>
                                                 </div>
+                                                <div class="col-md-2">
+                                                    <div class="col-md-12">
+                                                        <label>Commande préparée : </label>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <input type="checkbox" name="prepare" data-toggle="toggle" data-on="Oui" data-off="Non" <s:if test="prepare!=null">checked</s:if>>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-1"></div>
                                             </div>
                                         </div>
                                         <button style="margin-top: 15px;" type="submit" class="btn btn-default">Rechercher</button>

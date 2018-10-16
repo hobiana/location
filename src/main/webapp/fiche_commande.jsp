@@ -18,11 +18,11 @@
     <body>
         <div id="wrapper">
             <%@include file="/template/header.jsp" %>
-            
+
             <div id="page-wrapper">
                 <div class="row">
                     <div class="col-lg-12">
-                        <h1 class="page-header">Fiche Commande</h1>
+                        <h1 class="page-header">Fiche de la commande <s:property value="commande.getRef()"/></h1>
                     </div>
                     <!-- /.col-lg-12 -->
                 </div>
@@ -31,7 +31,7 @@
                     <div class="col-lg-12">
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                Fiche de la commande <s:property value="commande.getRef()"/>
+                                Fiche de la commande <s:property value="commande.getRef2()"/>
                             </div>
                             <!-- /.panel-heading -->
                             <div class="panel-body">
@@ -42,184 +42,117 @@
                                     <input name="client" class="form-control" value="<s:property value="commande.getClient().getPrenom()"/> <s:property value="commande.getClient().getNom()"/>" readonly>
                                 </div>
                                 <div class="form-group">
-                                    <label>Date début</label>
+                                    <label>Date d'acquisition</label>
+                                    <input name="dateDebut" class="form-control" type="date" value="<s:property value="commande.dateAcquisition()"/>" readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label>Date début de location</label>
                                     <input name="dateDebut" class="form-control" type="date" value="<s:property value="commande.dateDebut()"/>" readonly>
                                 </div>
                                 <div class="form-group">
-                                    <label>Date Fin</label>
+                                    <label>Date Fin de location</label>
                                     <input name="dateFin" class="form-control"  type="date" value="<s:property value="commande.dateFin()"/>" readonly>
                                 </div>
                                 <div class="form-group">
-                                    <label>Durée en jour(s)</label>
-                                    <input class="form-control" value="<s:property value="commande.getNombreDeJour()"/>" readonly>
+                                    <label>Date de retour des articles</label>
+                                    <input name="dateDebut" class="form-control" type="date" value="<s:property value="commande.dateRetour()"/>" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label>Etat :</label>
                                     <label class="checkbox-inline">
                                         <s:if test="commande.isRecu()==false">
                                             <button type="button" class="btn btn-default btn-sm btn-circle"><i class="fa fa-times"></i></button> Non reçu par le client
-                                        </s:if>
-                                        <s:else>
+                                            </s:if>
+                                            <s:else>
                                             <button type="button" class="btn btn-default btn-sm btn-circle"><i class="fa fa-check"></i></button> Reçu par le client
-                                        </s:else>
-                                         
+                                            </s:else>
+
                                     </label>
                                     <label class="checkbox-inline">
                                         <s:if test="commande.isAnnule()==false">
                                             <button type="button" class="btn btn-default btn-sm btn-circle"><i class="fa fa-times"></i></button> Non annulé
-                                        </s:if>
-                                        <s:else>
+                                            </s:if>
+                                            <s:else>
                                             <button type="button" class="btn btn-default btn-sm btn-circle"><i class="fa fa-check"></i></button> Annulé
-                                        </s:else>
+                                            </s:else>
                                     </label>
                                     <label class="checkbox-inline">
                                         <s:if test="commande.isRetour()==false">
                                             <button type="button" class="btn btn-default btn-sm btn-circle"><i class="fa fa-times"></i></button> Non retour au stock
-                                        </s:if>
-                                        <s:else>
+                                            </s:if>
+                                            <s:else>
                                             <button type="button" class="btn btn-default btn-sm btn-circle"><i class="fa fa-check"></i></button> Retour au stock
-                                        </s:else>
+                                            </s:else>
                                     </label>
                                     <label class="checkbox-inline">
                                         <s:if test="commande.isPaye()==false">
                                             <button type="button" class="btn btn-default btn-sm btn-circle"><i class="fa fa-times"></i></button> Non payé
-                                        </s:if>
-                                        <s:else>
+                                            </s:if>
+                                            <s:else>
                                             <button type="button" class="btn btn-default btn-sm btn-circle"><i class="fa fa-check"></i></button> Payé
-                                        </s:else>
+                                            </s:else>
                                     </label>
                                 </div>
-                                <a class="btn btn-default pull-left" href="#retour" data-toggle="modal">Retour en stock</a>
-                                <div class="modal fade" id="retour" role="dialog">
-                                    <div class="modal-dialog modal-lg">
-                                        <!-- Modal content-->
-                                        <div class="modal-content">
-                                            <form method="POST" action="retourcommande" onsubmit="setValueStruts()">
-                                                <div class="modal-header backg-brw">
-                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                    <h4 class="modal-title">Retour en stock</h4>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <table width="100%" class="table table-striped table-bordered table-hover">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>R&eacute;f.</th>
-                                                                <th>Désignation</th>
-                                                                <th>Qte. commandée</th>
-                                                                <th>Qte. à retouner</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <s:iterator value="listeCommandeStock" status="status">
-                                                                <tr class="odd gradeX">
-                                                                    <td> <s:property value="getRef()"/> </td>
-                                                                    <td> <s:property value="getStock().getDesignation()"/> </td>
-                                                                    <td><span class="pull-right"> <s:property value="quantiteCommande()"/></span></td>
-                                                                    <td><input class="form-control input-sm pull-right" id="cmd<s:property value="%{#status.index}"/>" ></td>
-                                                                    <s:hidden name="listProduitRetour[%{#status.index}].idProduit" value="%{id}"/> 
-                                                                    <s:hidden name="listProduitRetour[%{#status.index}].valueProduitRetour"/>
-                                                                    
-                                                                </tr>
-                                                            </s:iterator>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <input name="idCommande" type="hidden" value="<s:property value="idCommande"/>" >
-                                                    <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Annuler</button>
-                                                    <button class="btn btn-default base-background pull-right">Valider le retour de la commande</button>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-                                <a style='margin-left: 10px;' class="btn btn-default pull-left" href="#etat" data-toggle="modal">Modifier les états de la commande</a>
-                                <div class="modal fade" id="etat" role="dialog">
-                                    <div class="modal-dialog modal-lg">
-                                        <!-- Modal content-->
-                                        <div class="modal-content">
-                                            <form method="POST" action="retourcommande">
-                                                <div class="modal-header backg-brw">
-                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                    <h4 class="modal-title">Modifier les états de la commande</h4>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <div class="form-group">
-                                                        <div class="row">
-                                                            <div class="col-md-6">
-                                                                <div class="col-md-12">
-                                                                    <label>Re&ccedil;u par le client : </label>
-                                                                </div>
-                                                                <div class="col-md-3">
-                                                                    <input type="checkbox" name="recu" data-toggle="toggle" data-on="Oui" data-off="Non" <s:if test="commande.isRecu()==true">checked</s:if>>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-6">
-                                                                <div class="col-md-12">
-                                                                    <label>Annulée : </label>
-                                                                </div>
-                                                                <div class="col-md-12">
-                                                                    <input type="checkbox" name="annule" data-toggle="toggle" data-on="Oui" data-off="Non" <s:if test="commande.isAnnule()==true">checked</s:if>>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <input type="hidden" name="idCommande" value="<s:property value="idCommande"/>" />
-                                                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Annuler</button>
-                                                    <button class="btn btn-default base-background pull-right">Modifier</button>
-                                                </div>
-                                            </form>
-                                            </div>
-                                        </div>
-                                    </div>
+                                <s:if test="commande.isAnnule()==false">
+                                    <a style='margin-left: 10px;' onclick="confirmAnnulation()" class="btn btn-danger pull-left" >Annuler la commande</a>
                                     <a style='margin-left: 10px;' href="downloadPDF?idCommande=<s:property value="idCommande"/>" class="btn btn-default pull-left" >Facture</a>
-                                    <s:if test="commande.isPaye()==false">
-                                        <a class="btn btn-success pull-right" href="#payer" data-toggle="modal">Payer la commande</a>
-                                        <div class="modal fade" id="payer" role="dialog">
-                                            <div class="modal-dialog modal-md">
-                                                <!-- Modal content-->
-                                                <div class="modal-content">
-                                                    <form method="POST" action="payerCommande">
-                                                        <div class="modal-header backg-brw">
-                                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                            <h4 class="modal-title">Payer la commande</h4>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            <div class="form-group">
-                                                                <label>Quotient</label>
-                                                                <input name="quotient" type="number" class="form-control" placeholder="Quotient">
-                                                                <input name="idCommande" type="hidden" value="<s:property value="idCommande"/>">
-                                                            </div>
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Annuler</button>
-                                                            <button class="btn btn-success base-background pull-right">Payer</button>
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </s:if>
-                                </div>
-                                <!-- /.panel-body -->
-                            </div>
-                            <!-- /.panel -->
+                                    <a style='margin-left: 10px;' href="downloadQuotient?idCommande=<s:property value="idCommande"/>" class="btn btn-default pull-left" >Facture Quotient</a>
+                                    <a class="btn btn-success pull-right" href="paiement?idCommande=<s:property value="idCommande" />">Paiement</a>
+                                </s:if>
+                                
 
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <span>Liste des commandes</span>
-                                </div>
-                                <!-- /.panel-heading -->
-                                <div class="panel-body">
-                                    <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
-                                        <thead>
+                            </div>
+                            <!-- /.panel-body -->
+                        </div>
+                        <!-- /.panel -->
+                        
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <span>Hors Stock</span>
+                            </div>
+                            <!-- /.panel-heading -->
+                            <div class="panel-body">
+                                <table width="100%" class="table table-striped table-bordered table-hover" id="hors_stock">
+                                    <thead>
+                                        <tr>
+                                            <th>Désignation</th>
+                                            <th>PU</th>
+                                            <th>Qte</th>
+                                            <th>Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <s:iterator value="listeHorsStock">
+                                            <tr class="odd gradeX">
+                                                <td> <s:property value="libelle"/> </td>
+                                                <td><span class="pull-right"> <s:property value="doubleToString(montant)"/> </span></td> 
+                                                <td><span class="pull-right"><s:property value="quantite"/> </span></td>
+                                                <td><span class="pull-right"><s:property value="doubleToString(quantite*montant)"/> </span></td>
+                                            </tr>
+                                        </s:iterator>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- /.panel-body -->
+                        </div>
+
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <span>Liste des commandes</span>
+                            </div>
+                            <!-- /.panel-heading -->
+                            <div class="panel-body">
+                                <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
+                                    <thead>
                                         <tr>
                                             <th>R&eacute;f.</th>
                                             <th>Désignation</th>
+                                            <th>Prix de casse</th>
                                             <th>Qte.</th>
-                                            <th>PU/jrs</th>
+                                            <th>Remise</th>
+                                            <th>PU</th>
+                                            <th>Tot.Rem.</th>
+                                            <th>Montant</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -227,13 +160,66 @@
                                             <tr class="odd gradeX">
                                                 <td> <s:property value="getRef()"/> </td>
                                                 <td> <s:property value="getStock().getDesignation()"/> </td>
+                                                <td><span class="pull-right"><s:property value="prixCasse()"/> </span></td>
                                                 <td><span class="pull-right"> <s:property value="quantiteCommande()"/> </span></td> 
+                                                <td><span class="pull-right"> <s:property value="doubleToString(remise)"/> </span></td> 
                                                 <td><span class="pull-right"><s:property value="getStringPrixLocation()"/> </span></td>
+                                                <td><span class="pull-right"> <s:property value="doubleToString(remise*quantiteCommande)"/> </span></td> 
+                                                <td><span class="pull-right"> <s:property value="doubleToString(prixLocation*quantiteCommande)"/> </span></td> 
                                             </tr>
                                         </s:iterator>
                                     </tbody>
                                 </table>
-                                        <p class="text-right h4"><strong class="">Total :</strong> <s:property value="total"/> Ar </p>
+                                <div class="col-md-12">
+                                    <div class="col-md-9">
+                                        <p class="text-right"><strong class="">Tot. Hors Stock :</strong></p>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <p class="text-right"><s:property value="doubleToString(total[3])"/> Ar </p>
+                                        <hr>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="col-md-9">
+                                        <p class="text-right"><strong class="">Nb. Jrs :</strong></p>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <p class="text-right"><s:property value="commande.nombreJour()"/> </p>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="col-md-9">
+                                        <p class="text-right"><strong class="">Tot. brute :</strong></p>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <p class="text-right"><s:property value="doubleToString(total[1])"/> Ar </p>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="col-md-9">
+                                        <p class="text-right"><strong class="">Tot. rem. Art. :</strong></p>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <p class="text-right"><s:property value="doubleToString(total[2])"/> Ar </p>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="col-md-9">
+                                        <p class="text-right"><strong class="">Remise commande :</strong></p>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <p class="text-right"><s:property value="doubleToString(commande.getRemiseGlobal())"/> Ar </p>
+                                        <hr>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="col-md-9">
+                                        <p class="text-right"><strong class="">Tot. net :</strong></p>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <p class="text-right"><strong><s:property value="doubleToString(total[0])"/> Ar </strong></p>
+                                    </div>
+                                </div>
                             </div>
                             <!-- /.panel-body -->
                         </div>
@@ -254,19 +240,24 @@
                 responsive: true,
                 paging: false
             });
-            /*
-            $("#cmd0").click(function(){
-                alert("The paragraph was clicked.");
-            });*/
+            $('#hors_stock').DataTable({
+                responsive: true,
+                paging: false
+            });
         });
-        function setValueStruts(){
+        function setValueStruts() {
             //listProduitRetour_0__valueProduitRetour
             var size = <s:property value="listeCommandeStock.size()"/>
-            for(var i=0;i<size;i++){
-                var val = document.getElementById('cmd'+i).value;
-                var inputStruts = document.getElementById('listProduitRetour_'+i+'__valueProduitRetour');
+            for (var i = 0; i < size; i++) {
+                var val = document.getElementById('cmd' + i).value;
+                var inputStruts = document.getElementById('listProduitRetour_' + i + '__valueProduitRetour');
                 inputStruts.value = val;
             }
+        }
+        function confirmAnnulation(){
+             if(confirm("Etes-vous sûr de vouloir annulée la commande? L'annulation est irreversible.")){
+                 window.location.replace("annulecommande?idCommande=<s:property value="idCommande"/>&annule=true")
+             }
         }
     </script>
 </html>

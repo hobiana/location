@@ -11,15 +11,17 @@
         
     <!--Action class-->
     <bean id="quotientAction" class="com.project.location.action.ActionQuotient">
-        <property name="ServiceCaisse" ref="serviceCaisse" />
-        <property name="ServiceCaisseQuotient" ref="serviceCaisseQuotient" />
+        <property name="serviceCaisse" ref="serviceCaisse" />
+        <property name="serviceCaisseQuotient" ref="serviceCaisseQuotient" />
     </bean>
     <bean id="caisseAction" class="com.project.location.action.ActionCaisse">
         <property name="serviceCaisse" ref="serviceCaisse" />
-        <property name="ServiceCaisseQuotient" ref="serviceCaisseQuotient" />
+        <property name="serviceCaisseQuotient" ref="serviceCaisseQuotient" />
     </bean>
     <bean id="clientAction" class="com.project.location.action.ActionClient">
+        <property name="serviceStat" ref="serviceStat" />
         <property name="clientService" ref="clientService" />
+        <property name="serviceUsers" ref="serviceUsers" />
     </bean>
     <bean id="usersAction" class="com.project.location.action.ActionUsers">
         <property name="serviceUsers" ref="serviceUsers" />
@@ -30,8 +32,19 @@
     <bean id="commandeAction" class="com.project.location.action.ActionCommande">
         <property name="serviceStock" ref="serviceStock" />
         <property name="serviceCommande" ref="serviceCommande" />
+        <property name="serviceFacture" ref="serviceFacture" />
     </bean>
-    <!--service class-->   
+    <bean id="paiementAction" class="com.project.location.action.ActionPaiement">
+        <property name="serviceCommande" ref="serviceCommande" />
+        <property name="serviceFacture" ref="serviceFacture" />
+    </bean>
+    <bean id="webService" class="com.project.location.action.ActionWebService">
+        <property name="serviceStat" ref="serviceStat" />
+    </bean>
+    <!--service class--> 
+    <bean id="serviceFacture" class="com.project.location.service.ServiceFacture">
+        <property name="hibernateDao" ref="hibernateDao" />
+    </bean>  
     <bean id="serviceCaisse" class="com.project.location.service.ServiceCaisse">
         <property name="hibernateDao" ref="hibernateDao" />
         <property name="serviceCommande" ref="serviceCommande" />
@@ -48,6 +61,7 @@
         <property name="hibernateDao" ref="hibernateDao" />
         <property name="serviceStock" ref="serviceStock" />
         <property name="serviceUtil" ref="serviceUtil" />
+        <property name="serviceFacture" ref="serviceFacture" />
     </bean>
     <bean id="serviceEntree" class="com.project.location.service.ServiceEntree">
         <property name="hibernateDao" ref="hibernateDao" />
@@ -65,6 +79,9 @@
         <property name="hibernateDao" ref="hibernateDao" />
         <property name="serviceStock" ref="serviceStock" />
         <property name="serviceUtil" ref="serviceUtil" />
+    </bean>
+    <bean id="serviceStat" class="com.project.location.service.ServiceStat">     
+        <property name="hibernateDao" ref="hibernateDao" />
     </bean>
     <bean id="serviceStock" class="com.project.location.service.ServiceStock">
         <property name="hibernateDao" ref="hibernateDao" />

@@ -39,7 +39,7 @@
                             <!-- /.panel-body -->
                         </div>
                         <!-- /.panel -->
-                        <div class="panel panel-default">
+                        <div class="panel panel-success">
                             <div class="panel-heading">
                                 Entrée
                             </div>
@@ -60,7 +60,7 @@
                             <!-- /.panel-body -->
                         </div>
                         <!-- /.panel -->
-                        <div class="panel panel-default">
+                        <div class="panel panel-danger">
                             <div class="panel-heading">
                                 Sortie
                             </div>

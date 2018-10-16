@@ -54,5 +54,6 @@ Contributor(s):
     <property column="quantiteretour" name="quantiteRetour" type="double"/>
     <property column="prixlocation" name="prixLocation" type="integer"/>
     <property column="prixcasse" name="prixCasse" type="integer"/>
+    <property column="remise" name="remise" type="double"/>
   </class>
 </hibernate-mapping>

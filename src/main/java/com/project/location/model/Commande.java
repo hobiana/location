@@ -24,9 +24,27 @@ public class Commande extends BaseModel {
     private boolean retour;
     private boolean recu;
     private boolean paye; 
+    private boolean prepare;
+    private Double remiseGlobal;
     private Client client;
     private List<CommandeStock> commandeStock;
 
+    public boolean isPrepare() {
+        return prepare;
+    }
+
+    public void setPrepare(boolean prepare) {
+        this.prepare = prepare;
+    }
+
+    public Double getRemiseGlobal() {
+        return remiseGlobal;
+    }
+
+    public void setRemiseGlobal(Double remiseGlobal) {
+        if(remiseGlobal == null) this.remiseGlobal = 0.0;
+        else this.remiseGlobal = remiseGlobal;
+    }
     public List<CommandeStock> getCommandeStock() {
         return commandeStock;
     }
@@ -96,6 +114,14 @@ public class Commande extends BaseModel {
     
     public String dateCommande() throws Exception{
         return DateUtil.convert(dateCommande);
+    }
+    
+    public String dateAcquisition() throws Exception{
+        return DateUtil.convert(dateAcquisition);
+    }
+    
+    public String dateRetour() throws Exception{
+        return DateUtil.convert(dateRetour);
     }
     
     public void setDateDebut(Date dateDebut) {

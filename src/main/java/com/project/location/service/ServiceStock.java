@@ -43,13 +43,19 @@ public class ServiceStock extends BaseService {
         }
     }
 
-    public List<Stock> find(String designation, int quantiteMin, int quantiteMax, int locationMin, int locationMax) throws Exception {
+    public List<Stock> find(String reference,String designation, int quantiteMin, int quantiteMax, int locationMin, int locationMax) throws Exception {
         List<Object[]> arg = new ArrayList<>();
         Object[] des = Test.instance(2);
         des[0] = "designation";
         des[1] = designation;
         if (Test.argmumentNull(designation)) {
             des = null;
+        }
+        Object[] ref = Test.instance(2);
+        ref[0] = "reference";
+        ref[1] = reference;
+        if (Test.argmumentNull(reference)) {
+            ref = null;
         }
         Object[] quantite = Test.instance(3);
         quantite[0] = "quantite";
@@ -107,6 +113,9 @@ public class ServiceStock extends BaseService {
         }
         if (!Test.testNull(location)) {
             arg.add(location);
+        }
+        if (!Test.testNull(ref)) {
+            arg.add(ref);
         }
         List<Stock> reponse = null;
         try {
@@ -187,6 +196,7 @@ public class ServiceStock extends BaseService {
             if (tr != null) {
                 tr.rollback();
             }
+            ex.printStackTrace();
             throw new Exception("impossible de d'ajouter dans historique de prix stock ou de modifier le stock : " + stock.getRef());
         } finally {
             if (session != null) {

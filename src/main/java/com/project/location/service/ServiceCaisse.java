@@ -7,15 +7,11 @@ package com.project.location.service;
 
 import com.project.location.dao.HibernateDao;
 import com.project.location.model.Caisse;
-import com.project.location.model.Commande;
 import com.project.location.model.EntreeQuotient;
 import com.project.location.model.EntreeVola;
-import com.project.location.model.Facture;
 import com.project.location.model.Quotient;
 import com.project.location.model.SortieQuotient;
 import com.project.location.model.SortieVola;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -147,7 +143,7 @@ public class ServiceCaisse extends BaseService {
         }
     }
     
-    private void addVolaCaisse(EntreeVola vola,Session session) throws Exception{
+    public void addVolaCaisse(EntreeVola vola,Session session) throws Exception{
         Caisse caisse = new Caisse();              
         double solde = 0; 
         try{
@@ -156,7 +152,9 @@ public class ServiceCaisse extends BaseService {
             this.cleanCaisse(session);
             this.addCaisse(caisse, session);
             this.addEntree(vola, session);
+            ServiceHistoriqueUser.save("ajout de la somme "+vola.getVolaM()+" Ar dans la caisse", session);
         }catch(Exception e){
+            e.printStackTrace();
             throw new Exception("Impossible de sauvegarder l'argent dans la caisse cause "+e.getMessage());
         }
     }
@@ -185,7 +183,7 @@ public class ServiceCaisse extends BaseService {
         }
     }
     
-    private void addVolaQuotient(EntreeQuotient vola,Session session) throws Exception{
+    public void addVolaQuotient(EntreeQuotient vola,Session session) throws Exception{
         Quotient quotient = new Quotient();       
         double solde = 0;
         
@@ -195,7 +193,9 @@ public class ServiceCaisse extends BaseService {
             this.cleanQuotient(session);
             this.addQuotient(quotient, session);
             this.addEntreeQuotient(vola, session);
+            ServiceHistoriqueUser.save("ajout de la somme "+vola.getVolaM()+" Ar dans la caisse des quotients", session);
         }catch(Exception e){
+            e.printStackTrace();
             throw new Exception("impossible de sauvegarder l'argent dans le quotient cause "+e.getMessage());
         }
     }
@@ -280,55 +280,5 @@ public class ServiceCaisse extends BaseService {
             return 0; 
         }
         return quotients.get(quotients.size()-1).getVolaM();       
-    }
-    
-    private void payerCommande(Commande commande, double quotient)throws Exception{
-        if(commande.isPaye())throw new Exception("la commande a déjà été payé");
-        double totalCaisse = this.serviceCommande.getTotal(commande.getId()); 
-        Facture facture = new Facture();
-        facture.setCommande(commande);
-        facture.setQuotient(quotient);
-        facture.setRemise(0);
-        facture.setTVA(0);
-        Date now = Calendar.getInstance().getTime();
-        facture.setDateFacture(now);
-        
-        EntreeVola entree = new EntreeVola(); 
-        entree.setDate(now);
-        entree.setDesignation("payement de la commande "+commande.getRef());
-        entree.setVolaM(totalCaisse);
-        
-        EntreeQuotient entreeQuotient = null;
-        if(quotient!=0){
-            entreeQuotient = new EntreeQuotient(); 
-            entreeQuotient.setDesignation("payement de la commande "+commande.getRef());
-            entreeQuotient.setDate(now);
-            entreeQuotient.setVolaM(quotient);
-        }
-        
-        Session session = null; 
-        Transaction tr = null;
-        try{
-            session = this.hibernateDao.getSessionFactory().openSession(); 
-            tr = session.beginTransaction(); 
-            
-            this.addVolaCaisse(entree, session);
-            if(entreeQuotient!=null) this.addVolaQuotient(entreeQuotient, session);
-            ServiceFacture.newFacture(facture,session);
-            ServiceCommande.payer(commande, session);
-            ServiceHistoriqueUser.save("payement de la commande "+commande.getRef(), session);
-            tr.commit();
-        }catch(Exception e){
-            if(tr!=null)tr.rollback();
-            e.printStackTrace();
-            throw new Exception("impossible de payer la commande causse"+e.getMessage());
-        }finally{
-            if(session!=null)session.close();
-        }
-    }
-    
-    public void payerCommande(long idCommande, double quotient)throws Exception{
-        Commande commande = this.serviceCommande.find(idCommande);
-        this.payerCommande(commande, quotient);
     }
 }

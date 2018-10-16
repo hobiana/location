@@ -21,6 +21,7 @@
     <property name="show_sql">true</property>
     <mapping resource="xml/client.hbm.xml"/>
     <mapping resource="xml/facture.hbm.xml"/>
+    <mapping resource="xml/facturefille.hbm.xml"/>
     <mapping resource="xml/historiqueuser.hbm.xml"/>
     <mapping resource="xml/sortie.hbm.xml"/>
     <mapping resource="xml/sortievola.hbm.xml"/>
@@ -31,6 +32,7 @@
     <mapping resource="xml/caisse.hbm.xml"/>
     <mapping resource="xml/commande.hbm.xml"/>
     <mapping resource="xml/commandestock.hbm.xml"/>
+    <mapping resource="xml/horstock.hbm.xml"/>
     <mapping resource="xml/entree.hbm.xml"/>
     <mapping resource="xml/entreevola.hbm.xml"/>
     <mapping resource="xml/historiquePrixStock.hbm.xml"/>
