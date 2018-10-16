@@ -18,6 +18,7 @@ import com.project.location.model.Client;
 import com.project.location.model.Commande;
 import com.project.location.model.CommandeStock;
 import com.project.location.model.Facture;
+import com.project.location.model.HorsSotck;
 import com.project.location.model.ProduitRetour;
 import com.project.location.model.Stock;
 import com.project.location.reference.ReferenceSession;
@@ -243,6 +244,48 @@ public class ServiceCommande extends BaseService{
         }
     }
     
+    /*
+    public  List<HorsSotck> findListHorsStock(Commande commande, Session session) throws Exception{
+        Query query = null; 
+        try{
+            String sql = "SELECT hs FROM HorsStock hs join hs.commande commande  where commande.id = :id";
+            query = session.createQuery(sql);
+            query.setParameter("id", commande.getId());
+            return (List<HorsSotck>)query.list();
+        }catch(Exception e){
+            e.printStackTrace();
+            throw new Exception("impossible d'extraire le stock de la commande");
+        }
+    }*/
+    
+    public  List<HorsSotck> findListHorsStock(Commande commande) throws Exception{
+        Session session = null;
+        try{
+            session = this.hibernateDao.getSessionFactory().openSession();
+            return this.findListHorsStock(commande, session);
+        }catch(Exception e){
+            e.printStackTrace();
+            throw new Exception("impossible d'extraire le stock de la commande");
+        }finally{
+            if(session!=null) session.close();
+        }
+    }
+    
+    public List<HorsSotck> findListHorsStock(Commande commande,Session session) throws Exception{
+        Query query = null;
+        List<HorsSotck> reponse = null; 
+        try{
+            String sql = "SELECT horsStock FROM HorsSotck horsStock join horsStock.commande commande WHERE commande.id = :id"; 
+            query = session.createQuery(sql); 
+            query.setParameter("id", commande.getId()); 
+            
+            reponse =  query.list();
+            return reponse;
+        }catch(Exception e){
+            e.printStackTrace();
+            throw new Exception("Impossible d'extraire les détails de la commande "+commande.getRef());
+        }
+    }
     
     public void initStock(List<CommandeStock> commandeStock, Session session) throws Exception{
         try{
@@ -256,9 +299,12 @@ public class ServiceCommande extends BaseService{
         }
     }
     
-    //Fonction getTotal principal
-    public double getTotal(List<CommandeStock> commandesStock,Date debut, Date fin)throws Exception{
-        double total=0;
+    //Fonction getTotaux principal
+    public double[] getTotal(List<CommandeStock> commandesStock,List<HorsSotck> horsStock,double remise_globale,Date debut, Date fin)throws Exception{
+        double totalNet=0;
+        double totalBrute=0;
+        double total_remise=0;
+        double prixHorsStock = 0;
         Session session=null; 
         if(debut==null||fin==null)throw new Exception("Aucune date insérée");
         int nbrJour = DateUtil.nombreJ(debut, fin); 
@@ -272,8 +318,22 @@ public class ServiceCommande extends BaseService{
                 CommandeStock temp = commandesStock.get(i); 
                 double prixL = temp.getPrixLocation();
                 double quantite = temp.getQuantiteCommande(); 
-                total+= prixL*quantite*nbrJour;      
+                double tempremise = temp.getRemise()*quantite*nbrJour;
+                total_remise+=tempremise;
+                totalBrute+= (prixL*quantite*nbrJour);      
             }
+            totalNet = totalBrute-total_remise-remise_globale;
+            for(int i =0;i<horsStock.size();i++){
+                HorsSotck temp = horsStock.get(i);
+                double prixHS = temp.getMontant()*temp.getQuantite();
+                prixHorsStock+= prixHS;
+            }
+            
+            double[] total=new double[4];
+            total[0]=totalNet;
+            total[1]=totalBrute;
+            total[2]=total_remise;
+            total[3]=prixHorsStock;
             return total;
         }catch(Exception e){
             e.printStackTrace();
@@ -285,23 +345,25 @@ public class ServiceCommande extends BaseService{
     }
     
     //Fonction getTotal des commande temporaire
-    public double getTotal(Date debut, Date fin) throws Exception{
-        List<CommandeStock> list = this.getCommande(); 
-        return this.getTotal(list, debut, fin);
+    public double[] getTotal(double remise_globale,Date debut, Date fin) throws Exception{
+        List<CommandeStock> listCS = this.getCommande(); 
+        List<HorsSotck> listHS = this.getCommandeHS(); 
+        return this.getTotal(listCS,listHS,remise_globale, debut, fin);
     }
     
     //Get total des commande temporaire avec des date en String
-    public double getTotal(String debut, String fin) throws Exception{
+    public double[] getTotal(double remise_globale,String debut, String fin) throws Exception{
         Date debutD = DateUtil.convert(debut); 
         Date finD = DateUtil.convert(fin);
-        return this.getTotal(debutD, finD);
+        return this.getTotal(remise_globale,debutD, finD);
     }
     
     //Get total des commandes dans la base de données
-    public double getTotal(long idCommande)throws Exception{
+    public double[] getTotal(long idCommande)throws Exception{
         Commande commande = this.find(idCommande); 
-        List<CommandeStock> list = this.find(commande); 
-        return this.getTotal(list, commande.getDateDebut(), commande.getDateFin());
+        List<CommandeStock> listCS = this.find(commande); 
+        List<HorsSotck> listHS = this.findListHorsStock(commande); 
+        return this.getTotal(listCS,listHS,commande.getRemiseGlobal(), commande.getDateDebut(), commande.getDateFin());
     }
      
     public int getNombreJour(long idCommande) throws Exception {
@@ -693,6 +755,14 @@ public class ServiceCommande extends BaseService{
         return restant - quantite; 
     }
     
+    public int dispoStock(long idStock, Date debut, Date fin) throws Exception{
+        return this.getStockRestant(idStock, debut, fin);
+    }
+    
+    public int dispoStock(long idStock, Date debut, Date fin, Session session) throws Exception{
+        return this.getStockRestant(idStock, debut, fin,session);
+    }
+    
     public int dispo(long idStock,int quantite, Date debut, Date fin, Session session) throws Exception{
         int restant = this.getStockRestant(idStock, debut, fin,session);
         return restant - quantite; 
@@ -703,7 +773,7 @@ public class ServiceCommande extends BaseService{
     }
     
     public boolean checkDispo(Date debut, Date fin, CommandeStock commande, Session session) throws Exception{
-        return this.dispo(commande.getStock().getId(), (int)commande.getQuantiteCommande(), debut, fin, session)>0;
+        return this.dispo(commande.getStock().getId(), (int)commande.getQuantiteCommande(), debut, fin, session)>=0;
     }
     
     public int getTotal() throws Exception{
@@ -714,7 +784,7 @@ public class ServiceCommande extends BaseService{
         return commandes.get(0).getCommande().getTotal(commandes);
     }
     
-    public void addCommand(long idStock, int quantite, Date debut, Date fin) throws Exception{
+    public void addCommand(long idStock, int quantite,double remise, Date debut, Date fin) throws Exception{
         HttpSession session = ServletActionContext.getRequest().getSession();
         List<CommandeStock> commandes = (List<CommandeStock>)(Object)session.getAttribute(ReferenceSession.COMMANDE);
         if(commandes==null){
@@ -729,12 +799,15 @@ public class ServiceCommande extends BaseService{
         commandeStock.setDescription("");
         commandeStock.setPrixCasse(stock.getPrixCasse());
         commandeStock.setPrixLocation(stock.getPrixLocation());
+        commandeStock.setRemise(remise);
         boolean test = false;
         for(int i=0;i<size;i++){
             CommandeStock temp = commandes.get(i);
             if(temp.getStock().getId()==idStock){
                 test=true; 
                 temp.setQuantiteCommande(temp.getQuantiteCommande()+quantite);
+                temp.setRemise(remise);
+                break;
             }
         }
         if(!test)commandes.add(commandeStock);  
@@ -743,17 +816,27 @@ public class ServiceCommande extends BaseService{
         this.checkAll(debut, fin);
     }
     
-    public void addCommand(long idStock, int quantite, String debut, String fin) throws Exception{
+    public void addCommand(long idStock, int quantite, double remise, String debut, String fin) throws Exception{
         Date debutD = DateUtil.convert(debut);
         Date finD = DateUtil.convert(fin); 
         
-        this.addCommand(idStock, quantite, debutD, finD);
+        this.addCommand(idStock, quantite, remise, debutD, finD);
     }
     
     public List<CommandeStock> getCommande(){
         HttpSession session = ServletActionContext.getRequest().getSession();
         
         List<CommandeStock> commandes = (List<CommandeStock>)(Object)session.getAttribute(ReferenceSession.COMMANDE);
+        if(commandes==null){
+            commandes = new ArrayList();
+        }
+        return commandes;
+    }
+    
+    public List<HorsSotck> getCommandeHS(){
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        
+        List<HorsSotck> commandes = (List<HorsSotck>)(Object)session.getAttribute(ReferenceSession.COMMANDE_HS);
         if(commandes==null){
             commandes = new ArrayList();
         }
@@ -773,19 +856,23 @@ public class ServiceCommande extends BaseService{
         
         for(int i=0; i<size;i++){
             if(i==idCommande) commandes.remove(i);
+            break;
         }
       
         session.removeAttribute(ReferenceSession.COMMANDE);
         session.setAttribute(ReferenceSession.COMMANDE, commandes);  
     }
     
-    public void modifierCommand(long idCommande, int quantite, Date debut, Date fin) throws Exception{
+    public void modifierCommand(long idCommande, int quantite, double remise, Date debut, Date fin) throws Exception{
         HttpSession session = ServletActionContext.getRequest().getSession();
         List<CommandeStock> commandes = (List<CommandeStock>)(Object)session.getAttribute(ReferenceSession.COMMANDE);
         int size = commandes.size();
         if(quantite>=1){
             for(int i=0; i<size;i++){
-                if(i==idCommande) commandes.get(i).setQuantiteCommande(quantite);
+                if(i==idCommande) {
+                    commandes.get(i).setQuantiteCommande(quantite);
+                    commandes.get(i).setRemise(remise);
+                }
             }
         }
         session.removeAttribute(ReferenceSession.COMMANDE);
@@ -793,10 +880,10 @@ public class ServiceCommande extends BaseService{
         this.checkAll(debut, fin);
     }
     
-    public void modifierCommand(long idCommande, int quantite, String debut, String fin) throws Exception{
+    public void modifierCommand(long idCommande, int quantite, double remise, String debut, String fin) throws Exception{
         Date debutD = DateUtil.convert(debut); 
         Date finD = DateUtil.convert(fin); 
-        this.modifierCommand(idCommande, quantite, debutD, finD);
+        this.modifierCommand(idCommande, quantite, remise,debutD, finD);
     }
     
     public void save(CommandeStock commandeStock)throws Exception{
@@ -840,8 +927,9 @@ public class ServiceCommande extends BaseService{
             
             for(int i=0;i<size;i++){
                 CommandeStock temp = commande.get(i);
-                boolean test = this.checkDispo(debut, fin, temp); 
-                if(!test) temp.setDescription("stock insuffisant");      
+                boolean test = this.checkDispo(debut, fin, temp,session); 
+                int valueRestant = this.dispoStock(temp.getStock().getId(), debut, fin);
+                if(!test) temp.setDescription("stock insuffisant, " + valueRestant + " restant(s)");      
                 else{
                     temp.setDescription("");
                 }
@@ -968,6 +1056,7 @@ public class ServiceCommande extends BaseService{
         commande.setRemiseGlobal(remiseGlobal);
        
         List<CommandeStock> commandes = this.getCommande();
+        List<HorsSotck> hors_stock = this.getCommandeHS();
         int size = commandes.size();
         if(size==0)throw new Exception("Aucune commande n'a été effectué");
         Session session = null; 
@@ -985,6 +1074,11 @@ public class ServiceCommande extends BaseService{
                     reponse = false;
                     temp.setDescription("stock insuffisant");
                 }
+                HibernateDao.save(temp, session);
+            }
+            for(int i=0;i<hors_stock.size();i++){
+                HorsSotck temp =hors_stock.get(i);
+                temp.setCommande(commande);
                 HibernateDao.save(temp, session);
             }
             Facture facture = new Facture();
@@ -1197,5 +1291,24 @@ public class ServiceCommande extends BaseService{
         }finally { 
             if(session!=null) session.close();
         }
+    }
+    
+    public void addHorsStockSession(HorsSotck hs){
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        List<HorsSotck> horsStock = (List<HorsSotck>)(Object)session.getAttribute(ReferenceSession.COMMANDE_HS);
+        if(horsStock==null){
+            horsStock = new ArrayList();
+        }
+        horsStock.add(hs);  
+        session.removeAttribute(ReferenceSession.COMMANDE_HS);
+        session.setAttribute(ReferenceSession.COMMANDE_HS, horsStock);
+    }
+    
+    public void deleteHorsStockSession(int indice){
+      HttpSession session = ServletActionContext.getRequest().getSession();
+        List<HorsSotck> hs = (List<HorsSotck>)(Object)session.getAttribute(ReferenceSession.COMMANDE_HS);
+        hs.remove(indice);
+        session.removeAttribute(ReferenceSession.COMMANDE_HS);
+        session.setAttribute(ReferenceSession.COMMANDE_HS, hs);  
     }
 }

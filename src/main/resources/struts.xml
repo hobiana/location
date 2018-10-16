@@ -3,7 +3,7 @@
 "http://struts.apache.org/dtds/struts-2.0.dtd">
 
 <struts>
-    <package name="default" extends="struts-default, json-default">	
+    <package name="default" extends="struts-default">	
         <action name="">
             <result name="success" type="redirect">index</result>
         </action>
@@ -191,9 +191,27 @@
                 <param name="dateFin">${dateFin}</param>
                 <param name="dateAquisition">${dateAquisition}</param>
                 <param name="dateRetour">${dateRetour}</param>
-                <param name="prixLivraison">${prixLivraison}</param>
+                <param name="remiseGlobal">${remiseGlobal}</param>
                 <param name="quotient">${quotient}</param>
                 <param name="action">${action}</param>
+           </result>
+           <result name="error">index.js</result>
+        </action>
+        
+        <action name="addhorsStock" method="addhorsStock" class="com.project.location.action.ActionCommande">
+           <result name="success" type="redirectAction">
+               <param name="actionName">commande</param>
+               <param name="idClient">${idClient}</param>
+                <param name="dateDebut">${dateDebut}</param>
+                <param name="dateFin">${dateFin}</param>
+                <param name="dateAquisition">${dateAquisition}</param>
+                <param name="dateRetour">${dateRetour}</param>
+                <param name="remiseGlobal">${remiseGlobal}</param>
+                <param name="quotient">${quotient}</param>
+                <param name="action">${action}</param>
+                <!--<param name="designation_HS">${designation_HS}</param>-->
+                <!--<param name="prix_HS">${prix_HS}</param>-->
+                <!--<param name="quantite_HS">${quantite_HS}</param>-->
            </result>
            <result name="error">index.js</result>
         </action>
@@ -206,7 +224,22 @@
                 <param name="dateFin">${dateFin}</param>
                 <param name="dateAquisitiont">${dateAquisition}</param>
                 <param name="dateRetour">${dateRetour}</param>
-                <param name="prixLivraison">${prixLivraison}</param>
+                <param name="remiseGlobal">${remiseGlobal}</param>
+                <param name="quotient">${quotient}</param>
+                <param name="action">${action}</param>
+           </result>
+           <result name="error">index.js</result>
+        </action>
+        
+        <action name="deletehorsStock" method="delhorsStock" class="com.project.location.action.ActionCommande">
+           <result name="success" type="redirectAction">
+               <param name="actionName">commande</param>
+               <param name="idClient">${idClient}</param>
+                <param name="dateDebut">${dateDebut}</param>
+                <param name="dateFin">${dateFin}</param>
+                <param name="dateAquisitiont">${dateAquisition}</param>
+                <param name="dateRetour">${dateRetour}</param>
+                <param name="remiseGlobal">${remiseGlobal}</param>
                 <param name="quotient">${quotient}</param>
                 <param name="action">${action}</param>
            </result>
@@ -221,7 +254,7 @@
                 <param name="dateFin">${dateFin}</param>
                 <param name="dateAquisitiont">${dateAquisition}</param>
                 <param name="dateRetour">${dateRetour}</param>
-                <param name="prixLivraison">${prixLivraison}</param>
+                <param name="remiseGlobal">${remiseGlobal}</param>
                 <param name="quotient">${quotient}</param>
                 <param name="action">${action}</param>
            </result>
@@ -236,7 +269,7 @@
                 <param name="dateFin">${dateFin}</param>
                 <param name="dateAquisition">${dateAquisition}</param>
                 <param name="dateRetour">${dateRetour}</param>
-                <param name="prixLivraison">${prixLivraison}</param>
+                <param name="remiseGlobal">${remiseGlobal}</param>
                 <param name="quotient">${quotient}</param>
                 <param name="action">${action}</param>
            </result>
@@ -252,7 +285,7 @@
                 <param name="dateFin">${dateFin}</param>
                 <param name="dateAquisition">${dateAquisition}</param>
                 <param name="dateRetour">${dateRetour}</param>
-                <param name="prixLivraison">${prixLivraison}</param>
+                <param name="remiseGlobal">${remiseGlobal}</param>
                 <param name="action">${action}</param>
            </result>
         </action>
@@ -547,6 +580,4 @@
             </result>
         </action>
     </package>
-    
-    
 </struts>

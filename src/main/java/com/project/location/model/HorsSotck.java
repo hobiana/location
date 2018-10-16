@@ -12,7 +12,7 @@ package com.project.location.model;
 public class HorsSotck extends BaseModel{
     private Commande commande;
     private String libelle; 
-    private double quantite; 
+    private int quantite; 
     private double montant;
 
     public Commande getCommande() {
@@ -31,11 +31,11 @@ public class HorsSotck extends BaseModel{
         this.libelle = libelle;
     }
 
-    public double getQuantite() {
+    public int getQuantite() {
         return quantite;
     }
 
-    public void setQuantite(double quantite) {
+    public void setQuantite(int quantite) {
         this.quantite = quantite;
     }
 
@@ -46,6 +46,18 @@ public class HorsSotck extends BaseModel{
     public void setMontant(double montant) {
         this.montant = montant;
     }
+
+    public HorsSotck() {
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+    
     
     
 }

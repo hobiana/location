@@ -44,11 +44,11 @@ Contributor(s):
     <id column="id_hors_stock" name="id" type="long">
       <generator class="increment"/>
     </id>
-    <property column="libelle" name="libelle" type="string"/>
-    <property column="quantite" name="quantite" type="integer"/>
-    <property column="montant" name="montant" type="double"/>
     <many-to-one class="com.project.location.model.Commande" fetch="select" name="commande">
       <column name="idcommande" not-null="true"/>
     </many-to-one>
+    <property column="libelle" name="libelle" type="string"/>
+    <property column="quantite" name="quantite" type="integer"/>
+    <property column="montant" name="montant" type="double"/>
   </class>
 </hibernate-mapping>
