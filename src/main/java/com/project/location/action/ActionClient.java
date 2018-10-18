@@ -336,6 +336,11 @@ public class ActionClient extends BaseAction {
     }
 
     public String saveClient() {
+        try {
+            Users u=this.getSessionUser();
+        } catch (Exception ex) {
+            return Action.LOGIN;
+        }
         Client e = new Client();
         try {
             this.titre = "Clients";
@@ -393,6 +398,11 @@ public class ActionClient extends BaseAction {
     }
 
     public String modifierModifier() {
+        try {
+            Users u=this.getSessionUser();
+        } catch (Exception ex) {
+            return Action.LOGIN;
+        }
         Client client = null;
 
         try {

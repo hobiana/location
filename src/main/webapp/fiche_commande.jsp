@@ -189,6 +189,14 @@
                                 </div>
                                 <div class="col-md-12">
                                     <div class="col-md-9">
+                                        <p class="text-right"><strong class="">Quotient :</strong></p>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <p class="text-right"><s:property value="doubleToString(facture.quotient)"/> Ar </p>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="col-md-9">
                                         <p class="text-right"><strong class="">Tot. brute :</strong></p>
                                     </div>
                                     <div class="col-md-3">
@@ -217,7 +225,7 @@
                                         <p class="text-right"><strong class="">Tot. net :</strong></p>
                                     </div>
                                     <div class="col-md-3">
-                                        <p class="text-right"><strong><s:property value="doubleToString(total[0])"/> Ar </strong></p>
+                                        <p class="text-right"><strong><s:property value="doubleToString(total[0]+facture.quotient)"/> Ar </strong></p>
                                     </div>
                                 </div>
                             </div>

@@ -214,6 +214,7 @@ public class ServiceCommande extends BaseService{
             this.populateClient(commande, session);
             return commande;
         }catch(Exception e){
+            e.printStackTrace();
             throw new Exception("impossible d'extraire la commande");
         }finally{
             if(session!=null)session.close();
@@ -344,6 +345,46 @@ public class ServiceCommande extends BaseService{
         
     }
     
+    public double[] getTotal(List<CommandeStock> commandesStock,List<HorsSotck> horsStock,double remise_globale,Date debut, Date fin,Session session)throws Exception{
+        double totalNet=0;
+        double totalBrute=0;
+        double total_remise=0;
+        double prixHorsStock = 0;
+        if(debut==null||fin==null)throw new Exception("Aucune date insérée");
+        int nbrJour = DateUtil.nombreJ(debut, fin); 
+        try{
+            if(!commandesStock.isEmpty()&&commandesStock.get(0).getId()>0){
+                this.initStock(commandesStock, session);
+            }
+            int size = commandesStock.size();
+            for(int i=0;i<size;i++){
+                CommandeStock temp = commandesStock.get(i); 
+                double prixL = temp.getPrixLocation();
+                double quantite = temp.getQuantiteCommande(); 
+                double tempremise = temp.getRemise()*quantite*nbrJour;
+                total_remise+=tempremise;
+                totalBrute+= (prixL*quantite*nbrJour);      
+            }
+            totalNet = totalBrute-total_remise-remise_globale;
+            for(int i =0;i<horsStock.size();i++){
+                HorsSotck temp = horsStock.get(i);
+                double prixHS = temp.getMontant()*temp.getQuantite();
+                prixHorsStock+= prixHS;
+            }
+            
+            double[] total=new double[4];
+            total[0]=totalNet;
+            total[1]=totalBrute;
+            total[2]=total_remise;
+            total[3]=prixHorsStock;
+            return total;
+        }catch(Exception e){
+            e.printStackTrace();
+            throw new Exception("erreur fatal durant le calcula des totals cause : "+e.getMessage());
+        }
+        
+    }
+    
     //Fonction getTotal des commande temporaire
     public double[] getTotal(double remise_globale,Date debut, Date fin) throws Exception{
         List<CommandeStock> listCS = this.getCommande(); 
@@ -360,10 +401,17 @@ public class ServiceCommande extends BaseService{
     
     //Get total des commandes dans la base de données
     public double[] getTotal(long idCommande)throws Exception{
-        Commande commande = this.find(idCommande); 
-        List<CommandeStock> listCS = this.find(commande); 
-        List<HorsSotck> listHS = this.findListHorsStock(commande); 
-        return this.getTotal(listCS,listHS,commande.getRemiseGlobal(), commande.getDateDebut(), commande.getDateFin());
+        Commande _commande = this.find(idCommande); 
+        List<CommandeStock> listCS = this.find(_commande); 
+        List<HorsSotck> listHS = this.findListHorsStock(_commande); 
+        return this.getTotal(listCS,listHS,_commande.getRemiseGlobal(), _commande.getDateDebut(), _commande.getDateFin());
+    }
+    
+    public double[] getTotal(long idCommande, Session session)throws Exception{
+        Commande commande = this.find(idCommande, session); 
+        List<CommandeStock> listCS = this.find(commande, session); 
+        List<HorsSotck> listHS = this.findListHorsStock(commande, session); 
+        return this.getTotal(listCS,listHS,commande.getRemiseGlobal(), commande.getDateDebut(), commande.getDateFin(),session);
     }
      
     public int getNombreJour(long idCommande) throws Exception {
@@ -1191,10 +1239,12 @@ public class ServiceCommande extends BaseService{
             session = this.hibernateDao.getSessionFactory().openSession(); 
             Commande commande = this.find(idCommande, session);
             List<CommandeStock> commandeStock = this.find(commande,session);
+            List<HorsSotck> hors_stock = this.findListHorsStock(commande,session);
             Client client = this.findClient(commande, session);
             Facture factureF = ServiceFacture.findFacture(commande, session);
+            double[] total = this.getTotal(idCommande);
             this.initStock(commandeStock, session);
-            FactureGenerator facture = new FactureGenerator(client,commande,commandeStock, factureF,servletRequest);
+            FactureGenerator facture = new FactureGenerator(client,commande,commandeStock,hors_stock, factureF, total,servletRequest);
             
         } catch( NullPointerException npe) {
             npe.printStackTrace();

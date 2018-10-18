@@ -15,6 +15,7 @@
         
         <action name="dashboard" method="dashboard" class="com.project.location.action.ActionClient">
             <result name="success">dashboard.jsp</result>
+            <result name="login" type="redirect">index</result>
         </action>
         
         <action name="login" method="login" class="com.project.location.action.ActionClient">
@@ -38,6 +39,7 @@
         </action>
         
         <action name="saveclient" method="saveClient" class="com.project.location.action.ActionClient">
+            <result name="login" type="redirect">index</result>
             <result name="success" type="redirectAction">
                 <param name="actionName">client</param>
                 <param name="linkSuccess">${linkSuccess}</param>
@@ -75,6 +77,7 @@
                 <param name="idClient">${idClient}</param>
                 
             </result>
+            <result name="login" type="redirect">index</result>
         </action>
         
          <action name="indexUsers" method="index" class="com.project.location.action.ActionUsers">
@@ -94,6 +97,7 @@
                 <param name="linkError">${linkError}</param>
                 <param name="messageError">${messageError}</param>
             </result> 
+            <result name="login" type="redirect">index</result>
         </action>
         
         <action name="modifierUser" method="loadModifier" class="com.project.location.action.ActionUsers">
@@ -119,6 +123,7 @@
                 <param name="idUsers">${idUsers}</param>
                 <param name="pseudo">${pseudo}</param>
             </result>
+            <result name="login" type="redirect">index</result>
         </action>
         
         <action name="stock" method="load" class="com.project.location.action.ActionStock">
@@ -136,11 +141,13 @@
         <action name="ajoutStock" method="ajoutStock" class="com.project.location.action.ActionStock">
            <result name="success" type="redirectAction">stock</result>
            <result name="error">index.js</result>
+            <result name="login" type="redirect">index</result>
         </action>
         
         <action name="newStock" method="newStock" class="com.project.location.action.ActionStock">
            <result name="success" type="redirectAction">stock</result>
            <result name="error">index.js</result>
+            <result name="login" type="redirect">index</result>
         </action>
         
         <action name="outStock" method="outStock" class="com.project.location.action.ActionStock">
@@ -152,6 +159,7 @@
         <action name="sortieStock" method="sortieStock" class="com.project.location.action.ActionStock">
            <result name="success" type="redirectAction">stock</result>
            <result name="error">index.js</result>
+            <result name="login" type="redirect">index</result>
         </action>
         
         <action name="toupdateStock" method="toupdateStock" class="com.project.location.action.ActionStock">
@@ -163,6 +171,7 @@
         <action name="modifStock" method="modifStock" class="com.project.location.action.ActionStock">
            <result name="success" type="redirectAction">stock</result>
            <result name="error">index.js</result>
+            <result name="login" type="redirect">index</result>
         </action>
         
         <action name="listInStock" method="listInStock" class="com.project.location.action.ActionStock">
@@ -196,6 +205,7 @@
                 <param name="action">${action}</param>
            </result>
            <result name="error">index.js</result>
+            <result name="login" type="redirect">index</result>
         </action>
         
         <action name="addhorsStock" method="addhorsStock" class="com.project.location.action.ActionCommande">
@@ -214,6 +224,7 @@
                 <!--<param name="quantite_HS">${quantite_HS}</param>-->
            </result>
            <result name="error">index.js</result>
+            <result name="login" type="redirect">index</result>
         </action>
         
         <action name="deleteCommande" method="deleteSessionCommande" class="com.project.location.action.ActionCommande">
@@ -229,6 +240,7 @@
                 <param name="action">${action}</param>
            </result>
            <result name="error">index.js</result>
+            <result name="login" type="redirect">index</result>
         </action>
         
         <action name="deletehorsStock" method="delhorsStock" class="com.project.location.action.ActionCommande">
@@ -244,6 +256,7 @@
                 <param name="action">${action}</param>
            </result>
            <result name="error">index.js</result>
+            <result name="login" type="redirect">index</result>
         </action>
         
         <action name="modifCommande" method="modifSessionCommande" class="com.project.location.action.ActionCommande">
@@ -259,6 +272,7 @@
                 <param name="action">${action}</param>
            </result>
            <result name="error">index.js</result>
+            <result name="login" type="redirect">index</result>
         </action>
         
         <action name="verifierCommande" method="verifSessionCommande" class="com.project.location.action.ActionCommande">
@@ -274,6 +288,7 @@
                 <param name="action">${action}</param>
            </result>
            <result name="error">index.js</result>
+            <result name="login" type="redirect">index</result>
         </action>
         
         <action name="validerCommandeClient" method="validerSessionCommande" class="com.project.location.action.ActionCommande">
@@ -288,6 +303,7 @@
                 <param name="remiseGlobal">${remiseGlobal}</param>
                 <param name="action">${action}</param>
            </result>
+            <result name="login" type="redirect">index</result>
         </action>
         
         <action name="validerCommandeUpdate" method="validerSessionCommande" class="com.project.location.action.ActionCommande">
@@ -301,6 +317,7 @@
                 <param name="dateRetour">${dateRetour}</param>
                 <param name="action">${action}</param>
            </result>
+            <result name="login" type="redirect">index</result>
         </action>
         
         <action name="listcommande" method="listCommande" class="com.project.location.action.ActionCommande">
@@ -318,6 +335,7 @@
         <action name="fichecommande" method="ficheCommande" class="com.project.location.action.ActionCommande">
            <result name="success">fiche_commande.jsp</result>
            <result name="error">index.jsp</result>
+            <result name="login" type="redirect">index</result>
         </action>
 		
 	<action name="payerCommande" method="payerCommande" class="com.project.location.action.ActionCommande">
@@ -331,6 +349,7 @@
                 <param name="linkError">${linkError}</param>
                 <param name="messageError">${messageError}</param>
            </result>
+            <result name="login" type="redirect">index</result>
         </action>
 		
         <action name="retourcommande" method="retourcommande" class="com.project.location.action.ActionCommande">
@@ -346,6 +365,7 @@
                 <param name="linkError">${linkError}</param>
                 <param name="messageError">${messageError}</param>
            </result>
+            <result name="login" type="redirect">index</result>
         </action>
         <action name="caisse" method="caisse" class="com.project.location.action.ActionCaisse">
            <result name="success">caisse.jsp</result>
@@ -356,11 +376,13 @@
         <action name="incaisse" method="inCaisse" class="com.project.location.action.ActionCaisse">
            <result name="success" type="redirect">caisse</result>
            <result name="error">index.jsp</result>
+            <result name="login" type="redirect">index</result>
         </action>
         
         <action name="outcaisse" method="outCaisse" class="com.project.location.action.ActionCaisse">
            <result name="success" type="redirect">caisse</result>
            <result name="error">index.jsp</result>
+            <result name="login" type="redirect">index</result>
         </action>
         
         <action name="historiquecaisse" method="historiquecaisse" class="com.project.location.action.ActionCaisse">
@@ -428,6 +450,7 @@
         <action name="deluser" method="deluser" class="com.project.location.action.ActionUsers">
            <result name="success">utilisateurs.jsp</result>
            <result name="error">index.jsp</result>
+            <result name="login" type="redirect">index</result>
         </action>
         <action name="downloadPDF" class="com.project.location.action.ActionCommande" method="generateFacture">
             <result name="success" type="stream">

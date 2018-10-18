@@ -87,6 +87,15 @@ public class ActionCommande extends BaseAction {
     private int indiceHorsStock;
     
     private double remiseArticle;
+    private Facture facture;
+
+    public Facture getFacture() {
+        return facture;
+    }
+
+    public void setFacture(Facture facture) {
+        this.facture = facture;
+    }
 
     public int getNombre_jour() {
         return nombre_jour;
@@ -468,26 +477,51 @@ public class ActionCommande extends BaseAction {
     }
 
     public String addSessionCommande() throws Exception {
+        try {
+            Users u=this.getSessionUser();
+        } catch (Exception ex) {
+            return Action.LOGIN;
+        }
         serviceCommande.addCommand(idStock, quantite, remiseArticle, dateDebut, dateFin);
         return Action.SUCCESS;
     }
 
     public String deleteSessionCommande() throws Exception {
+        try {
+            Users u=this.getSessionUser();
+        } catch (Exception ex) {
+            return Action.LOGIN;
+        }
         serviceCommande.deleteCommand(idCommandeStock);
         return Action.SUCCESS;
     }
 
     public String modifSessionCommande() throws Exception {
+        try {
+            Users u=this.getSessionUser();
+        } catch (Exception ex) {
+            return Action.LOGIN;
+        }
         serviceCommande.modifierCommand(idCommandeStock, quantite, remiseArticle, dateDebut, dateFin);
         return Action.SUCCESS;
     }
 
     public String verifSessionCommande() throws Exception {
+        try {
+            Users u=this.getSessionUser();
+        } catch (Exception ex) {
+            return Action.LOGIN;
+        }
         serviceCommande.checkAll(dateDebut, dateFin);
         return Action.SUCCESS;
     }
 
     public String validerSessionCommande() throws Exception {
+        try {
+            Users u=this.getSessionUser();
+        } catch (Exception ex) {
+            return Action.LOGIN;
+        }
         if (action.equals("save")) {
             if (
                 serviceCommande.saveCommande(idClient, dateDebut, dateFin,this.dateAquisition,this.dateRetour,this.remiseGlobal,this.quotient)) {
@@ -542,6 +576,11 @@ public class ActionCommande extends BaseAction {
     }
     
     public String retourcommande(){
+        try {
+            Users u=this.getSessionUser();
+        } catch (Exception ex) {
+            return Action.LOGIN;
+        }
         try{
             this.serviceCommande.retour(listProduitRetour);
             this.serviceCommande.updateEtat(idCommande);
@@ -617,7 +656,7 @@ public class ActionCommande extends BaseAction {
         } catch (Exception ex) {
             return Action.LOGIN;
         }
-        
+        facture = serviceFacture.findByCommande(idCommande);
         commande = this.serviceCommande.find(idCommande);
         this.total = this.serviceCommande.getTotal(idCommande);
         this.listeCommandeStock = this.serviceCommande.find(commande);
