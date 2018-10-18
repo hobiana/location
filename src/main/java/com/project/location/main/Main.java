@@ -24,7 +24,7 @@ public class Main {
        Session session = null;
        try{
            session = hibernate.getSessionFactory().openSession();
-           ServiceStat.getArticleCasse(DateUtil.convert("2018-03-01"), session);
+           ServiceStat.getBiggerBenificeClient( session);
        }catch (Exception he) {
            he.printStackTrace();
        } finally {
