@@ -43,7 +43,7 @@
                                   
                                 </ul>
 
-                                <a class="btn btn-success"><i class="fa fa-edit m-right-xs"></i>Modifier les information</a>
+                                <a class="btn btn-success" href="modifclient?idClient=<s:property value="idClient"  />"><i class="fa fa-edit m-right-xs"></i>Modifier les information</a>
                                 <br />
 
                               
