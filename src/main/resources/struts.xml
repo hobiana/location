@@ -3,6 +3,7 @@
 "http://struts.apache.org/dtds/struts-2.0.dtd">
 
 <struts>
+    <constant name="struts.ognl.allowStaticMethodAccess" value="true"/>
     <package name="default" extends="struts-default">	
         <action name="">
             <result name="success" type="redirect">index</result>
@@ -584,6 +585,11 @@
            <result name="login" type="redirect">index</result>
            <result name="error">index.jsp</result>
         </action>
+        <action name="ficheclient" method="ficheClient" class="com.project.location.action.ActionClient">
+           <result name="success">profile.jsp</result>
+           <result name="login" type="redirect">index</result>
+           <result name="error" type="redirect">index</result>
+        </action>
     </package>
     <package name="webService" extends="json-default">
         <action name="articlePreferer" 
@@ -596,6 +602,30 @@
         </action>
         <action name="articleCasse" 
            method="getArticleCasse" class="com.project.location.action.ActionWebService">
+            <result type="json" >
+                <param name="root">
+                    objectResult
+                </param>
+            </result>
+        </action>
+        <action name="articlePrefererClient" 
+           method="getArticleprefererClient" class="com.project.location.action.ActionWebService">
+            <result type="json" >
+                <param name="root">
+                    objectResult
+                </param>
+            </result>
+        </action>
+        <action name="getBenificeClient" 
+           method="getBenificeClient" class="com.project.location.action.ActionWebService">
+            <result type="json" >
+                <param name="root">
+                    objectResult
+                </param>
+            </result>
+        </action>
+        <action name="getCommande" 
+           method="getCommandeClient" class="com.project.location.action.ActionWebService">
             <result type="json" >
                 <param name="root">
                     objectResult

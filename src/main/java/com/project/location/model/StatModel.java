@@ -5,6 +5,7 @@
  */
 package com.project.location.model;
 
+import com.project.location.util.NumberTest;
 import java.util.Date;
 
 /**
@@ -39,6 +40,8 @@ public class StatModel {
     public void setOther(Object other) {
         this.other = other;
     }
-    
+    public String toMoney(){
+        return NumberTest.toMoney(this.value);
+    }
     
 }
