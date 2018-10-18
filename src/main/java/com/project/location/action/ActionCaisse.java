@@ -162,6 +162,11 @@ public class ActionCaisse extends BaseAction{
     
     public String inCaisse(){
         try {
+            Users u=this.getSessionUser();
+        } catch (Exception ex) {
+            return Action.LOGIN;
+        }
+        try {
             EntreeVola entree = new EntreeVola();
             entree.setDate(Calendar.getInstance().getTime());
             entree.setVolaM(volaM);
@@ -175,6 +180,11 @@ public class ActionCaisse extends BaseAction{
     }
     
     public String outCaisse(){
+        try {
+            Users u=this.getSessionUser();
+        } catch (Exception ex) {
+            return Action.LOGIN;
+        }
         try {
             SortieVola sortie = new SortieVola();
             sortie.setDate(Calendar.getInstance().getTime());

@@ -290,6 +290,11 @@ public class ActionUsers extends BaseAction {
         }
     }
     public String updateUsers(){
+        try {
+            Users u=this.getSessionUser();
+        } catch (Exception ex) {
+            return Action.LOGIN;
+        }
         try{
             Users user = new Users(this.getIdUsers());
             user.setPseudo(pseudo);
@@ -323,6 +328,11 @@ public class ActionUsers extends BaseAction {
         }
     }
     public String saveUsers(){
+        try {
+            Users u=this.getSessionUser();
+        } catch (Exception ex) {
+            return Action.LOGIN;
+        }
         Users user = new Users();
         try {
             this.titre = "Users | Nouveau utilisateurs";
@@ -358,11 +368,21 @@ public class ActionUsers extends BaseAction {
     
     public String utilisateurs(){
         this.titre="Utilisateurs";
+        try {
+            Users u=this.getSessionUser();
+        } catch (Exception ex) {
+            return Action.LOGIN;
+        }
         return Action.SUCCESS;
     }
     
     public String ficheuser(){
         this.titre="Fiche Utilisateur";
+        try {
+            Users u=this.getSessionUser();
+        } catch (Exception ex) {
+            return Action.LOGIN;
+        }
         return Action.SUCCESS;
     }
     
@@ -378,6 +398,11 @@ public class ActionUsers extends BaseAction {
     }
     
     public String deluser(){
+        try {
+            Users u=this.getSessionUser();
+        } catch (Exception ex) {
+            return Action.LOGIN;
+        }
         this.titre="Utilisateurs";
         return Action.SUCCESS;
     }

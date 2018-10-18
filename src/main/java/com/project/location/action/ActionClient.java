@@ -7,6 +7,7 @@ package com.project.location.action;
 
 import com.opensymphony.xwork2.Action;
 import com.project.location.model.Client;
+import com.project.location.model.StatModel;
 import com.project.location.model.Users;
 import com.project.location.reference.ReferenceErreur;
 import com.project.location.reference.ReferenceSession;
@@ -49,7 +50,17 @@ public class ActionClient extends BaseAction {
     private List<String> label; 
     private List<Double> data;
     private String years;
+    private List<StatModel> meilleurClient;
 
+    public List<StatModel> getMeilleurClient() {
+        return meilleurClient;
+    }
+
+    public void setMeilleurClient(List<StatModel> meilleurClient) {
+        this.meilleurClient = meilleurClient;
+    }
+    
+    
     public String getYears() {
         return years;
     }
@@ -299,7 +310,7 @@ public class ActionClient extends BaseAction {
             this.setCommandeCount((int)this.serviceStat.nombreCommandeTotal());
             this.setStockCount((int)this.serviceStat.nombreProduitTotal());
             this.setClientCount((int)this.serviceStat.nombreClientTotal());
-            
+            this.setMeilleurClient(this.serviceStat.getBiggerBenificeClient());
             this.years = String.valueOf(Calendar.getInstance().get(Calendar.YEAR));
             
             this.label = new ArrayList(); 
@@ -336,6 +347,11 @@ public class ActionClient extends BaseAction {
     }
 
     public String saveClient() {
+        try {
+            Users u=this.getSessionUser();
+        } catch (Exception ex) {
+            return Action.LOGIN;
+        }
         Client e = new Client();
         try {
             this.titre = "Clients";
@@ -391,8 +407,30 @@ public class ActionClient extends BaseAction {
             return Action.ERROR;
         }
     }
-
+    
+    public String ficheClient(){
+        try {
+            Users u=this.getSessionUser();
+        } catch (Exception ex) {
+            return Action.LOGIN;
+        }
+         try {
+            client = this.clientService.find(idClient);
+            this.years = String.valueOf(Calendar.getInstance().get(Calendar.YEAR));
+            return Action.SUCCESS;
+        } catch (Exception e) {
+            this.linkError = ReferenceErreur.VISIBLE;
+            this.messageError = e.getMessage();
+            return Action.ERROR;
+        }
+    }
+    
     public String modifierModifier() {
+        try {
+            Users u=this.getSessionUser();
+        } catch (Exception ex) {
+            return Action.LOGIN;
+        }
         Client client = null;
 
         try {
@@ -418,6 +456,5 @@ public class ActionClient extends BaseAction {
             this.messageError = e.getMessage();
             return Action.ERROR;
         }
-
     }
 }

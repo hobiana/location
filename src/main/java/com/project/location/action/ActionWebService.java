@@ -13,6 +13,7 @@ package com.project.location.action;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.opensymphony.xwork2.Action;
+import com.project.location.model.Client;
 import com.project.location.model.JsonResult;
 import com.project.location.service.ServiceStat;
 import com.project.location.util.DateUtil;
@@ -26,6 +27,14 @@ public class ActionWebService extends BaseAction{
     private String jsonResult;
     private JsonResult objectResult;
     private long idClient; 
+
+    public long getIdClient() {
+        return idClient;
+    }
+
+    public void setIdClient(long idClient) {
+        this.idClient = idClient;
+    }
     
     public String getArticlePreferer(){
         JsonResult result = null;
@@ -47,6 +56,49 @@ public class ActionWebService extends BaseAction{
             Date debutD = DateUtil.convert(debut);
             Date finD = DateUtil.convert(fin); 
             Object resultQuery =  (Object)this.serviceStat.getArticleCassePerMonth(debutD, finD);
+            result = new JsonResult(true,resultQuery);        
+        } catch (Exception ex) {
+            result = new JsonResult(false, ex.getMessage());
+        } 
+        this.objectResult = result;
+        return Action.SUCCESS;
+    }
+    public String getArticleprefererClient(){
+        JsonResult result = null;
+        try {
+            if(idClient==0) throw new Exception("Le client n'existe pas");
+            Date debutD = DateUtil.convert(debut);
+            Date finD = DateUtil.convert(fin); 
+            Object resultQuery =  (Object)this.serviceStat.getPreferenceClientPerMonth(debutD, finD, new Client(idClient));
+            result = new JsonResult(true,resultQuery);        
+        } catch (Exception ex) {
+            result = new JsonResult(false, ex.getMessage());
+        } 
+        this.objectResult = result;
+        return Action.SUCCESS;
+    }
+    public String getBenificeClient(){
+        JsonResult result = null;
+        try {
+            if(idClient==0) throw new Exception("Le client n'existe pas");
+            Date debutD = DateUtil.convert(debut);
+            Date finD = DateUtil.convert(fin); 
+            Object resultQuery =  (Object)this.serviceStat.getBenificeClientPerMouth(debutD, finD, new Client(idClient));
+            result = new JsonResult(true,resultQuery);        
+        } catch (Exception ex) {
+            result = new JsonResult(false, ex.getMessage());
+        } 
+        this.objectResult = result;
+        return Action.SUCCESS;
+    }
+    
+    public String getCommandeClient(){
+        JsonResult result = null;
+        try {
+            if(idClient==0) throw new Exception("Le client n'existe pas");
+            Date debutD = DateUtil.convert(debut);
+            Date finD = DateUtil.convert(fin); 
+            Object resultQuery =  (Object)this.serviceStat.getCommandePerMonthUser(debutD, finD, new Client(idClient));
             result = new JsonResult(true,resultQuery);        
         } catch (Exception ex) {
             result = new JsonResult(false, ex.getMessage());
