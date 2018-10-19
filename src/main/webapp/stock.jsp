@@ -13,6 +13,7 @@
         <title><s:property value="titre" /></title>
         <%@include file="/template/css.jsp" %>
         <link href="vendor/datatables/css/dataTables.bootstrap.min.css" rel="stylesheet">
+        <link href="css/lightbox.css" rel="stylesheet">
     </head>
     <body>
         <div id="wrapper">
@@ -144,6 +145,7 @@
                                         <th>Qte</th>
                                         <th>Entrée</th>
                                         <th>Sortie</th>
+                                        <th>Image</th>
                                         <s:if test="%{getSessionUser().nom!='stock'}">
                                         <th>Modifier</th>
                                         </s:if>
@@ -170,15 +172,20 @@
                                                         <i class="fa fa-sign-out"></i>
                                                     </a>
                                                 </td>
-                                                <s:if test="%{getSessionUser().nom!='stock'}">
+                                                
                                                 <td>
-                                                    <a type="button" 
-                                                       class="btn btn-default center-block" 
-                                                       href="toupdateStock?idStock=<s:property value="id"  />">
-                                                        <i class="fa fa-edit"></i>
-                                                    </a>
+                                                    <a id="img" href="<s:property value="image"/>" data-lightbox="image-1" data-title="<s:property value="designation" />"><img id="printImg" src="<s:property value="image"/>"  width="80px"> </a>
                                                 </td>
+                                                <s:if test="%{getSessionUser().nom!='stock'}">
+                                                    <td>
+                                                        <a type="button" 
+                                                           class="btn btn-default center-block" 
+                                                           href="toupdateStock?idStock=<s:property value="id"  />">
+                                                            <i class="fa fa-edit"></i>
+                                                        </a>
+                                                    </td>
                                                 </s:if>
+                                                
                                             </tr>
                                         </s:iterator>
                                     </tbody>
@@ -196,6 +203,7 @@
     <%@include file="/template/footer.jsp" %>
     <script src="vendor/datatables/js/jquery.dataTables.min.js"></script>
     <script src="vendor/datatables/js/dataTables.bootstrap.min.js"></script>
+    <script src="js/lightbox.js" ></script>
     <script>
         $(document).ready(function () {
             $('#dataTables-example').DataTable({

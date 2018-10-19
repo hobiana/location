@@ -40,6 +40,7 @@ public class ActionStock extends BaseAction {
     private int prixAchat;
     private int prixLocation;
     private int quantite;
+    private String image;
 
     private int quantiteMin;
     private int quantiteMax;
@@ -72,6 +73,14 @@ public class ActionStock extends BaseAction {
     private boolean recu;
 
     // getters setters
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+    
     public boolean getPrepare() {
         return prepare;
     }
@@ -415,6 +424,7 @@ public class ActionStock extends BaseAction {
 
     public String modifStock() throws Exception {
         Stock stock = serviceStock.find(idStock);
+        stock.setImage(image);
         stock.setDesignation(designation);
         stock.setPrixLocation(prixLocation);
         stock.setPrixCasse(prixCasse);
