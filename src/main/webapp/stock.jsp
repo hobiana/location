@@ -105,6 +105,13 @@
                                                         <h4 class="modal-title">Ajouter stock</h4>
                                                     </div>
                                                     <div class="modal-body">
+                                                         <a id="img" href="" data-lightbox="image-1" data-title="Nouveau stock"><img id="printImg" src=""  width="300px"> </a>
+                                    
+                                                        <div class="form-group">
+                                                            <label>Image</label>
+                                                            <input id="file" type="file" class="form-control" accept="image/x-png,image/gif,image/jpeg" onchange="changeFile()" >
+                                                            <input id="base64" type="hidden" name="image" value="">
+                                                        </div>
                                                         <div class="form-group">
                                                             <div class="form-group">
                                                             <label>Référence</label>
@@ -210,5 +217,30 @@
                 responsive: true
             });
         });
+    </script>
+    <script>
+        function getBase64(file, callback) {
+            var reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = function () {
+              callback(false,reader.result);
+            };
+            reader.onerror = function (error) {
+                callback(true,error);
+            };
+         }
+         function changeFile(){
+              var file = document.getElementById('file').files[0];
+              getBase64(file, function(err, data) {
+                if(!err) {
+                    document.getElementById("base64").value = data;
+                    document.getElementById("img").href = data;
+                    document.getElementById("printImg").src = data;
+                } else {
+                    alert('une erreur s\'est parvenue lors du chargement de l\'image cause : '+data);
+                }
+             });
+         }
+         
     </script>
 </html>

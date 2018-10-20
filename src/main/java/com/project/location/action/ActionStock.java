@@ -395,7 +395,13 @@ public class ActionStock extends BaseAction {
     }
 
     public String newStock() throws Exception {
+        try {
+            Users u = this.getSessionUser();
+        } catch (Exception ex) {
+            return Action.LOGIN;
+        }
         Stock stock = new Stock();
+        stock.setImage(image);
         stock.setReference(reference);
         stock.setPrixLocation(prixLocation);
         stock.setDesignation(designation);
@@ -462,7 +468,18 @@ public class ActionStock extends BaseAction {
             return Action.LOGIN;
         }
         this.titre = "Commande du jour";
-        this.listeCommande = serviceCommande.find("", Calendar.getInstance().getTime(), null, false, false, false, false);
+        Date max; 
+        Date min;
+        
+        if(this.dateMax ==null) max = null;
+        else max = DateUtil.convert(this.dateMax);
+        
+        if(this.dateMin ==null ){
+            min = Calendar.getInstance().getTime();
+            this.dateMin = DateUtil.convert(min);
+        }
+        else min = DateUtil.convert(this.dateMin);
+        this.listeCommande = serviceCommande.find("",min, max, false, false, false, false);
         return Action.SUCCESS;
     }
 
