@@ -22,7 +22,7 @@
             <div id="page-wrapper">
                 <div class="row">
                     <div class="col-lg-12">
-                        <h1 class="page-header">Fiche de la commande <s:property value="commande.getRef()"/></h1>
+                        <h1 class="page-header"><a href="listcommande" ><i class="fa fa-arrow-left"></i></a> Fiche de la commande <s:property value="commande.getRef()"/></h1>
                     </div>
                     <!-- /.col-lg-12 -->
                 </div>
@@ -96,7 +96,7 @@
                                 <s:if test="commande.isAnnule()==false">
                                     <a style='margin-left: 10px;' onclick="confirmAnnulation()" class="btn btn-danger pull-left" >Annuler la commande</a>
                                     <a style='margin-left: 10px;' href="downloadPDF?idCommande=<s:property value="idCommande"/>" class="btn btn-default pull-left" >Facture</a>
-                                    <a style='margin-left: 10px;' href="downloadQuotient?idCommande=<s:property value="idCommande"/>" class="btn btn-default pull-left" >Facture Quotient</a>
+                                    <a style='margin-left: 10px;' href="downloadQuotient?idCommande=<s:property value="idCommande"/>" class="btn btn-default pull-left" >Facture Caution</a>
                                     <a class="btn btn-success pull-right" href="paiement?idCommande=<s:property value="idCommande" />">Paiement</a>
                                 </s:if>
                                 
@@ -189,7 +189,7 @@
                                 </div>
                                 <div class="col-md-12">
                                     <div class="col-md-9">
-                                        <p class="text-right"><strong class="">Quotient :</strong></p>
+                                        <p class="text-right"><strong class="">Caution :</strong></p>
                                     </div>
                                     <div class="col-md-3">
                                         <p class="text-right"><s:property value="doubleToString(facture.quotient)"/> Ar </p>

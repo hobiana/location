@@ -52,7 +52,7 @@
                                     </div>
                                     <div class="col-xs-10 text-center">
                                         <div class="huge"><s:property value="quotientMoney"/></div>
-                                        <div>Soldes Quotient</div>
+                                        <div>Soldes Caution</div>
                                     </div>
                                 </div>
                             </div>

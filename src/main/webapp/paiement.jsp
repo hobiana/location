@@ -20,7 +20,7 @@
             <div id="page-wrapper" style="min-height: 708px;">
                 <div class="row">
                     <div class="col-lg-12">
-                        <h1 class="page-header">Paiement</h1>
+                        <h1 class="page-header"><a href="fichecommande?idCommande=<s:property value="idCommande"/>" ><i class="fa fa-arrow-left"></i></a> Paiement</h1>
                     </div>
                 </div>
                 <%@include file="/template/Erreur.jsp" %>

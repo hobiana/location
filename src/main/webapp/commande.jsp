@@ -75,7 +75,7 @@
                                             </div>
                                             <div class="form-group">
                                                 <div class="col-md-12">
-                                                    <label>Quotient </label>
+                                                    <label>Caution </label>
                                                 </div>
                                                 <div class="col-md-12">
                                                     <input id="quotient" name="quotient" class="form-control"  type="number" value="<s:property value="quotient"/>">
@@ -158,7 +158,7 @@
                                 </div>
                                 <div class="col-md-12">
                                     <div class="col-md-9">
-                                        <p class="text-right"><strong class="">Quotient :</strong></p>
+                                        <p class="text-right"><strong class="">Caution :</strong></p>
                                     </div>
                                     <div class="col-md-3">
                                         <p class="text-right"><s:property value="doubleToString(quotient)"/> Ar </p>

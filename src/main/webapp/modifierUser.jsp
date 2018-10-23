@@ -67,7 +67,7 @@
                                         <label>Accès aux liens</label>
                                         <div class="checkbox">
                                             <label>
-                                                <input name="boolCaisseQuotient" type="checkbox" value="true" <s:if test="boolCaisseQuotient.equals(true)" >checked</s:if>>Caisse et quotient
+                                                <input name="boolCaisseQuotient" type="checkbox" value="true" <s:if test="boolCaisseQuotient.equals(true)" >checked</s:if>>Caisse et caution
                                             </label>
                                         </div>
                                         <div class="checkbox">

@@ -115,7 +115,7 @@
                                                             <label>Accès aux liens</label>
                                                             <div class="checkbox">
                                                                 <label>
-                                                                    <input name="boolCaisseQuotient" type="checkbox" value="true">Caisse et quotient
+                                                                    <input name="boolCaisseQuotient" type="checkbox" value="true">Caisse et caution
                                                                 </label>
                                                             </div>
                                                             <div class="checkbox">

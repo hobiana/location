@@ -173,7 +173,7 @@ public class ServiceCaisse extends BaseService {
             this.cleanQuotient(session);
             this.addQuotient(quotient, session);
             this.addEntreeQuotient(vola, session);
-            ServiceHistoriqueUser.save("ajout de la somme "+vola.getVolaM()+" Ar dans la caisse des quotients", session);
+            ServiceHistoriqueUser.save("ajout de la somme "+vola.getVolaM()+" Ar dans la caisse des cautions", session);
             tr.commit();
         }catch(Exception e){
             if(tr!=null) tr.rollback();
@@ -193,10 +193,10 @@ public class ServiceCaisse extends BaseService {
             this.cleanQuotient(session);
             this.addQuotient(quotient, session);
             this.addEntreeQuotient(vola, session);
-            ServiceHistoriqueUser.save("ajout de la somme "+vola.getVolaM()+" Ar dans la caisse des quotients", session);
+            ServiceHistoriqueUser.save("ajout de la somme "+vola.getVolaM()+" Ar dans la caisse des cautions", session);
         }catch(Exception e){
             e.printStackTrace();
-            throw new Exception("impossible de sauvegarder l'argent dans le quotient cause "+e.getMessage());
+            throw new Exception("impossible de sauvegarder l'argent dans le caution cause "+e.getMessage());
         }
     }
     
@@ -240,7 +240,7 @@ public class ServiceCaisse extends BaseService {
             this.cleanQuotient(session);
             this.addQuotient(quotient, session);
             this.addSortieQuotient(vola, session);
-            ServiceHistoriqueUser.save("retrait de la somme de "+vola.getVolaM()+ "dans la caisse des quotients", session);
+            ServiceHistoriqueUser.save("retrait de la somme de "+vola.getVolaM()+ "dans la caisse des cautions", session);
             tr.commit();
         }catch(Exception e){
             if(tr!=null) tr.rollback();

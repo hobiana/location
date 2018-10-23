@@ -22,7 +22,7 @@
             <div id="page-wrapper">
                 <div class="row">
                     <div class="col-lg-12">
-                        <h1 class="page-header">Modification du stock <s:property value="stock.reference" /></h1>
+                        <h1 class="page-header"><a href="listcommande" ><i class="fa fa-arrow-left"></i></a> Modification du stock <s:property value="stock.reference" /></h1>
                     </div>
                     <!-- /.col-lg-12 -->
                 </div>
