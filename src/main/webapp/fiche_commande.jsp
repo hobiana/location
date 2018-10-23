@@ -165,7 +165,7 @@
                                                 <td><span class="pull-right"> <s:property value="doubleToString(remise)"/> </span></td> 
                                                 <td><span class="pull-right"><s:property value="getStringPrixLocation()"/> </span></td>
                                                 <td><span class="pull-right"> <s:property value="doubleToString(remise*quantiteCommande)"/> </span></td> 
-                                                <td><span class="pull-right"> <s:property value="doubleToString(prixLocation*quantiteCommande)"/> </span></td> 
+                                                <td><span class="pull-right"> <s:property value="doubleToString((prixLocation*quantiteCommande)-(remise*quantiteCommande))"/> </span></td> 
                                             </tr>
                                         </s:iterator>
                                     </tbody>

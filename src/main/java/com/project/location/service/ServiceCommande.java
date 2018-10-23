@@ -844,9 +844,15 @@ public class ServiceCommande extends BaseService{
     }
     
     public void setCommande(List<CommandeStock> commandes){
-        this.clearSession();
+        this.clearSession(ReferenceSession.COMMANDE);
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.setAttribute(ReferenceSession.COMMANDE,commandes);
+    }
+    
+    public void setCommandeHS(List<HorsSotck> hors_stock){
+        this.clearSession(ReferenceSession.COMMANDE_HS);
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        session.setAttribute(ReferenceSession.COMMANDE_HS,hors_stock);
     }
     
     public void deleteCommand(long idCommande){
@@ -966,12 +972,29 @@ public class ServiceCommande extends BaseService{
         }
     }
     
+    public void deleteHorsStock(long idCommande, Session session) throws Exception{
+        try{
+            String sql = "SELECT hs FROM  HorsSotck hs join hs.commande commande where commande.id = :id "; 
+            Query query = session.createQuery(sql); 
+            query.setParameter("id", idCommande); 
+            List<HorsSotck> list =  query.list(); 
+            int size = list.size(); 
+            for(int i=0;i<size;i++){
+                HorsSotck temp = list.get(i);
+                HibernateDao.delete(temp, session);
+            }
+        }catch(Exception e){
+            throw e; 
+        }
+    }
+    
     public boolean updateCommande(Date debut, Date  fin, Date acquisition, Date retour, double remiseGlobal, double quotient)throws Exception{
         boolean reponse; 
         Session session = null; 
         Transaction tr = null; 
        HttpSession sessionServelet = ServletActionContext.getRequest().getSession();
         List<CommandeStock> commandeStocks = this.getCommande(); 
+        List<HorsSotck> hors_stock = this.getCommandeHS(); 
         int size = commandeStocks.size(); 
         long idCommande =(long) sessionServelet.getAttribute(ReferenceSession.IDCOMMANDE);
         if(idCommande<1)throw new Exception("la commande n'a pas été initialisé");
@@ -990,8 +1013,14 @@ public class ServiceCommande extends BaseService{
                 CommandeStock temp = commandeStocks.get(i); 
                 temp.setCommande(commande);
             }
+            for(int i=0;i<hors_stock.size();i++){
+                HorsSotck hs = hors_stock.get(i);
+                hs.setCommande(commande);
+            }
             this.deleteCommandeStock(idCommande, session);
+            this.deleteHorsStock(idCommande, session);
             reponse = this.saveCommande(commandeStocks, session); 
+            reponse = this.saveCommandeHS(hors_stock, session); 
             
             Facture facture = this.serviceFacture.factureByCommande(commande.getId(),session);
             facture.setQuotient(quotient);
@@ -1031,7 +1060,26 @@ public class ServiceCommande extends BaseService{
                 
             }
             if(reponse==true){
-                this.clearSession();
+                this.clearSession(ReferenceSession.COMMANDE);
+            }     
+        }catch(Exception e){
+            e.printStackTrace();
+            reponse = false;
+        }
+        return reponse;
+    }
+    
+    public boolean saveCommandeHS(List<HorsSotck> hors_stock, Session session)throws Exception{
+        boolean reponse = true; 
+        try{
+           int size = hors_stock.size();
+            for(int i=0;i<size;i++){
+                HorsSotck temp = hors_stock.get(i);
+                HibernateDao.save(temp, session);
+                
+            }
+            if(reponse==true){
+                this.clearSession(ReferenceSession.COMMANDE_HS);
             }     
         }catch(Exception e){
             e.printStackTrace();
@@ -1087,7 +1135,7 @@ public class ServiceCommande extends BaseService{
             facture.setCommande(commande);
             serviceFacture.newFacture(facture,session);
             if(reponse==true){
-                this.clearSession();
+                this.clearSession(ReferenceSession.COMMANDE);
                 tr.commit();
             }else{
                 this.setCommande(commandes);
@@ -1111,9 +1159,9 @@ public class ServiceCommande extends BaseService{
         return this.saveCommande(idClient,debutD, finD, acquisitionD, retourD, remiseGlobal, quotient);
     }
     
-    public void clearSession(){
+    public void clearSession(String nom_session){
         HttpSession session = ServletActionContext.getRequest().getSession();
-        session.removeAttribute(ReferenceSession.COMMANDE);
+        session.removeAttribute(nom_session);
     }
 
     public boolean updateCommande(String dateDebut, String dateFin,String acquisition ,String retour, double remiseGlobal, double quotient) throws Exception {
