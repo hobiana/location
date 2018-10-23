@@ -451,7 +451,7 @@ public class ActionCommande extends BaseAction {
             if (Test.argmumentNull(dateRetour)) {
                 dateRetour = DateUtil.convert(fin);
             }
-            nombre_jour = DateUtil.nombreJ(debut, fin);
+            nombre_jour = DateUtil.nombreJ(dateDebut, dateFin);
         }else{
             HttpSession session = ServletActionContext.getRequest().getSession();          
             long idCommandeSession =0;

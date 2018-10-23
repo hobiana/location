@@ -23,6 +23,11 @@ public class DateUtil {
         long delta = fin.getTime() - debut.getTime();
         return (int)(delta / (MILLISECONDS_PER_DAY))+1;
     }
+    public static int nombreJ(String s_debut, String s_fin)throws Exception{
+        Date debut = DateUtil.convert(s_debut);
+        Date fin = DateUtil.convert(s_fin);
+         return DateUtil.nombreJ(debut, fin);
+    }
     public static String convert(Date date)throws Exception{
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); 
         String reponse; 
