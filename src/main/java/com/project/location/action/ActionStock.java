@@ -366,7 +366,7 @@ public class ActionStock extends BaseAction {
     }
 
     public String inStock() throws Exception {
-        this.titre = "Entrée de Stock";
+        this.titre = "EntrÃ©e de Stock";
         this.stock = serviceStock.find(idStock);
         this.title_page = "Ajout du stock " + stock.getReference();
         this.title_panel = "Ajout du stock > " + this.stock.getDesignation();
@@ -465,7 +465,7 @@ public class ActionStock extends BaseAction {
         } catch (Exception ex) {
             return Action.LOGIN;
         }
-        this.titre = "Liste entrée de Stock";
+        this.titre = "Liste entrÃ©e de Stock";
         listeEntree = serviceEntree.find(designation, prixAchatMin, prixAchatMax, quantiteMin, quantiteMax, dateMin, dateMax);
         return Action.SUCCESS;
     }
