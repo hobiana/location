@@ -89,8 +89,14 @@
                                     </label>
                                 </div>
                                 <hr>
+                                <s:if test="commande.isRecu()==false">
+                                    <a style='margin-left: 10px;' href="recuparclient?idCommande=<s:property value="idCommande"/>&recu=true" class="btn btn-default pull-left" >Reçu par le client</a>
+                                </s:if>
+                                <s:else>
+                                    <a style='margin-left: 10px;' href="recuparclient?idCommande=<s:property value="idCommande"/>&recu=false" class="btn btn-warning pull-left" >Non reçu par le client</a>
+                                </s:else>
                                 <s:if test="commande.isRecu()==true">
-                                <a class="btn btn-default pull-left" href="#retour" data-toggle="modal">Retour en stock</a>
+                                <a style='margin-left: 10px;' class="btn btn-success pull-left" href="#retour" data-toggle="modal">Retour en stock</a>
                                 </s:if>
                                 <div class="modal fade" id="retour" role="dialog">
                                     <div class="modal-dialog modal-lg">
@@ -134,15 +140,13 @@
                                             </form>
                                         </div>
                                     </div>
-                                </div>
-                                <s:if test="commande.isRecu()==false">
-                                    <a style='margin-left: 10px;' href="recuparclient?idCommande=<s:property value="idCommande"/>&recu=true" class="btn btn-default pull-left" >Reçu par le client</a>
-                                </s:if>
-                                <s:else>
-                                    <a style='margin-left: 10px;' href="recuparclient?idCommande=<s:property value="idCommande"/>&recu=false" class="btn btn-danger pull-left" >Non reçu par le client</a>
-                                </s:else>                    
+                                </div>       
+                                <s:if test="commande.isRecu()==true">
                                 <a style='margin-left: 10px;' href="downloadBS?idCommande=<s:property value="idCommande"/>" class="btn btn-default pull-left" >Bon de Sortie</a>
-                                <a style='margin-left: 10px;' href="downloadBR?idCommande=<s:property value="idCommande"/>" class="btn btn-default pull-left" >Bon de Reception</a>
+                                </s:if>
+                                <s:if test="commande.isRetour()==true">
+                                    <a style='margin-left: 10px;' href="downloadBR?idCommande=<s:property value="idCommande"/>" class="btn btn-default pull-left" >Bon de Reception</a>
+                                </s:if>
                             </div>
                             <!-- /.col-lg-12 -->
                         </div>

@@ -131,7 +131,7 @@ public class ServiceFacture extends BaseService {
             EntreeQuotient entreeQuotient = new EntreeQuotient();
             entreeQuotient.setVolaM(payeInQuotient);
             entreeQuotient.setDate(fille.getDate());
-            entreeQuotient.setDesignation("Paiement de la quotient de la commande n° "+commande.getRef());
+            entreeQuotient.setDesignation("Paiement de la caution de la commande n° "+commande.getRef());
             serviceCaisse.addVolaQuotient(entreeQuotient, session);
             if(rest>0) {
                 EntreeVola entreeVola = new EntreeVola();

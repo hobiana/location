@@ -5,7 +5,7 @@
             
             <s:if test="getAccesRoot().equals(true)">
                 <li>
-                    <a><i class="fa fa-money fa-fw"></i> Caisse et quotient<span class="fa arrow"></span></a>
+                    <a><i class="fa fa-money fa-fw"></i> Caisse et caution<span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
                         <li>
                             <a href="caisse"><i class="fa fa-money fa-fw"></i> Caisse</a>
@@ -14,10 +14,10 @@
                             <a href="findcaisse"><i class="fa fa-money fa-fw"></i> Historique Caisse</a>
                         </li>
                         <li>
-                            <a href="quotient"><i class="fa fa-money fa-fw"></i> Quotient</a>
+                            <a href="quotient"><i class="fa fa-money fa-fw"></i> Caution</a>
                         </li>
                         <li>
-                            <a href="findquotient"><i class="fa fa-money fa-fw"></i> Historique Quotient</a>
+                            <a href="findquotient"><i class="fa fa-money fa-fw"></i> Historique Caution</a>
                         </li>
                     </ul>
                 </li>
@@ -59,7 +59,7 @@
             <s:elseif test="getAccesRoot().equals(false)">
                 <s:if test="getAccesCaisseQuotient().equals(true)">
                 <li>
-                    <a><i class="fa fa-money fa-fw"></i> Caisse et quotient<span class="fa arrow"></span></a>
+                    <a><i class="fa fa-money fa-fw"></i> Caisse et caution<span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
                         <li>
                             <a href="caisse"><i class="fa fa-money fa-fw"></i> Caisse</a>
@@ -68,10 +68,10 @@
                             <a href="findcaisse"><i class="fa fa-money fa-fw"></i> Historique Caisse</a>
                         </li>
                         <li>
-                            <a href="quotient"><i class="fa fa-money fa-fw"></i> Quotient</a>
+                            <a href="quotient"><i class="fa fa-money fa-fw"></i> caution</a>
                         </li>
                         <li>
-                            <a href="findquotient"><i class="fa fa-money fa-fw"></i> Historique Quotient</a>
+                            <a href="findquotient"><i class="fa fa-money fa-fw"></i> Historique Caution</a>
                         </li>
                     </ul>
                 </li>
