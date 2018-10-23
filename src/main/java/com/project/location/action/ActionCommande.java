@@ -54,6 +54,7 @@ public class ActionCommande extends BaseAction {
     
     private double[] total;
     private int nombre_jour;
+    private double pourcentage_reste_a_payer;
     
     private int idCommande;
     private int idCommandeStock;
@@ -103,6 +104,14 @@ public class ActionCommande extends BaseAction {
 
     public void setNombre_jour(int nombre_jour) {
         this.nombre_jour = nombre_jour;
+    }
+
+    public double getPourcentage_reste_a_payer() {
+        return pourcentage_reste_a_payer;
+    }
+
+    public void setPourcentage_reste_a_payer(double pourcentage_reste_a_payer) {
+        this.pourcentage_reste_a_payer = pourcentage_reste_a_payer;
     }
 
     public double getRemiseArticle() {
@@ -660,6 +669,8 @@ public class ActionCommande extends BaseAction {
         facture = serviceFacture.findByCommande(idCommande);
         commande = this.serviceCommande.find(idCommande);
         this.total = this.serviceCommande.getTotal(idCommande);
+        double total_paye = this.serviceFacture.totalPayer(idCommande);
+        this.pourcentage_reste_a_payer = (int)((100*total_paye)/this.total[0]);
         this.listeCommandeStock = this.serviceCommande.find(commande);
         this.listeHorsStock = serviceCommande.findListHorsStock(commande);
         Facture facture = this.serviceFacture.factureByCommande(idCommande);

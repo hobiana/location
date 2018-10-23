@@ -89,12 +89,14 @@
                                             <button type="button" class="btn btn-default btn-sm btn-circle"><i class="fa fa-times"></i></button> Non payé
                                             </s:if>
                                             <s:else>
-                                            <button type="button" class="btn btn-default btn-sm btn-circle"><i class="fa fa-check"></i></button> Payé
+                                            <button type="button" class="btn btn-default btn-sm btn-circle"><i class="fa fa-check"></i></button> <s:property value="pourcentage_reste_a_payer" />% Payé
                                             </s:else>
                                     </label>
                                 </div>
                                 <s:if test="commande.isAnnule()==false">
+                                    <s:if test="commande.isPaye()==false">
                                     <a style='margin-left: 10px;' onclick="confirmAnnulation()" class="btn btn-danger pull-left" >Annuler la commande</a>
+                                    </s:if>
                                     <a style='margin-left: 10px;' href="downloadPDF?idCommande=<s:property value="idCommande"/>" class="btn btn-default pull-left" >Facture</a>
                                     <a style='margin-left: 10px;' href="downloadQuotient?idCommande=<s:property value="idCommande"/>" class="btn btn-default pull-left" >Facture Caution</a>
                                     <a class="btn btn-success pull-right" href="paiement?idCommande=<s:property value="idCommande" />">Paiement</a>

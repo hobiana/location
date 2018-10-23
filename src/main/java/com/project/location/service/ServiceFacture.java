@@ -106,7 +106,9 @@ public class ServiceFacture extends BaseService {
         double totalPaye = ServiceFacture.totalPayer(idCommande, session);
         double paye = fille.getValeur();
         double quotient = facture.getQuotient();
-        if(commande.isPaye()) throw new FactureAlreadyPayException(commande);
+        if(!commande.isPaye()){
+            ServiceCommande.payer(commande, session);
+        }
         if(paye > totalToPaye) throw new Exception("le montant insérer est supérieur au montant total à payer");
         ServiceCaisse serviceCaisse = new ServiceCaisse();
         
@@ -140,10 +142,11 @@ public class ServiceFacture extends BaseService {
                 entreeVola.setDesignation("Paiement de la commande n° "+commande.getRef());
             }
         }
+        /*
         totalPaye+=fille.getValeur();
         if(totalToPaye==totalPaye) {
             ServiceCommande.payer(commande, session);
-        }
+        }*/
         HibernateDao.save(fille, session);
         
         
