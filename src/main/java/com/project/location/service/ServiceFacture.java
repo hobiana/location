@@ -18,6 +18,7 @@ import com.project.location.model.EntreeQuotient;
 import com.project.location.model.EntreeVola;
 import com.project.location.model.Facture;
 import com.project.location.model.FactureFille;
+import com.project.location.model.HorsSotck;
 import com.project.location.util.DateUtil;
 import java.util.Date;
 import java.util.List;
@@ -25,6 +26,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.cfg.Configuration;
 
 /**
  *
@@ -292,10 +294,10 @@ public class ServiceFacture extends BaseService {
             session = this.hibernateDao.getSessionFactory().openSession(); 
             FactureFille factureFille = ServiceFacture.findFactureFille(idFactureFille, session); 
             ServiceCommande serviceCommande = new ServiceCommande();
-            Commande commande = serviceCommande.find(idCommande, session);
-            List<CommandeStock> commandeStock = serviceCommande.find(commande,session);
-            Client client = serviceCommande.findClient(commande, session);
-            Facture factureF = ServiceFacture.findFacture(commande, session);
+            Commande com = serviceCommande.find(idCommande, session);
+            List<CommandeStock> commandeStock = serviceCommande.find(com,session);
+            Client client = serviceCommande.findClient(com, session);
+            Facture factureF = ServiceFacture.findFacture(com, session);
             serviceCommande.initStock(commandeStock, session);
             
             List<FactureFille> factureFilles = ServiceFacture.factureFilleByCommande(idCommande, session);
@@ -304,8 +306,15 @@ public class ServiceFacture extends BaseService {
                 if(factFille.getId()==idFactureFille) break; 
                 totaPaye+=factFille.getValeur();
             }
+            List<HorsSotck> hors_stock = serviceCommande.findListHorsStock(com, session);
             
-            FactureFilleGenerator facture = new FactureFilleGenerator(client,commande,commandeStock,factureF ,totaPaye,factureFille.getValeur(),factureFille.getRef(), servletRequest);
+            //creer une session pour get total: sinon erreur A different object with the same identifier value was already associated with the session : [com.project.location.model.Commande#1]
+            HibernateDao hibernate = new HibernateDao();
+            hibernate.setSessionFactory(new Configuration().configure().buildSessionFactory());
+            Session s = hibernate.getSessionFactory().openSession();
+            double[] total = serviceCommande.getTotal(idCommande, s);
+            if(s!=null)s.close();
+            FactureFilleGenerator facture = new FactureFilleGenerator(client,com,commandeStock,hors_stock,factureF ,totaPaye,factureFille.getValeur(),factureFille.getRef(),total, servletRequest);
             
         } catch( NullPointerException npe) {
             npe.printStackTrace();
@@ -315,6 +324,7 @@ public class ServiceFacture extends BaseService {
         } catch( ConnexionException ce) {
             throw new Exception("Probleme de connexion à la base de donnée");
         } catch( Exception e){
+            e.printStackTrace();
             throw e;
         }finally { 
             if(session!=null) session.close();

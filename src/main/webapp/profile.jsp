@@ -42,7 +42,12 @@
 
                                   
                                 </ul>
+<<<<<<< HEAD
                                 <a href="modifclient?idClient=<s:property value="client.id"/>" class="btn btn-success"><i class="fa fa-edit m-right-xs"></i>Modifier les informations</a>
+=======
+
+                                <a class="btn btn-success" href="modifclient?idClient=<s:property value="idClient"  />"><i class="fa fa-edit m-right-xs"></i>Modifier les information</a>
+>>>>>>> c902fc0adeeeb249386b88cb438e5ce8452cbcf6
                                 <br />
 
                               

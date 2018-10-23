@@ -384,6 +384,11 @@ public class ActionStock extends BaseAction {
     }
 
     public String ajoutStock() throws Exception {
+        try {
+            Users u=this.getSessionUser();
+        } catch (Exception ex) {
+            return Action.LOGIN;
+        }
         Entree entree = new Entree();
         entree.setStock(new Stock(idStock));
         entree.setQuantite(quantite);
@@ -412,6 +417,11 @@ public class ActionStock extends BaseAction {
     }
 
     public String sortieStock() throws Exception {
+        try {
+            Users u=this.getSessionUser();
+        } catch (Exception ex) {
+            return Action.LOGIN;
+        }
         Sortie sortie = new Sortie();
         sortie.setStock(new Stock(idStock));
         sortie.setQuantite(quantite);
@@ -422,6 +432,11 @@ public class ActionStock extends BaseAction {
     }
 
     public String toupdateStock() throws Exception {
+        try {
+            Users u=this.getSessionUser();
+        } catch (Exception ex) {
+            return Action.LOGIN;
+        }
         this.titre = "Modification de Stock";
         this.stock = serviceStock.find(idStock);
         this.refStock = stock.getRef();
@@ -429,6 +444,11 @@ public class ActionStock extends BaseAction {
     }
 
     public String modifStock() throws Exception {
+        try {
+            Users u=this.getSessionUser();
+        } catch (Exception ex) {
+            return Action.LOGIN;
+        }
         Stock stock = serviceStock.find(idStock);
         stock.setImage(image);
         stock.setDesignation(designation);
