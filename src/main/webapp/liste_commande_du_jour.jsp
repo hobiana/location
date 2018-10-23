@@ -30,7 +30,26 @@
                 <div class="row">
                     <div class="col-lg-12">
                             <!-- /.panel -->
-
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    Recherche
+                                </div>
+                                <!-- /.panel-heading -->
+                                <div class="panel-body">
+                                    <form role="form" action="commandedujour">
+                                        <div class="form-group">
+                                            <label>Date début</label>
+                                            <input name="dateMin" type="date" class="form-control" value="<s:property value="dateMin"/>">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Date fin</label>
+                                            <input name="dateMax" type="date" class="form-control" value="<s:property value="dateMax"/>">
+                                        </div>
+                                        <button style="margin-top: 15px;" type="submit" class="btn btn-default">Rechercher</button>
+                                        </form>
+                                </div>
+                                <!-- /.panel-body -->
+                            </div>
                             <div class="panel panel-default">
                                 <div class="panel-heading">
                                     <span>Commandes du jour</span>

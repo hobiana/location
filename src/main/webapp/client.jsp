@@ -121,6 +121,7 @@
                                         <th>telephone</th>
                                         <th>Blacklist / Whitelist</th>
                                         <th>Commande</th>
+                                        <th>Fiche</th>
                                         <th>Modifier</th>
                                     </tr>
                                     </thead>
@@ -140,6 +141,10 @@
                                                     <s:if test="blackListe==false">
                                                         <a class="btn btn-circle btn-default center-block" href="commande?idClient=<s:property value="id"  />&action=save"><i class="fa fa-shopping-cart"></i></a>
                                                     </s:if>
+                                                </td>
+                                                <td>
+                                                    <a class="btn btn-circle btn-default center-block" href="ficheclient?idClient=<s:property value="id"  />"><i class="fa fa-area-chart"></i></a>
+                                                    
                                                 </td>
                                                 <td><a type="button" class="btn btn-default center-block" href="modifclient?idClient=<s:property value="id"  />"><i class="fa fa-edit"></i></a></td>
                                             </tr>

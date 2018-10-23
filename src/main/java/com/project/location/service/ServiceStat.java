@@ -141,11 +141,67 @@ public class ServiceStat extends BaseService{
         }
     }
     
+    public static List<StatModel> getCommandePerMonthUser(Date debut, Date fin, Client client, Session session) throws ConnexionException, Exception{
+        List<StatModel> result;
+        try{
+            String sql = "SELECT COUNT(*) as nombre, to_char(commande.dateCommande, 'YYYY-MM') as year_month , commande.client.id FROM Commande commande where (commande.client.id = :idClient) "
+                    + "and (commande.dateCommande BETWEEN :debut AND :fin)" +
+                    " group by to_char(commande.dateCommande, 'YYYY-MM'), commande.client.id" +
+                    " ORDER BY to_char(commande.dateCommande, 'YYYY-MM') asc";
+            Query query = session.createQuery(sql); 
+            query.setParameter("idClient", client.getId());
+            query.setParameter("debut", debut);
+            query.setParameter("fin", fin);
+            List<Object> resultQuery = query.list();
+            result = new ArrayList();
+            
+           List<Date> dates = DateUtil.allDateMonth(debut, fin);
+            for(int i=0; i<dates.size();i++) {
+                StatModel tempStat = new StatModel();
+                boolean test = false;
+                int indice = 0;
+                for(int j=0;j<resultQuery.size();j++) {
+                    Object[] temp =  (Object[]) resultQuery.get(j);
+                    if(DateUtil.convert((String)temp[1]).equals(dates.get(i))){
+                        test = true; 
+                        indice = j;
+                        break;
+                    }
+                }
+                if(test==true){
+                   Object[] temp =  (Object[]) resultQuery.get(indice);
+                   Long value = (Long)temp[0];
+                   double doubleValue = value;
+                   tempStat.setValue(doubleValue);
+                } else {
+                    tempStat.setValue(0.0);
+                }
+                tempStat.setDate(dates.get(i));
+                result.add(tempStat);
+            }
+            return result;
+        } catch(Exception e) {
+            throw e;
+        }
+    }
+    
     public List<StatModel> getCommandeUser(Date debut, Date fin, Client client) throws ConnexionException, Exception{
         Session session = null; 
         try{
             session = this.hibernateDao.getSessionFactory().openSession();
             return ServiceStat.getCommandeUser(debut, fin, client, session);
+        }catch(Exception e) {
+            throw e;
+        } finally{
+            if(session!=null) session.close();
+        }
+    }
+    
+    public List<StatModel> getCommandePerMonthUser(Date debut, Date fin, Client client) throws ConnexionException, Exception{
+        Session session = null; 
+        try{
+            session = this.hibernateDao.getSessionFactory().openSession();
+            return ServiceStat.getCommandePerMonthUser(debut, fin, client, session);
         }catch(Exception e) {
             throw e;
         } finally{
@@ -280,8 +336,13 @@ public class ServiceStat extends BaseService{
             query.setParameter("month", DateUtil.convertMonth(month));
             List<Object> resultQuery = query.list();
             result = new ArrayList();
-            
-            for(int i=0;i<resultQuery.size();i++){
+            int resultQuerySize = resultQuery.size();
+            if(resultQuerySize == 0){
+                StatModel temp = new StatModel();
+                temp.setDate(month);
+                result.add(temp);
+            }
+            for(int i=0;i<resultQuerySize;i++){
                 Object[] queryTemp = (Object[]) resultQuery.get(i);
                 StatModel temp = new StatModel();
                 long nombreLong = (long) queryTemp[0];
@@ -303,7 +364,7 @@ public class ServiceStat extends BaseService{
     
     public static List<List<StatModel>> getPreferenceClientPerMonth(Date debut, Date fin, Client client, Session session)throws ConnexionException, Exception{
         List<List<StatModel>> firstD = new ArrayList();
-        List<Date> months = DateUtil.allDateMonth(debut, debut);
+        List<Date> months = DateUtil.allDateMonth(debut, fin);
         int monthsSize = months.size();
         for(int i=0;i<monthsSize;i++){
             Date month = months.get(i);
@@ -442,6 +503,46 @@ public class ServiceStat extends BaseService{
         }catch(Exception e) {
             throw e;
         } finally{
+            if(session!=null) session.close();
+        }
+    }
+    
+    public static List<StatModel> getBiggerBenificeClient(Session session) throws ConnexionException, Exception{
+        List<StatModel> result;
+        try{
+            String sql = "SELECT SUM(factureFille.valeur) as argentEntree, factureFille.commande.client.id, factureFille.commande.client.prenom, factureFille.commande.client.nom "
+                    + "FROM FactureFille factureFille " 
+                    + " GROUP BY factureFille.commande.client.id,factureFille.commande.client.prenom, factureFille.commande.client.nom  "
+                    + "ORDER BY SUM(factureFille.valeur) DESC ";
+            Query query = session.createQuery(sql); 
+            query.setMaxResults(10);
+            List<Object> resultQuery = query.list();
+            result = new ArrayList();
+            int resultQuerySize = resultQuery.size(); 
+            for(int i=0;i<resultQuerySize;i++){
+                Object[] queryTemp = (Object[]) resultQuery.get(i);
+                StatModel tempStat = new StatModel(); 
+                Client clientTemp = new Client(); 
+                clientTemp.setId((long)queryTemp[1]);
+                clientTemp.setPrenom((String)queryTemp[2]);
+                clientTemp.setNom((String)queryTemp[3]);
+                tempStat.setOther(clientTemp);
+                tempStat.setValue((double)queryTemp[0]);
+                result.add(tempStat);
+            }
+            return result;
+        } catch(Exception e) {
+            throw e;
+        }
+    }
+    public List<StatModel> getBiggerBenificeClient() throws ConnexionException, Exception{
+        Session session = null;
+        try{
+            session = this.hibernateDao.getSessionFactory().openSession();
+            return ServiceStat.getBiggerBenificeClient(session);
+        } catch(Exception e) {
+            throw e;
+        } finally {
             if(session!=null) session.close();
         }
     }

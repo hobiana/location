@@ -42,7 +42,7 @@ public class HistoriqueUser extends BaseModel{
     }
     
     public String getDateString() throws Exception{
-       return DateUtil.convert(dateHU);
+       return DateUtil.convertTimestamp(dateHU);
     }
    
     

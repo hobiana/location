@@ -34,6 +34,17 @@ public class DateUtil {
         }
         return reponse; 
     }
+    public static String convertTimestamp(Date date)throws Exception{
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); 
+        String reponse; 
+        try{
+            reponse = sdf.format(date);
+        }catch(Exception e){
+            e.printStackTrace();
+            throw new Exception("La date inserer n'est pas valide");
+        }
+        return reponse; 
+    }
     public static String convertNormal(Date date)throws Exception{
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy"); 
         String reponse; 

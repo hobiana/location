@@ -17,6 +17,15 @@ public class Stock extends BaseModel {
     private int prixLocation; 
     private int quantite; 
     private int prixCasse;
+    private String image;
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
 
     public int getPrixCasse() {
         return prixCasse;
