@@ -42,7 +42,6 @@
 
                                   
                                 </ul>
-
                                 <a class="btn btn-success" href="modifclient?idClient=<s:property value="idClient"  />"><i class="fa fa-edit m-right-xs"></i>Modifier les information</a>
                                 <br />
 
@@ -90,10 +89,10 @@
                                   <div class="col-md-12">
                                     <div class="panel panel-default">
                                         <div class="panel-heading">
-                                            <i class="fa fa-bar-chart-o fa-fw"></i> Argent dépensé
+                                            <i class="fa fa-bar-chart-o fa-fw"></i> Argent dÃ©pensÃ©
                                             <div class="pull-right">
-                                                <input id="debut-benifice" type='month' value='<s:property value="years"/>-01' onchange="getBenifice()">
-                                                <input id="fin-benifice" type='month' value='<s:property value="years"/>-12' onchange="getBenifice()">
+                                                <input id="debut-benifice" type='month' value='<s:property value="years"/>-01' onchange="getBenificeClient()">
+                                                <input id="fin-benifice" type='month' value='<s:property value="years"/>-12' onchange="getBenificeClient()">
                                             </div>
                                         </div>
                                         <!-- /.panel-heading -->

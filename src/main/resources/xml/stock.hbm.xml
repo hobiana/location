@@ -49,5 +49,6 @@ Contributor(s):
     <property column="prixlocation" name="prixLocation" type="integer"/>
     <property column="prixcasse" name="prixCasse" type="integer"/>
     <property column="quantite" name="quantite" type="integer"/>
+    <property column="image" name="image" type="string"/>
   </class>
 </hibernate-mapping>

@@ -147,6 +147,7 @@
         
         <action name="newStock" method="newStock" class="com.project.location.action.ActionStock">
            <result name="success" type="redirectAction">stock</result>
+           <result name="login" type="redirect">index</result>
            <result name="error">index.js</result>
             <result name="login" type="redirect">index</result>
         </action>

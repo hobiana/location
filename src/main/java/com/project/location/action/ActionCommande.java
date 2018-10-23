@@ -468,7 +468,8 @@ public class ActionCommande extends BaseAction {
             nombre_jour = DateUtil.nombreJ(commande.getDateDebut(), commande.getDateRetour());
             Facture facture = this.serviceFacture.factureByCommande(commande.getId());
             quotient = facture.getQuotient();
-            this.serviceCommande.setCommande(this.serviceCommande.find(commande)); 
+            this.serviceCommande.setCommande(this.serviceCommande.find(commande));
+            this.serviceCommande.setCommandeHS(this.serviceCommande.findListHorsStock(commande));
         }
         listeCommandeStock = serviceCommande.getCommande();
         listeHorsStock = serviceCommande.getCommandeHS();

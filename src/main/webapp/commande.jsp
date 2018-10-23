@@ -13,6 +13,7 @@
         <title><s:property value="titre"/></title>
         <%@include file="/template/css.jsp" %>
         <link href="vendor/datatables/css/dataTables.bootstrap.min.css" rel="stylesheet">
+        <link href="css/lightbox.css" rel="stylesheet">
     </head>
     <body>
         <div id="wrapper">
@@ -282,6 +283,7 @@
                                             <th>Location (Ariary/unité)</th>
                                             <th>Qte</th>
                                             <th>Rem. Art. (Ar)</th>
+                                            <th>Image</th>
                                             <th></th>
                                         </tr>
                                     </thead>
@@ -292,6 +294,9 @@
                                                 <td><span class="pull-right"><s:property value="getPL()"  /></span></td>
                                                 <td><span class="pull-right"><input id="addQte<s:property value="id"  />" name="quantite" class=" form-control input-sm" type="number" min="0" ></span></td>
                                                 <td><span class="pull-right"><input id="addRemise<s:property value="id"  />" name="remise" class=" form-control input-sm" type="number" min="0" ></span></td>
+                                                 <td>
+                                                    <a id="img" href="<s:property value="image"/>" data-lightbox="image-1" data-title="<s:property value="designation" />"><img id="printImg" src="<s:property value="image"/>"  width="80px"> </a>
+                                                </td>
                                                 <td><button id="<s:property value="id"  />" type="submit" class="ajouter btn btn-default btn-sm"><i class="fa fa-plus"></i><i class="fa fa-shopping-cart"></i></button></td>
                                             </tr>
                                         </s:iterator>
@@ -310,6 +315,7 @@
     <%@include file="/template/footer.jsp" %>
     <script src="vendor/datatables/js/jquery.dataTables.min.js"></script>
     <script src="vendor/datatables/js/dataTables.bootstrap.min.js"></script>
+    <script src="js/lightbox.js" ></script>
     <script>
         $(document).ready(function () {
             $('.modifier').on('click', function ()
