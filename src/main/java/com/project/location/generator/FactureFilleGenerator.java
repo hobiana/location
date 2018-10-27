@@ -708,7 +708,7 @@ public class FactureFilleGenerator {
         if(leftPage<300)sautPage(document,1);
         
         information = new Paragraph(); 
-        information.add(new Phrase("Arrété la présente facture à  la somme de : "+ConvertionLettre.getLettre(total[0]+this.facture.getQuotient()-paye)+" Ariary ",smallFontBold));
+        information.add(new Phrase("Arrété la présente facture à  la somme de : "+ConvertionLettre.getLettre(total[0]+this.facture.getQuotient()-paye+total[3])+" Ariary ",smallFontBold));
         document.add(information);
         
         information = new Paragraph();
