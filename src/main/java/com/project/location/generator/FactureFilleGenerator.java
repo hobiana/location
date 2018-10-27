@@ -12,6 +12,7 @@ import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
+import com.itextpdf.text.Image;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
 import com.itextpdf.text.Rectangle;
@@ -49,6 +50,7 @@ public class FactureFilleGenerator {
     private String refFille;
     private List<HorsSotck> hors_stock;
     private double[] total;
+    private HttpServletRequest servletRequest;
     
     private static final Font boltTableFont = new Font(Font.FontFamily.TIMES_ROMAN, 10, Font.BOLD);
     private static final Font normalBoldTableFont = new Font(Font.FontFamily.TIMES_ROMAN, 9, Font.BOLD);
@@ -65,6 +67,15 @@ public class FactureFilleGenerator {
     private static Font extraSmallFont = new Font(Font.FontFamily.TIMES_ROMAN, 7, Font.BOLD);
     private static Font smallFontBold = new Font(Font.FontFamily.TIMES_ROMAN, 9, Font.BOLD);
 
+    public HttpServletRequest getServletRequest() {
+        return servletRequest;
+    }
+
+    public void setServletRequest(HttpServletRequest servletRequest) {
+        this.servletRequest = servletRequest;
+    }
+
+    
     public List<HorsSotck> getHors_stock() {
         return hors_stock;
     }
@@ -156,6 +167,7 @@ public class FactureFilleGenerator {
         this.refFille = refFille;
         this.setHors_stock(hors_stock);
         this.setTotal(total);
+        this.setServletRequest(servletRequest);
         Document document = new Document();
         PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(servletRequest.getSession().getServletContext().getRealPath("/")+PathData.PATH_PDF_FACTURE_FILLE));
         document.open();
@@ -178,7 +190,22 @@ public class FactureFilleGenerator {
     private void addContent(Document document,PdfWriter writer) throws DocumentException, BadElementException, IOException, Exception {
         Paragraph information = new Paragraph();
 
-        
+        Image img = Image.getInstance(servletRequest.getSession().getServletContext().getRealPath("/")+"data/logo/logo.png");
+        img.scaleAbsolute(300, 50);
+        img.setAlignment(Element.ALIGN_CENTER);
+        information.add(img);
+        addEmptyLine(information, 1);
+        document.add(information);
+
+        information = new Paragraph();
+        information.add(new Phrase("LOT V8 72 A TER C AMBATOROKA - 101 Antananarivo MADAGASCAR", normalFont));
+        addEmptyLine(information, 1);
+        information.add(new Phrase("NIF : 6002986663 - ", normalFont));
+        information.add(new Phrase("Stat : 42201-11-2018-0-10341", normalFont));
+        addEmptyLine(information, 1);
+        information.add(new Phrase("Email : direction@prima.mg - ", normalFont));
+        information.add(new Phrase("Tel : 020 22 220 54 – 034 21 777 99", normalFont));
+        information.setAlignment(Element.ALIGN_LEFT);
         document.add(information);
 
         information = new Paragraph();
