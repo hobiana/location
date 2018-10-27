@@ -551,7 +551,7 @@ public class FactureFilleGenerator {
         c1.setVerticalAlignment(Element.ALIGN_MIDDLE);
         table.addCell(c1);
         
-        c1 = new PdfPCell(new Phrase(UtilConvert.toMoney(total[0]+facture.getQuotient()), boldFont));
+        c1 = new PdfPCell(new Phrase(UtilConvert.toMoney(total[0]+facture.getQuotient()+total[3]), boldFont));
         c1.setHorizontalAlignment(Element.ALIGN_RIGHT);
         c1.setVerticalAlignment(Element.ALIGN_MIDDLE);
         table.addCell(c1);
