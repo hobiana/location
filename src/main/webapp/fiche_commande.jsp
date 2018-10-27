@@ -227,7 +227,7 @@
                                         <p class="text-right"><strong class="">Tot. net :</strong></p>
                                     </div>
                                     <div class="col-md-3">
-                                        <p class="text-right"><strong><s:property value="doubleToString(total[0]+facture.quotient)"/> Ar </strong></p>
+                                        <p class="text-right"><strong><s:property value="doubleToString(total[0]+facture.quotient+total[3])"/> Ar </strong></p>
                                     </div>
                                 </div>
                             </div>

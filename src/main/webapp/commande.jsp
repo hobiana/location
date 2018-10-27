@@ -194,7 +194,7 @@
                                         <p class="text-right"><strong class="">Tot. net :</strong></p>
                                     </div>
                                     <div class="col-md-3">
-                                        <p class="text-right"><strong><s:property value="doubleToString(total[0]+quotient)"/> Ar </strong></p>
+                                        <p class="text-right"><strong><s:property value="doubleToString(total[0]+quotient+total[3])"/> Ar </strong></p>
                                     </div>
                                 </div>
                                 <a class="btn btn-success pull-right" id="validerCommande">Valider la commande</a>

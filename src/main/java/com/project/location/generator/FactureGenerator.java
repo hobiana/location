@@ -552,7 +552,7 @@ public class FactureGenerator {
         c1.setVerticalAlignment(Element.ALIGN_MIDDLE);
         table.addCell(c1);
         
-        c1 = new PdfPCell(new Phrase(UtilConvert.toMoney(total[0]+facture.getQuotient()), boldFont));
+        c1 = new PdfPCell(new Phrase(UtilConvert.toMoney(total[0]+facture.getQuotient()+total[3]), boldFont));
         c1.setHorizontalAlignment(Element.ALIGN_RIGHT);
         c1.setVerticalAlignment(Element.ALIGN_MIDDLE);
         table.addCell(c1);
@@ -618,7 +618,7 @@ public class FactureGenerator {
         if(leftPage<300)sautPage(document,1);
         
         information = new Paragraph(); 
-        information.add(new Phrase("Arrété la présente facture à  la somme de : "+ConvertionLettre.getLettre(total[0]+this.facture.getQuotient())+" Ariary ",smallFontBold));
+        information.add(new Phrase("Arrété la présente facture à  la somme de : "+ConvertionLettre.getLettre(total[0]+this.facture.getQuotient()+total[3])+" Ariary ",smallFontBold));
         document.add(information);
         
         information = new Paragraph();
