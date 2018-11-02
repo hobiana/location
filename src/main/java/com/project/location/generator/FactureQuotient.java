@@ -13,12 +13,14 @@ import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.Image;
+import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
 import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.GrayColor;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfPageEventHelper;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.project.location.data.PathData;
 import com.project.location.model.Client;
@@ -32,6 +34,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -117,8 +121,9 @@ public class FactureQuotient {
         this.setFacture(facture);
         this.setServletRequest(servletRequest);
         Document document = new Document();
-        PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(servletRequest.getSession().getServletContext().getRealPath("/")+PathData.PATH_PDF_BON_QUOTIENT));
-        document.open();
+        PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(servletRequest.getSession().getServletContext().getRealPath("/")+PathData.PATH_PDF_BON_QUOTIENT));     
+        setNumberPage(writer, servletRequest);
+        document.open();     
         addMetaData(document);
         addContent(document,writer);
         document.close();
@@ -386,6 +391,68 @@ public class FactureQuotient {
         
         
         
+    }
+    public void setNumberPage(PdfWriter writer,final HttpServletRequest servletRequest) {
+        writer.setPageEvent(new PdfPageEventHelper() {
+            @Override
+            public void onStartPage(PdfWriter writer, Document document) {
+                try {
+                    Paragraph information = new Paragraph();
+                    Rectangle rect = document.getPageSize();
+                    Image img = Image.getInstance(servletRequest.getSession().getServletContext().getRealPath("/")+"data/logo/logo.png");
+//                    img.setAbsolutePosition((rect.getLeft() + rect.getRight()) / 2 - 45, rect.getTop() - 50);
+                    img.setAlignment(Element.ALIGN_CENTER);   
+                    
+                    information.add(img);
+                    addEmptyLine(information, 1);
+                    document.add(information);
+                   
+                } catch (BadElementException ex) {
+                    Logger.getLogger(FactureGenerator.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (IOException ex) {
+                    Logger.getLogger(FactureGenerator.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (DocumentException ex) {
+                    Logger.getLogger(FactureGenerator.class.getName()).log(Level.SEVERE, null, ex);                }
+            }
+            @Override
+            public void onEndPage(PdfWriter writer, Document document) {
+                
+                try {
+                   
+                    Paragraph information = new Paragraph();
+                    Rectangle rect = document.getPageSize();
+                    Image img = Image.getInstance(servletRequest.getSession().getServletContext().getRealPath("/")+"data/logo/pied.PNG");
+                    img.scaleAbsolute(300, 50);
+                    float x = (PageSize.A4.getWidth() - img.getScaledWidth()) / 2;
+                    img.setAbsolutePosition(x, rect.getBottom()+50);
+                    img.setAlignment(Element.ALIGN_CENTER);
+                    information.add(img);
+                    addEmptyLine(information, 1);
+                    document.add(information);
+                    
+//                    writer.getDirectContent().addImage(img);
+                    
+                    int pageNumber = writer.getPageNumber();
+                    String text = "Page " + pageNumber;
+                    Rectangle page = document.getPageSize();
+                    PdfPTable structure = new PdfPTable(1);
+                    PdfPCell c2 = new PdfPCell(new Paragraph(text));
+                    c2.setHorizontalAlignment(Element.ALIGN_RIGHT);
+                    c2.setBorder(PdfPCell.NO_BORDER);
+                    
+                    structure.addCell(c2);
+                    structure.setTotalWidth(page.getWidth() - document.leftMargin() - document.rightMargin());
+                    structure.writeSelectedRows(0, -1, document.leftMargin(), document.bottomMargin(), writer.getDirectContent());
+                } catch (BadElementException ex) {
+                    Logger.getLogger(FactureGenerator.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (IOException ex) {
+                    Logger.getLogger(FactureGenerator.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (DocumentException ex) {
+                    Logger.getLogger(FactureGenerator.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+
+        });
     }
 
     private static void addEmptyLine(Paragraph paragraph, int number) {

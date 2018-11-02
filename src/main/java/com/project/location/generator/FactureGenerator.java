@@ -13,12 +13,14 @@ import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.Image;
+import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
 import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.GrayColor;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfPageEventHelper;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.project.location.data.PathData;
 import com.project.location.model.Client;
@@ -33,6 +35,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -146,9 +150,11 @@ public class FactureGenerator {
         this.setServletRequest(servletRequest);
         Document document = new Document();
         PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(servletRequest.getSession().getServletContext().getRealPath("/")+PathData.PATH_PDF_FACTURE));
+        setNumberPage(writer, servletRequest);
         document.open();
         addMetaData(document);
         addContent(document,writer);
+        
         document.close();
     }
 
@@ -165,12 +171,6 @@ public class FactureGenerator {
 
     private void addContent(Document document,PdfWriter writer) throws DocumentException, BadElementException, IOException, Exception {
         Paragraph information = new Paragraph();
-
-        Image img = Image.getInstance(servletRequest.getSession().getServletContext().getRealPath("/")+"data/logo/logo.png");
-        img.scaleAbsolute(300, 50);
-        img.setAlignment(Element.ALIGN_CENTER);
-        information.add(img);
-        addEmptyLine(information, 1);
         document.add(information);
 
         information = new Paragraph();
@@ -196,12 +196,12 @@ public class FactureGenerator {
         document.add(information);
 
         information = new Paragraph();
-        addEmptyLine(information, 2);
+        addEmptyLine(information, 1);
         
         information.add(new Phrase("Object : Facture de la commande N° "+ this.commande.getRef(),boldFont));
         addEmptyLine(information,1);
         information.add(new Phrase("N° Facture : "+ this.facture.getRef(),boldFont));
-        addEmptyLine(information,2);
+        addEmptyLine(information,1);
             
        
        
@@ -209,71 +209,8 @@ public class FactureGenerator {
 
         PdfPCell c1;
         
-        PdfPTable hors_stock = new PdfPTable(4);
-        hors_stock.setWidthPercentage(100);
-        hors_stock.setWidths(new float[]{5, 2, 2,2});
-        
-        c1 = new PdfPCell(new Phrase("DESIGNATION", header));
-        c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-        hors_stock.addCell(c1);
-        
-        c1 = new PdfPCell(new Phrase("PU", header));
-        c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-        hors_stock.addCell(c1);
-        
-        c1 = new PdfPCell(new Phrase("QUANTITE", header));
-        c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-        hors_stock.addCell(c1);
-        
-        c1 = new PdfPCell(new Phrase("MONTANT", header));
-        c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-        hors_stock.addCell(c1);
-        
-        for (HorsSotck hs: this.hors_stock) {
-            c1 = new PdfPCell(new Phrase(hs.getLibelle(), smallFont));
-            c1.setHorizontalAlignment(Element.ALIGN_LEFT);
-            c1.setPadding(2);
-            hors_stock.addCell(c1);
-            
-            c1 = new PdfPCell(new Phrase(String.valueOf(hs.getQuantite()), smallFont));
-            c1.setHorizontalAlignment(Element.ALIGN_LEFT);
-            c1.setPadding(2);
-            hors_stock.addCell(c1);
-            
-            c1 = new PdfPCell(new Phrase(UtilConvert.toMoney(hs.getMontant()), smallFont));
-            c1.setHorizontalAlignment(Element.ALIGN_LEFT);
-            c1.setPadding(2);
-            hors_stock.addCell(c1);
-            
-            c1 = new PdfPCell(new Phrase(UtilConvert.toMoney(hs.getMontant()*hs.getQuantite()), smallFont));
-            c1.setHorizontalAlignment(Element.ALIGN_LEFT);
-            c1.setPadding(2);
-            hors_stock.addCell(c1);
-        }
-        
-        c1 = new PdfPCell();
-        c1.setHorizontalAlignment(Element.ALIGN_LEFT);
-        c1.setBorder(Rectangle.NO_BORDER);
-        hors_stock.addCell(c1);
-        
-        c1 = new PdfPCell();
-        c1.setHorizontalAlignment(Element.ALIGN_LEFT);
-        c1.setBorder(Rectangle.NO_BORDER);
-        hors_stock.addCell(c1);
-        
-        c1 = new PdfPCell(new Phrase("Total Hors Stock", boldFont));
-        c1.setBorder(Rectangle.NO_BORDER);
-        c1.setHorizontalAlignment(Element.ALIGN_RIGHT);
-        c1.setVerticalAlignment(Element.ALIGN_MIDDLE);
-        hors_stock.addCell(c1);
-        
-        c1 = new PdfPCell(new Phrase(UtilConvert.toMoney(total[3]), boldFont));
-        c1.setHorizontalAlignment(Element.ALIGN_RIGHT);
-        c1.setVerticalAlignment(Element.ALIGN_MIDDLE);
-        hors_stock.addCell(c1);
          // end
         
-        document.add(hors_stock);
         //end hors stock
         
         information = new Paragraph();
@@ -372,6 +309,44 @@ public class FactureGenerator {
             table.addCell(c1);
 
         }
+        
+        for (HorsSotck hs: this.hors_stock) {
+            c1 = new PdfPCell(new Phrase(hs.getLibelle(), smallFont));
+            c1.setHorizontalAlignment(Element.ALIGN_LEFT);
+            c1.setPadding(2);
+            table.addCell(c1);
+            
+            c1 = new PdfPCell(new Phrase(String.valueOf(hs.getQuantite()), smallFont));
+            c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+            c1.setVerticalAlignment(Element.ALIGN_MIDDLE);
+            c1.setPadding(2);
+            table.addCell(c1);
+            
+            c1 = new PdfPCell(new Phrase(UtilConvert.toMoney(hs.getMontant()), smallFont));
+            c1.setHorizontalAlignment(Element.ALIGN_RIGHT);
+            c1.setPadding(2);
+            table.addCell(c1);
+            
+            c1 = new PdfPCell(new Phrase(UtilConvert.toMoney(0), smallFont));
+            c1.setHorizontalAlignment(Element.ALIGN_RIGHT);
+            c1.setPadding(2);
+            table.addCell(c1);
+            
+            c1 = new PdfPCell(new Phrase(UtilConvert.toMoney(0), smallFont));
+            c1.setHorizontalAlignment(Element.ALIGN_RIGHT);
+            c1.setPadding(2);
+            table.addCell(c1);
+            
+            c1 = new PdfPCell(new Phrase(UtilConvert.toMoney(0), smallFont));
+            c1.setHorizontalAlignment(Element.ALIGN_RIGHT);
+            c1.setPadding(2);
+            table.addCell(c1);
+            
+            c1 = new PdfPCell(new Phrase(UtilConvert.toMoney(hs.getMontant()*hs.getQuantite()), smallFont));
+            c1.setHorizontalAlignment(Element.ALIGN_RIGHT);
+            c1.setPadding(2);
+            table.addCell(c1);
+        }
          
         c1 = new PdfPCell();
         c1.setHorizontalAlignment(Element.ALIGN_LEFT);
@@ -398,13 +373,49 @@ public class FactureGenerator {
         c1.setBorder(Rectangle.NO_BORDER);
         table.addCell(c1);
         
-        c1 = new PdfPCell(new Phrase("Total brute", boldFont));
+        c1 = new PdfPCell(new Phrase("Total brute (Journalière)", boldFont));
         c1.setBorder(Rectangle.NO_BORDER);
         c1.setHorizontalAlignment(Element.ALIGN_RIGHT);
         c1.setVerticalAlignment(Element.ALIGN_MIDDLE);
         table.addCell(c1);
         
         c1 = new PdfPCell(new Phrase(UtilConvert.toMoney(total[1]), boldFont));
+        c1.setHorizontalAlignment(Element.ALIGN_RIGHT);
+        c1.setVerticalAlignment(Element.ALIGN_MIDDLE);
+        table.addCell(c1);
+         // end
+        c1 = new PdfPCell();
+        c1.setHorizontalAlignment(Element.ALIGN_LEFT);
+        c1.setBorder(Rectangle.NO_BORDER);
+        table.addCell(c1);
+        
+        c1 = new PdfPCell();
+        c1.setHorizontalAlignment(Element.ALIGN_LEFT);
+        c1.setBorder(Rectangle.NO_BORDER);
+        table.addCell(c1);
+        
+        c1 = new PdfPCell();
+        c1.setHorizontalAlignment(Element.ALIGN_LEFT);
+        c1.setBorder(Rectangle.NO_BORDER);
+        table.addCell(c1);
+        
+        c1 = new PdfPCell();
+        c1.setHorizontalAlignment(Element.ALIGN_LEFT);
+        c1.setBorder(Rectangle.NO_BORDER);
+        table.addCell(c1);
+        
+        c1 = new PdfPCell();
+        c1.setHorizontalAlignment(Element.ALIGN_LEFT);
+        c1.setBorder(Rectangle.NO_BORDER);
+        table.addCell(c1);
+        
+        c1 = new PdfPCell(new Phrase("Totale brute (Non journalière)", boldFont));
+        c1.setBorder(Rectangle.NO_BORDER);
+        c1.setHorizontalAlignment(Element.ALIGN_RIGHT);
+        c1.setVerticalAlignment(Element.ALIGN_MIDDLE);
+        table.addCell(c1);
+        
+        c1 = new PdfPCell(new Phrase(UtilConvert.toMoney(total[3]), boldFont));
         c1.setHorizontalAlignment(Element.ALIGN_RIGHT);
         c1.setVerticalAlignment(Element.ALIGN_MIDDLE);
         table.addCell(c1);
@@ -546,13 +557,49 @@ public class FactureGenerator {
         c1.setBorder(Rectangle.NO_BORDER);
         table.addCell(c1);
         
-        c1 = new PdfPCell(new Phrase("Total net", boldFont));
+        c1 = new PdfPCell(new Phrase("Nombre de jour", boldFont));       
         c1.setBorder(Rectangle.NO_BORDER);
+        c1.setHorizontalAlignment(Element.ALIGN_RIGHT);
+        c1.setVerticalAlignment(Element.ALIGN_MIDDLE);     
+        table.addCell(c1);
+        
+        c1 = new PdfPCell(new Phrase(String.valueOf(this.nombreJour), boldFont));        
         c1.setHorizontalAlignment(Element.ALIGN_RIGHT);
         c1.setVerticalAlignment(Element.ALIGN_MIDDLE);
         table.addCell(c1);
+         // end
+        c1 = new PdfPCell();
+        c1.setHorizontalAlignment(Element.ALIGN_LEFT);
+        c1.setBorder(Rectangle.NO_BORDER);
+        table.addCell(c1);
         
-        c1 = new PdfPCell(new Phrase(UtilConvert.toMoney(total[0]+facture.getQuotient()+total[3]), boldFont));
+        c1 = new PdfPCell();
+        c1.setHorizontalAlignment(Element.ALIGN_LEFT); 
+        c1.setBorder(Rectangle.NO_BORDER);
+        table.addCell(c1);
+        
+        c1 = new PdfPCell();
+        c1.setHorizontalAlignment(Element.ALIGN_LEFT);
+        c1.setBorder(Rectangle.NO_BORDER);
+        table.addCell(c1);
+        
+        c1 = new PdfPCell();
+        c1.setHorizontalAlignment(Element.ALIGN_LEFT);
+        c1.setBorder(Rectangle.NO_BORDER);
+        table.addCell(c1);
+        
+        c1 = new PdfPCell();
+        c1.setHorizontalAlignment(Element.ALIGN_LEFT);
+        c1.setBorder(Rectangle.NO_BORDER);
+        table.addCell(c1);
+        
+        c1 = new PdfPCell(new Phrase("Total Net Journalière", boldFont));       
+        c1.setBorder(Rectangle.NO_BORDER);
+        c1.setHorizontalAlignment(Element.ALIGN_RIGHT);
+        c1.setVerticalAlignment(Element.ALIGN_MIDDLE);     
+        table.addCell(c1);
+        
+        c1 = new PdfPCell(new Phrase(UtilConvert.toMoney(total[0]+facture.getQuotient()), boldFont));        
         c1.setHorizontalAlignment(Element.ALIGN_RIGHT);
         c1.setVerticalAlignment(Element.ALIGN_MIDDLE);
         table.addCell(c1);
@@ -583,13 +630,13 @@ public class FactureGenerator {
         c1.setBorder(Rectangle.NO_BORDER);
         table.addCell(c1);
         
-        c1 = new PdfPCell(new Phrase("Nombre de jour", boldFont));       
+        c1 = new PdfPCell(new Phrase("Total Net à Payer", boldFont));
         c1.setBorder(Rectangle.NO_BORDER);
         c1.setHorizontalAlignment(Element.ALIGN_RIGHT);
-        c1.setVerticalAlignment(Element.ALIGN_MIDDLE);     
+        c1.setVerticalAlignment(Element.ALIGN_MIDDLE);
         table.addCell(c1);
         
-        c1 = new PdfPCell(new Phrase(String.valueOf(this.nombreJour), boldFont));        
+        c1 = new PdfPCell(new Phrase(UtilConvert.toMoney(total[0]+facture.getQuotient()+total[3]), boldFont));
         c1.setHorizontalAlignment(Element.ALIGN_RIGHT);
         c1.setVerticalAlignment(Element.ALIGN_MIDDLE);
         table.addCell(c1);
@@ -615,7 +662,7 @@ public class FactureGenerator {
         document.add(table);
         
         float leftPage = 842-(document.getPageSize().getHeight()- writer.getVerticalPosition(false));        
-        if(leftPage<300)sautPage(document,1);
+        if(leftPage<200)sautPage(document,1);
         
         information = new Paragraph(); 
         information.add(new Phrase("Arrété la présente facture à  la somme de : "+ConvertionLettre.getLettre(total[0]+this.facture.getQuotient()+total[3])+" Ariary ",smallFontBold));
@@ -623,7 +670,6 @@ public class FactureGenerator {
         
         information = new Paragraph();
         information.add(new Phrase("Antananarivo le, "+DateUtil.toLettre(Calendar.getInstance().getTime()),smallFont));
-        addEmptyLine(information,1);
         
         
         document.add(information);
@@ -642,5 +688,67 @@ public class FactureGenerator {
             document.add(Chunk.NEXTPAGE);
         }
     }
+    
+    public void setNumberPage(PdfWriter writer,final HttpServletRequest servletRequest) {
+        writer.setPageEvent(new PdfPageEventHelper() {
+            @Override
+            public void onStartPage(PdfWriter writer, Document document) {
+                try {
+                    Paragraph information = new Paragraph();
+                    Rectangle rect = document.getPageSize();
+                    Image img = Image.getInstance(servletRequest.getSession().getServletContext().getRealPath("/")+"data/logo/logo.png");
+//                    img.setAbsolutePosition((rect.getLeft() + rect.getRight()) / 2 - 45, rect.getTop() - 50);
+                    img.setAlignment(Element.ALIGN_CENTER);   
+                    
+                    information.add(img);
+                    addEmptyLine(information, 1);
+                    document.add(information);
+                   
+                } catch (BadElementException ex) {
+                    Logger.getLogger(FactureGenerator.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (IOException ex) {
+                    Logger.getLogger(FactureGenerator.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (DocumentException ex) {
+                    Logger.getLogger(FactureGenerator.class.getName()).log(Level.SEVERE, null, ex);                }
+            }
+            @Override
+            public void onEndPage(PdfWriter writer, Document document) {
+                
+                try {
+                   
+                    Paragraph information = new Paragraph();
+                    Rectangle rect = document.getPageSize();
+                    Image img = Image.getInstance(servletRequest.getSession().getServletContext().getRealPath("/")+"data/logo/pied.PNG");
+                    img.scaleAbsolute(300, 50);
+                    float x = (PageSize.A4.getWidth() - img.getScaledWidth()) / 2;
+                    img.setAbsolutePosition(x, rect.getBottom()+50);
+                    img.setAlignment(Element.ALIGN_CENTER);
+                    information.add(img);
+                    addEmptyLine(information, 1);
+                    document.add(information);
+                    
+//                    writer.getDirectContent().addImage(img);
+                    
+                    int pageNumber = writer.getPageNumber();
+                    String text = "Page " + pageNumber;
+                    Rectangle page = document.getPageSize();
+                    PdfPTable structure = new PdfPTable(1);
+                    PdfPCell c2 = new PdfPCell(new Paragraph(text));
+                    c2.setHorizontalAlignment(Element.ALIGN_RIGHT);
+                    c2.setBorder(PdfPCell.NO_BORDER);
+                    
+                    structure.addCell(c2);
+                    structure.setTotalWidth(page.getWidth() - document.leftMargin() - document.rightMargin());
+                    structure.writeSelectedRows(0, -1, document.leftMargin(), document.bottomMargin(), writer.getDirectContent());
+                } catch (BadElementException ex) {
+                    Logger.getLogger(FactureGenerator.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (IOException ex) {
+                    Logger.getLogger(FactureGenerator.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (DocumentException ex) {
+                    Logger.getLogger(FactureGenerator.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
 
+        });
+    }
 }
