@@ -167,7 +167,7 @@ public class ActionPaiement extends BaseAction{
             Commande commande = this.serviceCommande.find(idCommande);
             double totalQuotient = this.serviceFacture.findByCommande(idCommande).getQuotient();
             double total[] = this.serviceCommande.getTotal(idCommande);
-            double somme = totalQuotient+ total[0] - commande.getRemiseGlobal();
+            double somme = totalQuotient+ total[0] + total[3] - commande.getRemiseGlobal();
             double tPay = this.serviceFacture.totalPayer(idCommande);
             this.setTotalToPaye(somme);
             this.setTotalPaye(tPay);
@@ -194,7 +194,7 @@ public class ActionPaiement extends BaseAction{
             double totalQuotient = this.serviceFacture.findByCommande(idCommande).getQuotient();
             double total[] = this.serviceCommande.getTotal(idCommande);
             double remiseGlobal = this.serviceCommande.find(idCommande).getRemiseGlobal();
-            double somme = totalQuotient+ total[0] - remiseGlobal;
+            double somme = totalQuotient+ total[0] +total[3] - remiseGlobal;
             this.serviceFacture.payement(idCommande, valeur, datepaiement, somme);
             return Action.SUCCESS;
         }catch(Exception e){

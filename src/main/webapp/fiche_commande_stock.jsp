@@ -114,7 +114,7 @@
                                                                 <th>R&eacute;f.</th>
                                                                 <th>Désignation</th>
                                                                 <th>Qte. commandée</th>
-                                                                <th>Qte. à retouner</th>
+                                                                <th>Qte. retournée</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>

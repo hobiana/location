@@ -22,6 +22,7 @@ import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfPageEventHelper;
 import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.text.pdf.draw.VerticalPositionMark;
 import com.project.location.data.PathData;
 import com.project.location.model.Client;
 import com.project.location.model.Commande;
@@ -102,6 +103,7 @@ public class BonSortieGenerator {
                     Paragraph information = new Paragraph();
                     Rectangle rect = document.getPageSize();
                     Image img = Image.getInstance(servletRequest.getSession().getServletContext().getRealPath("/")+"data/logo/logo.png");
+                    img.scaleAbsolute(150, 50);
 //                    img.setAbsolutePosition((rect.getLeft() + rect.getRight()) / 2 - 45, rect.getTop() - 50);
                     img.setAlignment(Element.ALIGN_CENTER);   
                     
@@ -123,7 +125,7 @@ public class BonSortieGenerator {
                    
                     Paragraph information = new Paragraph();
                     Rectangle rect = document.getPageSize();
-                    Image img = Image.getInstance(servletRequest.getSession().getServletContext().getRealPath("/")+"data/logo/pied.PNG");
+                    Image img = Image.getInstance(servletRequest.getSession().getServletContext().getRealPath("/")+"data/logo/pied.jpg");
                     img.scaleAbsolute(300, 50);
                     float x = (PageSize.A4.getWidth() - img.getScaledWidth()) / 2;
                     img.setAbsolutePosition(x, rect.getBottom()+50);
@@ -180,24 +182,10 @@ public class BonSortieGenerator {
     }
 
     private void addContent(Document document,PdfWriter writer) throws DocumentException, BadElementException, IOException, Exception {
-        Paragraph information = new Paragraph();
-
-        Image img = Image.getInstance(servletRequest.getSession().getServletContext().getRealPath("/")+"data/logo/logo.png");
-        img.scaleAbsolute(300, 50);
-        img.setAlignment(Element.ALIGN_CENTER);
-        information.add(img);
-        addEmptyLine(information, 1);
-        document.add(information);
-
-        information = new Paragraph();
-        information.add(new Phrase("LOT V8 72 A TER C AMBATOROKA - 101 Antananarivo MADAGASCAR", normalFont));
-        addEmptyLine(information, 1);
-        information.add(new Phrase("NIF : 6002986663 - ", normalFont));
-        information.add(new Phrase("Stat : 42201-11-2018-0-10341", normalFont));
-        addEmptyLine(information, 1);
-        information.add(new Phrase("Email : direction@prima.mg - ", normalFont));
-        information.add(new Phrase("Tel : 020 22 220 54 – 034 21 777 99", normalFont));
-        information.setAlignment(Element.ALIGN_LEFT);
+        Paragraph information = new Paragraph();       
+        addEmptyLine(information,2);
+        information.add(new Phrase("Antananarivo le, "+DateUtil.toLettre(Calendar.getInstance().getTime()),smallFont));
+       
         document.add(information);
 
         information = new Paragraph();
@@ -209,12 +197,15 @@ public class BonSortieGenerator {
         addEmptyLine(information, 1);
         information.add(new Phrase("Ref. client : "+this.client.getRef(), normalFont));
         information.setAlignment(Element.ALIGN_RIGHT);
+        addEmptyLine(information, 1);
+        information.add(new Phrase("Commande N° : "+this.commande.getRef(), normalFont));
+        information.setAlignment(Element.ALIGN_RIGHT);
         document.add(information);
 
         information = new Paragraph();
         addEmptyLine(information, 2);
         
-        information.add(new Phrase("Object : Bon de sortie de la commande N° "+ this.commande.getRef(),boldFont));
+        information.add(new Phrase("Bon de sortie N° BS-"+ this.commande.getRef(),boldFont));
         addEmptyLine(information,2);
             
        
@@ -266,13 +257,20 @@ public class BonSortieGenerator {
         
         
         information = new Paragraph();
-        addEmptyLine(information,2);
-        information.add(new Phrase("Antananarivo le, "+DateUtil.toLettre(Calendar.getInstance().getTime()),smallFont));
         addEmptyLine(information,5);
         information.add(new Phrase("Lieu d'installation : ___________________________          Numéro de voiture : _______________________",smallFont));
-        
+        addEmptyLine(information,2);
         
         document.add(information);
+        Chunk glue = new Chunk(new VerticalPositionMark());
+        Paragraph p = new Paragraph("Le responsable", boldFont);
+//        addEmptyLine(p,3);
+
+        p.add(new Chunk(glue));
+        p.add(new Phrase("Le client", boldFont));
+        p.add(new Chunk(glue));
+
+        document.add(p);
         
         
         

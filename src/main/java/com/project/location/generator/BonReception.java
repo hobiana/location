@@ -91,7 +91,7 @@ public class BonReception {
     public void setClient(Client client) {
         this.client = client;
     }
-     public void setNumberPage(PdfWriter writer,final HttpServletRequest servletRequest) {
+    public void setNumberPage(PdfWriter writer,final HttpServletRequest servletRequest) {
         writer.setPageEvent(new PdfPageEventHelper() {
             @Override
             public void onStartPage(PdfWriter writer, Document document) {
@@ -99,6 +99,7 @@ public class BonReception {
                     Paragraph information = new Paragraph();
                     Rectangle rect = document.getPageSize();
                     Image img = Image.getInstance(servletRequest.getSession().getServletContext().getRealPath("/")+"data/logo/logo.png");
+                    img.scaleAbsolute(150, 50);
 //                    img.setAbsolutePosition((rect.getLeft() + rect.getRight()) / 2 - 45, rect.getTop() - 50);
                     img.setAlignment(Element.ALIGN_CENTER);   
                     
@@ -120,7 +121,7 @@ public class BonReception {
                    
                     Paragraph information = new Paragraph();
                     Rectangle rect = document.getPageSize();
-                    Image img = Image.getInstance(servletRequest.getSession().getServletContext().getRealPath("/")+"data/logo/pied.PNG");
+                    Image img = Image.getInstance(servletRequest.getSession().getServletContext().getRealPath("/")+"data/logo/pied.jpg");
                     img.scaleAbsolute(300, 50);
                     float x = (PageSize.A4.getWidth() - img.getScaledWidth()) / 2;
                     img.setAbsolutePosition(x, rect.getBottom()+50);
@@ -132,7 +133,7 @@ public class BonReception {
 //                    writer.getDirectContent().addImage(img);
                     
                     int pageNumber = writer.getPageNumber();
-                    String text = "Page " + pageNumber;
+                    String text = ""+pageNumber;
                     Rectangle page = document.getPageSize();
                     PdfPTable structure = new PdfPTable(1);
                     PdfPCell c2 = new PdfPCell(new Paragraph(text));
@@ -178,23 +179,10 @@ public class BonReception {
     private void addContent(Document document,PdfWriter writer) throws DocumentException, BadElementException, IOException, Exception {
         Paragraph information = new Paragraph();
 
-        Image img = Image.getInstance(servletRequest.getSession().getServletContext().getRealPath("/")+"data/logo/logo.png");
-        img.scaleAbsolute(300, 50);
-        img.setAlignment(Element.ALIGN_CENTER);
-        information.add(img);
-        addEmptyLine(information, 1);
+        
         document.add(information);
 
-        information = new Paragraph();
-        information.add(new Phrase("LOT V8 72 A TER C AMBATOROKA - 101 Antananarivo MADAGASCAR", normalFont));
-        addEmptyLine(information, 1);
-        information.add(new Phrase("NIF : 6002986663 - ", normalFont));
-        information.add(new Phrase("Stat : 42201-11-2018-0-10341", normalFont));
-        addEmptyLine(information, 1);
-        information.add(new Phrase("Email : direction@prima.mg - ", normalFont));
-        information.add(new Phrase("Tel : 020 22 220 54 – 034 21 777 99", normalFont));
-        information.setAlignment(Element.ALIGN_LEFT);
-        document.add(information);
+       
 
         information = new Paragraph();
         information.add(new Phrase(this.client.getPrenom()+" "+this.client.getNom(), normalFont));
