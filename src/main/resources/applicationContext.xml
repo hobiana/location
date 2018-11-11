@@ -61,6 +61,7 @@
         <property name="hibernateDao" ref="hibernateDao" />
         <property name="serviceStock" ref="serviceStock" />
         <property name="serviceUtil" ref="serviceUtil" />
+        <property name="serviceSortie" ref="serviceSortie" />
         <property name="serviceFacture" ref="serviceFacture" />
     </bean>
     <bean id="serviceEntree" class="com.project.location.service.ServiceEntree">

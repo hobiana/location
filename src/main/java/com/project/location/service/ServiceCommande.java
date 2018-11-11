@@ -20,6 +20,7 @@ import com.project.location.model.CommandeStock;
 import com.project.location.model.Facture;
 import com.project.location.model.HorsSotck;
 import com.project.location.model.ProduitRetour;
+import com.project.location.model.Sortie;
 import com.project.location.model.Stock;
 import com.project.location.reference.ReferenceSession;
 import com.project.location.util.DateUtil;
@@ -46,9 +47,19 @@ import org.hibernate.criterion.Restrictions;
  */
 public class ServiceCommande extends BaseService{
     public ServiceStock serviceStock;
+    public ServiceSortie serviceSortie;
     public ServiceUtil serviceUtil;
     public ServiceFacture serviceFacture;
 
+    public ServiceSortie getServiceSortie() {
+        return serviceSortie;
+    }
+
+    public void setServiceSortie(ServiceSortie serviceSortie) {
+        this.serviceSortie = serviceSortie;
+    }
+
+    
     public ServiceFacture getServiceFacture() {
         return serviceFacture;
     }
@@ -237,7 +248,10 @@ public class ServiceCommande extends BaseService{
             String sql = "SELECT stock FROM CommandeStock commande join commande.stock stock where commande.id = :id";
             query = session.createQuery(sql);
             query.setParameter("id", commande.getId());
-            return (Stock)query.list().get(0);
+            if(query.list().size()>0) {
+                return (Stock)query.list().get(0);
+            }
+            return null;    
             
         }catch(Exception e){
             e.printStackTrace();
@@ -311,9 +325,6 @@ public class ServiceCommande extends BaseService{
         int nbrJour = DateUtil.nombreJ(debut, fin); 
         try{
             session = this.hibernateDao.getSessionFactory().openSession();
-            if(!commandesStock.isEmpty()&&commandesStock.get(0).getId()>0){
-                this.initStock(commandesStock, session);
-            }
             int size = commandesStock.size();
             for(int i=0;i<size;i++){
                 CommandeStock temp = commandesStock.get(i); 
@@ -862,6 +873,7 @@ public class ServiceCommande extends BaseService{
         session.removeAttribute(ReferenceSession.COMMANDE);
         session.setAttribute(ReferenceSession.COMMANDE, commandes);
         this.checkAll(debut, fin);
+        boolean testTrue = true;
     }
     
     public void addCommand(long idStock, int quantite, double remise, String debut, String fin) throws Exception{
@@ -909,8 +921,10 @@ public class ServiceCommande extends BaseService{
         int size = commandes.size();
         
         for(int i=0; i<size;i++){
-            if(i==idCommande) commandes.remove(i);
-            break;
+            if(i==idCommande){
+                commandes.remove(i);
+                break;
+            }
         }
       
         session.removeAttribute(ReferenceSession.COMMANDE);
@@ -1241,15 +1255,22 @@ public class ServiceCommande extends BaseService{
          return commandeStock;
     } 
     
-    public static CommandeStock findCommandeStockById(CommandeStock commandeStock,Session session) throws Exception {       
+    public static CommandeStock findCommandeStockById(CommandeStock commandeStock, String commande,Session session) throws Exception {       
          HibernateDao.findById(commandeStock,session);
          return commandeStock;
     } 
     
-    public void retour(long idCommandStock, int quantite, Session session) throws Exception {       
+    public void retour(long idCommandStock, int quantite, String commande, Session session) throws Exception {       
         CommandeStock commandeStock = ServiceCommande.findCommandeStockById(idCommandStock, session); 
-        if(quantite>commandeStock.getPrixLocation()) throw new Exception("La quantite de retour ne peut être supérieure à la quantite louer");
+        if(quantite>commandeStock.getQuantiteCommande()) throw new Exception("La quantite de retour ne peut être supérieure à la quantite louer");
         try {
+            double quantiteNonRetour = commandeStock.getQuantiteCommande() - quantite;
+            Sortie sortie = new Sortie(); 
+            sortie.setDate(Calendar.getInstance().getTime());
+            sortie.setDescription("Casse de la commande N° : "+commande+" quantite : "+quantiteNonRetour);
+            sortie.setStock(commandeStock.getStock());
+            sortie.setQuantite(quantite);
+            this.serviceSortie.insert(sortie, commande);
             commandeStock.setQuantiteRetour(quantite);
             HibernateDao.update(commandeStock, session);
             ServiceHistoriqueUser.save("Retour  des commandes "+commandeStock.getRef(), session);
@@ -1259,7 +1280,7 @@ public class ServiceCommande extends BaseService{
         }
     }
     
-    public void retour(List<ProduitRetour> retour) throws Exception{
+    public void retour(List<ProduitRetour> retour, String idCommande) throws Exception{
         
         Session session = null; 
         Transaction tr = null; 
@@ -1270,7 +1291,7 @@ public class ServiceCommande extends BaseService{
             for(int i=0;i<size;i++) {
                 long id = retour.get(i).getIdProduit(); 
                 int quantite = retour.get(i).getValueProduitRetour();
-                this.retour(id, quantite, session);
+                this.retour(id, quantite, idCommande,session);
             }    
             tr.commit();
         } catch (Exception e) {

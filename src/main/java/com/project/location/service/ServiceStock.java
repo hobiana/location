@@ -166,10 +166,19 @@ public class ServiceStock extends BaseService {
     }
 
     public Stock find(long id) throws Exception {
-        Stock stock = new Stock(id);
+        Stock stockFind = new Stock(id);
         try {
-            this.hibernateDao.findById(stock);
-            return stock;
+            this.hibernateDao.findById(stockFind);
+            return stockFind;
+        } catch (Exception e) {
+            throw new Exception("Le stock " + id + " est introuvable cause " + e.getMessage());
+        }
+    }
+    public static Stock find(long id, Session session) throws Exception {
+        Stock stockObject = new Stock(id);
+        try {
+            HibernateDao.findById(stockObject, session);
+            return stockObject;
         } catch (Exception e) {
             throw new Exception("Le stock " + id + " est introuvable cause " + e.getMessage());
         }
@@ -204,9 +213,9 @@ public class ServiceStock extends BaseService {
             }
         }
     }
-    public void update(Stock stock,Session session) throws Exception {
+    public static void update(Stock stock,Session session) throws Exception {
         try {
-            Stock oldStock = this.find(stock.getId());
+            Stock oldStock = ServiceStock.find(stock.getId(),session);
             if (oldStock.getPrixLocation() != stock.getPrixLocation()) {
                 HistoriquePrixStock historique = new HistoriquePrixStock();
                 historique.setDate(Calendar.getInstance().getTime());
@@ -214,8 +223,11 @@ public class ServiceStock extends BaseService {
                 historique.setStock(stock);
                 HibernateDao.save(historique, session);               
             }
+            session.flush();
+            session.clear();
             HibernateDao.update(stock, session);
         } catch (Exception ex) {
+            ex.printStackTrace();
             throw new Exception("impossible de d'ajouter dans historique de prix stock ou de modifier le stock : " + stock.getRef());
         } 
     }

@@ -464,7 +464,14 @@ public class ActionCommande extends BaseAction {
         }else{
             HttpSession session = ServletActionContext.getRequest().getSession();          
             long idCommandeSession =0;
-            if(session.getAttribute(ReferenceSession.IDCOMMANDE)!=null) idCommandeSession = (long) session.getAttribute(ReferenceSession.IDCOMMANDE);
+            if(session.getAttribute(ReferenceSession.IDCOMMANDE)!=null){
+                idCommandeSession = (long) session.getAttribute(ReferenceSession.IDCOMMANDE);
+                if(idCommandeSession!=this.idCommande){
+                    session.removeAttribute(ReferenceSession.COMMANDE);
+                    session.removeAttribute(ReferenceSession.IDCOMMANDE);
+                    idCommandeSession = 0;
+                }
+            }
             if(idCommandeSession==0) idCommandeSession = this.idCommande;
             Commande commande = this.serviceCommande.find(idCommandeSession);
             this.idCommande = 0; 
@@ -592,7 +599,8 @@ public class ActionCommande extends BaseAction {
             return Action.LOGIN;
         }
         try{
-            this.serviceCommande.retour(listProduitRetour);
+            Commande commande = new Commande(this.idCommande);
+            this.serviceCommande.retour(listProduitRetour,commande.getRef());
             this.serviceCommande.updateEtat(idCommande);
             this.linkSuccess = ReferenceErreur.VISIBLE;
             this.messageSuccess = "mise à jour effectué avec succes";

@@ -22,7 +22,7 @@ import org.hibernate.Transaction;
  * @author Diary
  */
 public class ServiceSortie extends BaseService{
-    private ServiceStock ServiceStock;
+    private ServiceStock serviceStock;
     private ServiceUtil serviceUtil;
 
     public ServiceUtil getServiceUtil() {
@@ -34,26 +34,47 @@ public class ServiceSortie extends BaseService{
     }
     
     public ServiceStock getServiceStock() {
-        return ServiceStock;
+        return serviceStock;
     }
 
     public void setServiceStock(ServiceStock ServiceStock) {
-        this.ServiceStock = ServiceStock;
+        this.serviceStock = ServiceStock;
     }
-    
+    public void insert(Sortie sortie, String reference)throws Exception{
+        Session session = null; 
+        Transaction tr = null; 
+        try{
+            session = this.hibernateDao.getSessionFactory().openSession();
+            tr = session.beginTransaction();           
+            Stock stock = this.serviceStock.find(sortie.getStock().getId());
+            ServiceHistoriqueUser.save("Casse de "+sortie.getQuantite()+" "+stock.getDesignation()+" dans le stock, commande "+ reference, session);
+            int value = stock.getQuantite()-sortie.getQuantite();
+            if(value<0)throw new Exception("stock insuffisant pour cette sortie");
+            HibernateDao.save(sortie,session);           
+            stock.setQuantite(value);          
+            this.serviceStock.update(stock,session);
+            tr.commit();
+        }catch(Exception e){
+            if(tr!=null)tr.rollback();
+            e.printStackTrace();
+            throw new Exception("Impossible de faire cette sortie cause : "+e.getMessage());
+        }finally{
+            if(session!=null)session.close();
+        }
+    }
     public void insert(Sortie sortie)throws Exception{
         Session session = null; 
         Transaction tr = null; 
         try{
             session = this.hibernateDao.getSessionFactory().openSession();
             tr = session.beginTransaction();           
-            Stock stock = this.ServiceStock.find(sortie.getStock().getId());
+            Stock stock = this.serviceStock.find(sortie.getStock().getId());
             ServiceHistoriqueUser.save("sortie de "+sortie.getQuantite()+" "+stock.getDesignation()+" dans le stock", session);
             int value = stock.getQuantite()-sortie.getQuantite();
             if(value<0)throw new Exception("stock insuffisant pour cette sortie");
             HibernateDao.save(sortie,session);           
             stock.setQuantite(value);          
-            this.ServiceStock.update(stock,session);
+            this.serviceStock.update(stock,session);
             tr.commit();
         }catch(Exception e){
             if(tr!=null)tr.rollback();

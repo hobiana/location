@@ -89,13 +89,16 @@
                                     </label>
                                 </div>
                                 <hr>
-                                <s:if test="commande.isRecu()==false">
-                                    <a style='margin-left: 10px;' href="recuparclient?idCommande=<s:property value="idCommande"/>&recu=true" class="btn btn-default pull-left" >Reçu par le client</a>
+                                <s:if test="commande.isRetour()==false">
+                                    <s:if test="commande.isRecu()==false">
+                                        <a style='margin-left: 10px;' href="recuparclient?idCommande=<s:property value="idCommande"/>&recu=true" class="btn btn-default pull-left" >Reçu par le client</a>
+                                    </s:if>
+                                    <s:else>
+                                        <a style='margin-left: 10px;' href="recuparclient?idCommande=<s:property value="idCommande"/>&recu=false" class="btn btn-warning pull-left" >Non reçu par le client</a>
+                                    </s:else>
                                 </s:if>
-                                <s:else>
-                                    <a style='margin-left: 10px;' href="recuparclient?idCommande=<s:property value="idCommande"/>&recu=false" class="btn btn-warning pull-left" >Non reçu par le client</a>
-                                </s:else>
-                                <s:if test="commande.isRecu()==true">
+                               
+                                <s:if test="commande.isRecu()==true&&commande.isRetour()==false">
                                 <a style='margin-left: 10px;' class="btn btn-success pull-left" href="#retour" data-toggle="modal">Retour en stock</a>
                                 </s:if>
                                 <div class="modal fade" id="retour" role="dialog">
