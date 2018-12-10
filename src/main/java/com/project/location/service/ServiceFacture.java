@@ -140,6 +140,7 @@ public class ServiceFacture extends BaseService {
                 entreeVola.setDate(fille.getDate());
                 entreeVola.setVolaM(rest);
                 entreeVola.setDesignation("Paiement de la commande n° "+commande.getRef());
+                serviceCaisse.addVolaCaisse(entreeVola, session);
             }
         }
         /*

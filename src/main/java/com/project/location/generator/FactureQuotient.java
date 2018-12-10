@@ -120,7 +120,7 @@ public class FactureQuotient {
         this.setClient(client);
         this.setFacture(facture);
         this.setServletRequest(servletRequest);
-        Document document = new Document();
+        Document document = new Document(PageSize.A4, 36, 36, 36, 150);
         PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(servletRequest.getSession().getServletContext().getRealPath("/")+PathData.PATH_PDF_BON_QUOTIENT));     
         setNumberPage(writer, servletRequest);
         document.open();     
@@ -161,7 +161,7 @@ public class FactureQuotient {
         information = new Paragraph();
         addEmptyLine(information, 2);
         
-        information.add(new Phrase("Object : Facture de la quotient commande N° "+ this.commande.getRef(),boldFont));
+        information.add(new Phrase("Object : Facture de la caution commande N° "+ this.commande.getRef(),boldFont));
         addEmptyLine(information,1);
         information.add(new Phrase("N° Facture "+ this.facture.getRef(),boldFont));
         addEmptyLine(information,2);
@@ -310,7 +310,7 @@ public class FactureQuotient {
         c1.setBorder(Rectangle.NO_BORDER);
         table.addCell(c1);
         
-        c1 = new PdfPCell(new Phrase("Quotient ", boldFont));
+        c1 = new PdfPCell(new Phrase("Caution ", boldFont));
         c1.setBorder(Rectangle.NO_BORDER);
         c1.setHorizontalAlignment(Element.ALIGN_RIGHT);
         c1.setVerticalAlignment(Element.ALIGN_MIDDLE);

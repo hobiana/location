@@ -678,7 +678,10 @@ public class ActionCommande extends BaseAction {
         commande = this.serviceCommande.find(idCommande);
         this.total = this.serviceCommande.getTotal(idCommande);
         double total_paye = this.serviceFacture.totalPayer(idCommande);
-        this.pourcentage_reste_a_payer = (int)((100*total_paye)/this.total[0]);
+        double totalQuotient = facture.getQuotient();
+        double totalToPaye = totalQuotient +total[0] + total[3];
+        this.pourcentage_reste_a_payer = (int)((100*total_paye)/totalToPaye);
+        
         this.listeCommandeStock = this.serviceCommande.find(commande);
         this.listeHorsStock = serviceCommande.findListHorsStock(commande);
         Facture facture = this.serviceFacture.factureByCommande(idCommande);

@@ -1269,7 +1269,7 @@ public class ServiceCommande extends BaseService{
             sortie.setDate(Calendar.getInstance().getTime());
             sortie.setDescription("Casse de la commande N° : "+commande+" quantite : "+quantiteNonRetour);
             sortie.setStock(commandeStock.getStock());
-            sortie.setQuantite(quantite);
+            sortie.setQuantite((int) quantiteNonRetour);
             this.serviceSortie.insert(sortie, commande);
             commandeStock.setQuantiteRetour(quantite);
             HibernateDao.update(commandeStock, session);

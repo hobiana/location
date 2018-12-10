@@ -130,9 +130,7 @@ public class BonSortieGenerator {
                     float x = (PageSize.A4.getWidth() - img.getScaledWidth()) / 2;
                     img.setAbsolutePosition(x, rect.getBottom()+50);
                     img.setAlignment(Element.ALIGN_CENTER);
-                    information.add(img);
-                    addEmptyLine(information, 1);
-                    document.add(information);
+                    writer.getDirectContent().addImage(img);
                     
 //                    writer.getDirectContent().addImage(img);
                     
@@ -164,7 +162,7 @@ public class BonSortieGenerator {
         this.setCommandeStock(commandeStocks);
         this.setClient(client);
         this.setServletRequest(servletRequest);
-        Document document = new Document();
+        Document document = new Document(PageSize.A4, 36, 36, 36, 150);
         PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(servletRequest.getSession().getServletContext().getRealPath("/")+PathData.PATH_PDF_BON_SORTIE));
         setNumberPage(writer, servletRequest);
         document.open();
@@ -251,9 +249,6 @@ public class BonSortieGenerator {
                  
         
         document.add(table);
-        
-        float leftPage = 842-(document.getPageSize().getHeight()- writer.getVerticalPosition(false));        
-        if(leftPage<300)sautPage(document,1);
         
         
         information = new Paragraph();

@@ -330,8 +330,9 @@ public class ServiceStat extends BaseService{
                     + "WHERE (commandeStock.commande.client.id = :idClient) "
                     + "AND (to_char(commandeStock.commande.dateCommande, 'YYYY-MM') = :month)" 
                     + " GROUP BY to_char(commandeStock.commande.dateCommande, 'YYYY-MM'),commandeStock.stock.id, commandeStock.stock.designation " 
-                    + " ORDER BY COUNt(*) DESC";
+                    + " ORDER BY COUNT(*) DESC ";
             Query query = session.createQuery(sql); 
+            query.setMaxResults(20);
             query.setParameter("idClient", client.getId());
             query.setParameter("month", DateUtil.convertMonth(month));
             List<Object> resultQuery = query.list();
@@ -392,8 +393,9 @@ public class ServiceStat extends BaseService{
                     + "FROM CommandeStock commandeStock "
                     + "WHERE  (to_char(commandeStock.commande.dateCommande, 'YYYY-MM') = :month)" 
                     + " GROUP BY to_char(commandeStock.commande.dateCommande, 'YYYY-MM'),commandeStock.stock.id, commandeStock.stock.designation " 
-                    + " ORDER BY COUNT(*) DESC";
+                    + " ORDER BY COUNT(*) DESC ";
             Query query = session.createQuery(sql); 
+            query.setMaxResults(25);
             query.setParameter("month", DateUtil.convertMonth(month));
             List<Object> resultQuery = query.list();
             result = new ArrayList();
@@ -456,6 +458,7 @@ public class ServiceStat extends BaseService{
                     + "GROUP BY to_char(commandeStock.commande.dateCommande, 'YYYY-MM'),commandeStock.stock.id, commandeStock.stock.designation " 
                     + "ORDER BY SUM(commandeStock.quantiteCommande-commandeStock.quantiteRetour) DESC";
            Query query = session.createQuery(sql); 
+           query.setMaxResults(25);
             query.setParameter("month", DateUtil.convertMonth(month));
             List<Object> resultQuery = query.list();
             result = new ArrayList();

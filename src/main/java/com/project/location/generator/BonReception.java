@@ -159,7 +159,7 @@ public class BonReception {
         this.setCommandeStock(commandeStocks);
         this.setClient(client);
         this.setServletRequest(servletRequest);
-        Document document = new Document();
+        Document document = new Document(PageSize.A4, 36, 36, 36, 150);
         PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(servletRequest.getSession().getServletContext().getRealPath("/")+PathData.PATH_PDF_BON_RECEPTION));
         setNumberPage(writer, servletRequest);
         document.open();
@@ -230,7 +230,6 @@ public class BonReception {
         int size = this.commandeStock.size();
         for (int i = 0; i < size; i++) {
             CommandeStock cs = this.commandeStock.get(i);
-
             c1 = new PdfPCell(new Phrase(cs.getStock().getDesignation(), smallFont));
             c1.setHorizontalAlignment(Element.ALIGN_LEFT);
             c1.setPadding(2);

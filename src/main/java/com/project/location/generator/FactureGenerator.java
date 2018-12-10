@@ -149,7 +149,7 @@ public class FactureGenerator {
         this.setTotal(total);
         this.setHors_stock(hors_stock);
         this.setServletRequest(servletRequest);
-        Document document = new Document();
+        Document document = new Document(PageSize.A4, 36, 36, 36, 150);
         PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(servletRequest.getSession().getServletContext().getRealPath("/")+PathData.PATH_PDF_FACTURE));
         setNumberPage(writer, servletRequest);
         document.open();
@@ -350,7 +350,8 @@ public class FactureGenerator {
         c1.setVerticalAlignment(Element.ALIGN_MIDDLE);
         table.addCell(c1);
          // end
-        if(total[2]>0) {
+        Double totalRemise = total[2]+commande.getRemiseGlobal();
+        if(totalRemise>0) {
              c1 = new PdfPCell();
             c1.setHorizontalAlignment(Element.ALIGN_LEFT);
             c1.setBorder(Rectangle.NO_BORDER);
@@ -366,47 +367,19 @@ public class FactureGenerator {
             c1.setBorder(Rectangle.NO_BORDER);
             table.addCell(c1);
 
-            c1 = new PdfPCell(new Phrase("Total remise article", boldFont));
+            c1 = new PdfPCell(new Phrase("Remise", boldFont));
             c1.setColspan(2);
             c1.setBorder(Rectangle.NO_BORDER);
             c1.setHorizontalAlignment(Element.ALIGN_RIGHT);
             c1.setVerticalAlignment(Element.ALIGN_MIDDLE);
             table.addCell(c1);
 
-            c1 = new PdfPCell(new Phrase(UtilConvert.toMoney(total[2]), boldFont));
+            c1 = new PdfPCell(new Phrase(UtilConvert.toMoney(totalRemise), boldFont));
             c1.setHorizontalAlignment(Element.ALIGN_RIGHT);
             c1.setVerticalAlignment(Element.ALIGN_MIDDLE);
             table.addCell(c1);
             // end
-        }    
-        if(commande.getRemiseGlobal()>0){
-             c1 = new PdfPCell();
-            c1.setHorizontalAlignment(Element.ALIGN_LEFT);
-            c1.setBorder(Rectangle.NO_BORDER);
-            table.addCell(c1);
-
-            c1 = new PdfPCell();
-            c1.setHorizontalAlignment(Element.ALIGN_LEFT);
-            c1.setBorder(Rectangle.NO_BORDER);
-            table.addCell(c1);
-
-            c1 = new PdfPCell();
-            c1.setHorizontalAlignment(Element.ALIGN_LEFT);
-            c1.setBorder(Rectangle.NO_BORDER);
-            table.addCell(c1);
-
-            c1 = new PdfPCell(new Phrase("Remise de la commande", boldFont));
-            c1.setColspan(2);
-            c1.setBorder(Rectangle.NO_BORDER);
-            c1.setHorizontalAlignment(Element.ALIGN_RIGHT);
-            c1.setVerticalAlignment(Element.ALIGN_MIDDLE);
-            table.addCell(c1);
-
-            c1 = new PdfPCell(new Phrase(UtilConvert.toMoney(commande.getRemiseGlobal()), boldFont));
-            c1.setHorizontalAlignment(Element.ALIGN_RIGHT);
-            c1.setVerticalAlignment(Element.ALIGN_MIDDLE);
-            table.addCell(c1);
-        }
+        } 
        
          // end
         
