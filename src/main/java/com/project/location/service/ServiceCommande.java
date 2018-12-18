@@ -19,6 +19,7 @@ import com.project.location.model.Commande;
 import com.project.location.model.CommandeStock;
 import com.project.location.model.Facture;
 import com.project.location.model.HorsSotck;
+import com.project.location.model.HorsStockRetour;
 import com.project.location.model.ProduitRetour;
 import com.project.location.model.Sortie;
 import com.project.location.model.Stock;
@@ -78,6 +79,32 @@ public class ServiceCommande extends BaseService{
     
     public ServiceStock getServiceStock() {
         return serviceStock;
+    }
+    
+    public static HorsSotck findHorsStock(long id, Session session) throws Exception{
+        HorsSotck hs = new HorsSotck(); 
+        hs.setId(id);
+        try{
+            HibernateDao.findById(hs, session);    
+            return hs;
+        }catch(Exception e){
+            e.printStackTrace();
+            throw new Exception("find hors stock by id = "+hs.getId());
+        }
+    }
+    
+    public HorsSotck findHorsStock(long id) throws Exception{
+        HorsSotck hs = null;
+        Session session = null; 
+        try{
+            session = this.hibernateDao.getSessionFactory().openSession(); 
+            hs = this.findHorsStock(id,session);
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }finally{
+            if(session!=null)session.close();
+        }
+        return hs;
     }
     
     public Commande findCommande(long id) throws Exception{
@@ -329,7 +356,7 @@ public class ServiceCommande extends BaseService{
             for(int i=0;i<size;i++){
                 CommandeStock temp = commandesStock.get(i); 
                 double prixL = temp.getPrixLocation();
-                double quantite = temp.getQuantiteCommande(); 
+                double quantite = temp.getQuantiteRetour(); 
                 double tempremise = temp.getRemise()*quantite*nbrJour;
                 total_remise+=tempremise;
                 totalBrute+= (prixL*quantite*nbrJour);      
@@ -1301,6 +1328,40 @@ public class ServiceCommande extends BaseService{
             if(session!=null) session.close();
         }
     }
+    
+    public void retourHorsStock(long idHS, int quantite, Session session) throws Exception {       
+        HorsSotck hs = ServiceCommande.findHorsStock(idHS, session); 
+        if(quantite>hs.getQuantite()) throw new Exception("La quantite de retour ne peut être supérieure à la quantite louer");
+        try {
+            hs.setQuantiteRetour(quantite);
+            HibernateDao.update(hs, session);
+            ServiceHistoriqueUser.save("Retour  des commandes hors stock : id = "+hs.getRef(), session);
+        } catch( Exception e) {
+            e.printStackTrace();
+            throw new Exception("Erreur Interne, impossible de sauvegarder le retour hors stock"); 
+        }
+    }
+    
+    public void retourHorsStock(List<HorsStockRetour> retour) throws Exception{
+        Session session = null; 
+        Transaction tr = null;
+        try {
+            session = this.hibernateDao.getSessionFactory().openSession();
+            tr = session.beginTransaction();
+            int size = retour.size();
+            for(int i=0;i<size;i++) {
+                long id = retour.get(i).getIdHorsStock(); 
+                int quantite = retour.get(i).getValueHorsStockRetour();
+                this.retourHorsStock(id, quantite, session);
+            }    
+            tr.commit();
+        } catch (Exception e) {
+            if(tr!=null) tr.rollback();
+            e.printStackTrace();
+        } finally {
+            if(session!=null) session.close();
+        }
+    }
 
     public void generatPdfFacture(long idCommande,HttpServletRequest servletRequest) throws Exception {
         Session session = null; 
@@ -1336,10 +1397,11 @@ public class ServiceCommande extends BaseService{
             session = this.hibernateDao.getSessionFactory().openSession(); 
             Commande commande = this.find(idCommande, session);
             if(!commande.isRecu()) throw new NotTakeCLientException("la commande n'a pas encore était reçu par le client");
+            List<HorsSotck> hors_stock = this.findListHorsStock(commande,session);
             List<CommandeStock> commandeStock = this.find(commande,session);
             Client client = this.findClient(commande, session);
             this.initStock(commandeStock, session);
-            BonSortieGenerator facture = new BonSortieGenerator(client,commande,commandeStock,servletRequest);
+            BonSortieGenerator facture = new BonSortieGenerator(client,commande,commandeStock,hors_stock,servletRequest);
             
         } catch( NullPointerException npe) {
             npe.printStackTrace();
@@ -1363,9 +1425,10 @@ public class ServiceCommande extends BaseService{
             if(!commande.isRecu()) throw new NotTakeCLientException("la commande n'a pas encore était reçu par le client");
             if(!commande.isRetour()) throw new NotReturnException("la commande n'a pas encore était retourné par le client");
             List<CommandeStock> commandeStock = this.find(commande,session);
+            List<HorsSotck> hors_stock = this.findListHorsStock(commande,session);
             Client client = this.findClient(commande, session);
             this.initStock(commandeStock, session);
-            BonReception facture = new BonReception(client,commande,commandeStock,servletRequest);
+            BonReception facture = new BonReception(client,commande,commandeStock,hors_stock,servletRequest);
             
         } catch( NullPointerException npe) {
             throw new Exception("Les données de la commande sont vide");

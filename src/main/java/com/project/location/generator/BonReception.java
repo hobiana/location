@@ -26,7 +26,9 @@ import com.project.location.data.PathData;
 import com.project.location.model.Client;
 import com.project.location.model.Commande;
 import com.project.location.model.CommandeStock;
+import com.project.location.model.HorsSotck;
 import com.project.location.util.DateUtil;
+import com.project.location.util.UtilConvert;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Calendar;
@@ -42,6 +44,7 @@ import javax.servlet.http.HttpServletRequest;
 public class BonReception {
     private Commande commande;
     private List<CommandeStock> commandeStock;
+    private List<HorsSotck> hors_stock;
     private Client client;
     private HttpServletRequest servletRequest;
     
@@ -74,6 +77,14 @@ public class BonReception {
 
     public void setCommande(Commande commande) {
         this.commande = commande;
+    }
+
+    public List<HorsSotck> getHors_stock() {
+        return hors_stock;
+    }
+
+    public void setHors_stock(List<HorsSotck> hors_stock) {
+        this.hors_stock = hors_stock;
     }
 
     public List<CommandeStock> getCommandeStock() {
@@ -154,10 +165,11 @@ public class BonReception {
 
         });
     }
-    public BonReception(Client client,Commande commande,List<CommandeStock> commandeStocks,HttpServletRequest servletRequest) throws Exception {
+    public BonReception(Client client,Commande commande,List<CommandeStock> commandeStocks,List<HorsSotck> horsStock,HttpServletRequest servletRequest) throws Exception {
         this.setCommande(commande);
         this.setCommandeStock(commandeStocks);
         this.setClient(client);
+        this.setHors_stock(horsStock);
         this.setServletRequest(servletRequest);
         Document document = new Document(PageSize.A4, 36, 36, 36, 150);
         PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(servletRequest.getSession().getServletContext().getRealPath("/")+PathData.PATH_PDF_BON_RECEPTION));
@@ -235,16 +247,36 @@ public class BonReception {
             c1.setPadding(2);
             table.addCell(c1);
 
-            c1 = new PdfPCell(new Phrase(String.valueOf(cs.getQuantiteCommande()), smallFont));
+            c1 = new PdfPCell(new Phrase(UtilConvert.toMoney(cs.getQuantiteCommande()), smallFont));
             c1.setHorizontalAlignment(Element.ALIGN_CENTER);
             c1.setVerticalAlignment(Element.ALIGN_MIDDLE);
             table.addCell(c1);
             
-            c1 = new PdfPCell(new Phrase(String.valueOf(cs.getQuantiteRetour()), smallFont));
+            c1 = new PdfPCell(new Phrase(UtilConvert.toMoney(cs.getQuantiteRetour()), smallFont));
             c1.setHorizontalAlignment(Element.ALIGN_CENTER);
             c1.setVerticalAlignment(Element.ALIGN_MIDDLE);
             table.addCell(c1);
             
+        }
+        
+        for (int i = 0; i < hors_stock.size(); i++) {
+            HorsSotck cs = this.hors_stock.get(i);
+            if(cs.isRetour_HS()){
+                c1 = new PdfPCell(new Phrase(cs.getLibelle(), smallFont));
+                c1.setHorizontalAlignment(Element.ALIGN_LEFT);
+                c1.setPadding(2);
+                table.addCell(c1);
+                
+                c1 = new PdfPCell(new Phrase(UtilConvert.toMoney(cs.getQuantite()), smallFont));
+                c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+                c1.setVerticalAlignment(Element.ALIGN_MIDDLE);
+                table.addCell(c1);
+
+                c1 = new PdfPCell(new Phrase(UtilConvert.toMoney(cs.getQuantiteRetour()), smallFont));
+                c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+                c1.setVerticalAlignment(Element.ALIGN_MIDDLE);
+                table.addCell(c1);
+            }
         }
         
                  

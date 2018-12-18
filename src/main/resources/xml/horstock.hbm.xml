@@ -49,6 +49,8 @@ Contributor(s):
     </many-to-one>
     <property column="libelle" name="libelle" type="string"/>
     <property column="quantite" name="quantite" type="integer"/>
+    <property column="quantiteretour" name="quantiteRetour" type="integer"/>
     <property column="montant" name="montant" type="double"/>
+    <property column="retour_HS" name="retour_HS" type="boolean"/>
   </class>
 </hibernate-mapping>

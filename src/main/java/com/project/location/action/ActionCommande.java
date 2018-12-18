@@ -11,6 +11,7 @@ import com.project.location.model.Commande;
 import com.project.location.model.CommandeStock;
 import com.project.location.model.Facture;
 import com.project.location.model.HorsSotck;
+import com.project.location.model.HorsStockRetour;
 import com.project.location.model.ProduitRetour;
 import com.project.location.model.Stock;
 import com.project.location.model.Users;
@@ -51,6 +52,7 @@ public class ActionCommande extends BaseAction {
     private Commande commande;
     
     private List<ProduitRetour> listProduitRetour;
+    private List<HorsStockRetour> listHorsStockRetour;
     
     private double[] total;
     private int nombre_jour;
@@ -85,6 +87,7 @@ public class ActionCommande extends BaseAction {
     private String designation_HS;
     private double prix_HS;
     private int quantite_HS;
+    private boolean retour_HS;
     private int indiceHorsStock;
     
     private double remiseArticle;
@@ -138,6 +141,14 @@ public class ActionCommande extends BaseAction {
         this.designation_HS = designation_HS;
     }
 
+    public boolean isRetour_HS() {
+        return retour_HS;
+    }
+
+    public void setRetour_HS(boolean retour_HS) {
+        this.retour_HS = retour_HS;
+    }
+
     public double getPrix_HS() {
         return prix_HS;
     }
@@ -184,6 +195,14 @@ public class ActionCommande extends BaseAction {
 
     public void setRemiseGlobal(double remiseGlobal) {
         this.remiseGlobal = remiseGlobal;
+    }
+
+    public List<HorsStockRetour> getListHorsStockRetour() {
+        return listHorsStockRetour;
+    }
+
+    public void setListHorsStockRetour(List<HorsStockRetour> listHorsStockRetour) {
+        this.listHorsStockRetour = listHorsStockRetour;
     }
 
     public List<ProduitRetour> getListProduitRetour() {
@@ -601,6 +620,7 @@ public class ActionCommande extends BaseAction {
         try{
             Commande commande = new Commande(this.idCommande);
             this.serviceCommande.retour(listProduitRetour,commande.getRef());
+            this.serviceCommande.retourHorsStock(listHorsStockRetour);
             this.serviceCommande.updateEtat(idCommande);
             this.linkSuccess = ReferenceErreur.VISIBLE;
             this.messageSuccess = "mise à jour effectué avec succes";
@@ -711,6 +731,7 @@ public class ActionCommande extends BaseAction {
         hs.setLibelle(designation_HS);
         hs.setQuantite(quantite_HS);
         hs.setMontant(prix_HS);
+        hs.setRetour_HS(retour_HS);
         serviceCommande.addHorsStockSession(hs);
         return Action.SUCCESS;
     }

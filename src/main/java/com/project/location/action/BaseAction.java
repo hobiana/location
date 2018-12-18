@@ -11,6 +11,7 @@ import com.project.location.model.Users;
 import com.project.location.model.UsersAcces;
 import com.project.location.reference.ReferenceAccesUser;
 import com.project.location.reference.ReferenceSession;
+import com.project.location.util.NumberTest;
 import java.sql.Timestamp;
 import java.util.Calendar;
 import javax.servlet.http.HttpServletRequest;
@@ -139,5 +140,9 @@ public class BaseAction extends ActionSupport implements ServletRequestAware{
         if(user.getUserAccess().size()==1&&idroot==ReferenceAccesUser.ROOT)
             return true;
         return false;
+    }
+    
+    public String doubleToString(double n) {
+        return NumberTest.toMoney(n);
     }
 }

@@ -9,6 +9,7 @@ import com.opensymphony.xwork2.Action;
 import com.project.location.model.Commande;
 import com.project.location.model.CommandeStock;
 import com.project.location.model.Entree;
+import com.project.location.model.HorsSotck;
 import com.project.location.model.Sortie;
 import com.project.location.model.Stock;
 import com.project.location.model.Users;
@@ -21,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import org.hibernate.Session;
 
 /**
  *
@@ -57,6 +59,7 @@ public class ActionStock extends BaseAction {
     private List<Sortie> listeSortie;
     private List<Commande> listeCommande;
     private List<CommandeStock> listeCommandeStock;
+    private List<HorsSotck> listeHorsStock;
     private String dateMin;
     private String dateMax;
     private Stock stock;
@@ -115,6 +118,14 @@ public class ActionStock extends BaseAction {
 
     public List<Commande> getListeCommande() {
         return listeCommande;
+    }
+
+    public List<HorsSotck> getListeHorsStock() {
+        return listeHorsStock;
+    }
+
+    public void setListeHorsStock(List<HorsSotck> listeHorsStock) {
+        this.listeHorsStock = listeHorsStock;
     }
 
     public void setListeCommande(List<Commande> listeCommande) {
@@ -511,6 +522,7 @@ public class ActionStock extends BaseAction {
         }
         this.commande = this.serviceCommande.find(idCommande);
         this.listeCommandeStock = this.serviceCommande.find(commande);
+        this.listeHorsStock = this.serviceCommande.findListHorsStock(commande);
         this.titre = "Fiche Commande";
         return Action.SUCCESS;
     }

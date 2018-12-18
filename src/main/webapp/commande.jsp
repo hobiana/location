@@ -14,6 +14,7 @@
         <%@include file="/template/css.jsp" %>
         <link href="vendor/datatables/css/dataTables.bootstrap.min.css" rel="stylesheet">
         <link href="css/lightbox.css" rel="stylesheet">
+        <link href="js/bootstrap-toggle.min.css" rel="stylesheet">
     </head>
     <body>
         <div id="wrapper">
@@ -218,6 +219,7 @@
                                             <th>PU</th>
                                             <th>Qte</th>
                                             <th>Montant</th>
+                                            <th>Retour</th>
                                             <th></th>
                                         </tr>
                                     </thead>
@@ -240,6 +242,9 @@
                                                         <s:property value="doubleToString(quantite*montant)"  />
                                                     </span>
                                                 </td>
+                                                <td>
+                                                    <input disabled="" type="checkbox" name="recu" data-toggle="toggle" <s:if test="retour_HS">checked</s:if>>
+                                                </td>
                                                 <td class="text-center"> 
                                                     <button class="delete_hors_stock btn btn-default btn-sm" id="del<s:property value="%{#incr.index}"/>" style="color: red;">
                                                         <i class="fa fa-close" ></i>
@@ -258,6 +263,10 @@
                                                     <span class="pull-right">
                                                         <input class="form-control" id="quantite_HS" name="quantite_HS" type="number" min="1" />
                                                     </span>
+                                                </td>
+                                                <td></td>
+                                                <td>
+                                                    <input type="checkbox" id="retour_HS" name="retour_HS" data-toggle="toggle" data-on="Oui" data-off="Non">
                                                 </td>
                                                 <td colspan="2">
                                                     <button id="" type="submit" class="ajouter_hors_stock btn btn-default btn-sm">
@@ -316,6 +325,7 @@
     <script src="vendor/datatables/js/jquery.dataTables.min.js"></script>
     <script src="vendor/datatables/js/dataTables.bootstrap.min.js"></script>
     <script src="js/lightbox.js" ></script>
+    <script src="js/bootstrap-toggle.min.js"></script>
     <script>
         $(document).ready(function () {
             $('.modifier').on('click', function ()
@@ -377,8 +387,9 @@
                 var designation_HS = document.getElementById("designation_HS").value;
                 var prix_HS = document.getElementById("prix_HS").value;
                 var quantite_HS = document.getElementById("quantite_HS").value;
+                var retour_HS = $("#retour_HS").prop('checked');
                 if (dateD != "" && dateF != "" && dateAquisition != "" && dateRetour != "") {
-                    window.location.replace("addhorsStock?idClient=<s:property value="idClient"/>&dateDebut=" + dateD + "&dateFin=" + dateF + "&dateAquisition=" + dateAquisition + "&dateRetour=" + dateRetour + "&remiseGlobal=" + remiseGlobal + "&quotient=" + quotient + "&action=<s:property value="action"/>" + "&designation_HS=" + designation_HS + "&prix_HS=" + prix_HS + "&quantite_HS=" + quantite_HS)
+                    window.location.replace("addhorsStock?idClient=<s:property value="idClient"/>&dateDebut=" + dateD + "&dateFin=" + dateF + "&dateAquisition=" + dateAquisition + "&dateRetour=" + dateRetour + "&remiseGlobal=" + remiseGlobal + "&quotient=" + quotient + "&action=<s:property value="action"/>" + "&designation_HS=" + designation_HS + "&prix_HS=" + prix_HS + "&quantite_HS=" + quantite_HS+ "&retour_HS="+retour_HS)
                 }
             });
             

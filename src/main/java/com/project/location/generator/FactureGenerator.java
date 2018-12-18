@@ -191,6 +191,12 @@ public class FactureGenerator {
 
         information = new Paragraph();
         addEmptyLine(information,1);
+        information.add(new Phrase("Date d'évènement: "+ commande.dateDebut(),normalFont));
+        addEmptyLine(information,1);
+        information.add(new Phrase("Date d'acquisition: "+ commande.dateAcquisition(),normalFont));
+        addEmptyLine(information,1);
+        information.add(new Phrase("Date de retour prévu : "+ commande.dateRetour(),normalFont));
+        addEmptyLine(information,1);
         information.add(new Phrase("Facture N°: "+ this.facture.getRef(),catFont));
         addEmptyLine(information,1);
             
@@ -263,7 +269,7 @@ public class FactureGenerator {
             c1.setPadding(2);
             table.addCell(c1);
 
-            c1 = new PdfPCell(new Phrase(String.valueOf(cs.getQuantiteCommande()), smallFont));
+            c1 = new PdfPCell(new Phrase(UtilConvert.toMoney(cs.getQuantiteCommande()), smallFont));
             c1.setHorizontalAlignment(Element.ALIGN_CENTER);
             c1.setVerticalAlignment(Element.ALIGN_MIDDLE);
             table.addCell(c1);
@@ -296,7 +302,8 @@ public class FactureGenerator {
             c1.setPadding(2);
             table.addCell(c1);
             
-            c1 = new PdfPCell(new Phrase(String.valueOf(hs.getQuantite()), smallFont));
+            double qte = hs.getQuantite();
+            c1 = new PdfPCell(new Phrase(UtilConvert.toMoney(qte), smallFont));
             c1.setHorizontalAlignment(Element.ALIGN_CENTER);
             c1.setVerticalAlignment(Element.ALIGN_MIDDLE);
             c1.setPadding(2);

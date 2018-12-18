@@ -135,7 +135,9 @@
                                         </div>
                                     </div>
                                     <input name="idCommande" type="hidden" value="<s:property value="idCommande"/>" />
+                                    <s:if test="reste>0">
                                     <button style="margin-top: 10px;margin-right: 15px" type="submit" class="btn btn-primary pull-right">Payer</button>
+                                    </s:if>
                                 </form>
                             </div>
                             <!-- /.panel-body -->

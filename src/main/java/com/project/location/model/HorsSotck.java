@@ -13,7 +13,25 @@ public class HorsSotck extends BaseModel{
     private Commande commande;
     private String libelle; 
     private int quantite; 
+    private int quantiteRetour; 
     private double montant;
+    private boolean retour_HS;
+
+    public int getQuantiteRetour() {
+        return quantiteRetour;
+    }
+
+    public void setQuantiteRetour(int quantiteRetour) {
+        this.quantiteRetour = quantiteRetour;
+    }
+
+    public boolean isRetour_HS() {
+        return retour_HS;
+    }
+
+    public void setRetour_HS(boolean retour_HS) {
+        this.retour_HS = retour_HS;
+    }
 
     public Commande getCommande() {
         return commande;

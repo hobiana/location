@@ -46,7 +46,7 @@
                                     <input name="dateDebut" class="form-control" type="date" value="<s:property value="commande.dateAcquisition()"/>" readonly>
                                 </div>
                                 <div class="form-group">
-                                    <label>Date début de location</label>
+                                    <label>Date d&&eacute;but de location</label>
                                     <input name="dateDebut" class="form-control" type="date" value="<s:property value="commande.dateDebut()"/>" readonly>
                                 </div>
                                 <div class="form-group">
@@ -58,25 +58,25 @@
                                     <input name="dateDebut" class="form-control" type="date" value="<s:property value="commande.dateRetour()"/>" readonly>
                                 </div>
                                 <div class="form-group">
-                                    <label>Durée en jour(s)</label>
+                                    <label>Dur&&eacute;e en jour(s)</label>
                                     <input class="form-control" value="<s:property value="commande.nombreJour()"/>" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label>Etat :</label>
                                     <label class="checkbox-inline">
                                         <s:if test="commande.isPrepare()==false">
-                                            <button type="button" class="btn btn-danger btn-sm btn-circle"><i class="fa fa-times"></i></button> Commande non préparée
+                                            <button type="button" class="btn btn-danger btn-sm btn-circle"><i class="fa fa-times"></i></button> Commande non pr&eacute;par&eacute;e
                                         </s:if>
                                         <s:else>
-                                            <button type="button" class="btn btn-success btn-sm btn-circle"><i class="fa fa-check"></i></button> Commande préparée
+                                            <button type="button" class="btn btn-success btn-sm btn-circle"><i class="fa fa-check"></i></button> Commande pr&eacute;par&eacute;e
                                         </s:else>
                                     </label>
                                     <label class="checkbox-inline">
                                         <s:if test="commande.isRecu()==false">
-                                            <button type="button" class="btn btn-default btn-sm btn-circle"><i class="fa fa-times"></i></button> Non reçu par le client
+                                            <button type="button" class="btn btn-default btn-sm btn-circle"><i class="fa fa-times"></i></button> Non re&ccedil;u par le client
                                         </s:if>
                                         <s:else>
-                                            <button type="button" class="btn btn-default btn-sm btn-circle"><i class="fa fa-check"></i></button> Reçu par le client
+                                        <button type="button" class="btn btn-default btn-sm btn-circle"><i class="fa fa-check"></i></button> Re&ccedil;u par le client
                                         </s:else>
                                     </label>
                                     <label class="checkbox-inline">
@@ -91,10 +91,10 @@
                                 <hr>
                                 <s:if test="commande.isRetour()==false">
                                     <s:if test="commande.isRecu()==false">
-                                        <a style='margin-left: 10px;' href="recuparclient?idCommande=<s:property value="idCommande"/>&recu=true" class="btn btn-default pull-left" >Reçu par le client</a>
+                                        <a style='margin-left: 10px;' href="recuparclient?idCommande=<s:property value="idCommande"/>&recu=true" class="btn btn-default pull-left" >Re&ccedil;u par le client</a>
                                     </s:if>
                                     <s:else>
-                                        <a style='margin-left: 10px;' href="recuparclient?idCommande=<s:property value="idCommande"/>&recu=false" class="btn btn-warning pull-left" >Non reçu par le client</a>
+                                        <a style='margin-left: 10px;' href="recuparclient?idCommande=<s:property value="idCommande"/>&recu=false" class="btn btn-warning pull-left" >Non re&ccedil;u par le client</a>
                                     </s:else>
                                 </s:if>
                                
@@ -111,29 +111,59 @@
                                                     <h4 class="modal-title">Retour en stock</h4>
                                                 </div>
                                                 <div class="modal-body">
-                                                    <table width="100%" class="table table-striped table-bordered table-hover">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>R&eacute;f.</th>
-                                                                <th>Désignation</th>
-                                                                <th>Qte. commandée</th>
-                                                                <th>Qte. retournée</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <s:iterator value="listeCommandeStock" status="status">
-                                                                <tr class="odd gradeX">
-                                                                    <td> <s:property value="getRef()"/> </td>
-                                                                    <td> <s:property value="getStock().getDesignation()"/> </td>
-                                                                    <td><span class="pull-right"> <s:property value="quantiteCommande()"/></span></td>
-                                                                    <td><input class="form-control input-sm pull-right" id="cmd<s:property value="%{#status.index}"/>" ></td>
-                                                                        <s:hidden name="listProduitRetour[%{#status.index}].idProduit" value="%{id}"/> 
-                                                                        <s:hidden name="listProduitRetour[%{#status.index}].valueProduitRetour"/>
-
+                                                    <div class="row" style="padding:10px">
+                                                        <h5>Hors Stock &agrave; retourner</h5>
+                                                        <table width="100%" class="table table-striped table-bordered table-hover">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>D&eacute;signation</th>
+                                                                    <th>Qte</th>
+                                                                    <th>Qte. &agrave; retourner</th>
                                                                 </tr>
-                                                            </s:iterator>
-                                                        </tbody>
-                                                    </table>
+                                                            </thead>
+                                                            <tbody>
+                                                                <s:set var="counter" value="0"/>
+                                                                <s:iterator value="listeHorsStock" status="status">
+                                                                    <s:if test="retour_HS==true">
+                                                                    <tr class="odd gradeX">
+                                                                        <td> <s:property value="libelle"/> </td>
+                                                                        <td> <span class="pull-right"><s:property value="doubleToString(quantite)"/></span> </td>
+                                                                        <td><input class="form-control input-sm pull-right" id="cmd_hs_<s:property value="%{#counter}"/>" ></td>
+                                                                            <s:hidden name="listHorsStockRetour[%{counter}].idHorsStock" value="%{id}"/> 
+                                                                            <s:hidden name="listHorsStockRetour[%{counter}].valueHorsStockRetour"/>
+                                                                    </tr>
+                                                                    <s:set var="counter" value="%{#counter+1}"/>
+                                                                    </s:if>
+                                                                </s:iterator>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                    <div class="row" style="padding:10px">
+                                                        <h5>Stock &aacute; retourner</h5>
+                                                        <table width="100%" class="table table-striped table-bordered table-hover">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>R&eacute;f.</th>
+                                                                    <th>D&eacute;signation</th>
+                                                                    <th>Qte. command&eacute;e</th>
+                                                                    <th>Qte. &agrave; retouner</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <s:iterator value="listeCommandeStock" status="status">
+                                                                    <tr class="odd gradeX">
+                                                                        <td> <s:property value="getRef()"/> </td>
+                                                                        <td> <s:property value="getStock().getDesignation()"/> </td>
+                                                                        <td><span class="pull-right"> <s:property value="quantiteCommande()"/></span></td>
+                                                                        <td><input class="form-control input-sm pull-right" id="cmd<s:property value="%{#status.index}"/>" ></td>
+                                                                            <s:hidden name="listProduitRetour[%{#status.index}].idProduit" value="%{id}"/> 
+                                                                            <s:hidden name="listProduitRetour[%{#status.index}].valueProduitRetour"/>
+
+                                                                    </tr>
+                                                                </s:iterator>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
                                                 </div>
                                                 <div class="modal-footer">
                                                     <input name="idCommande" type="hidden" value="<s:property value="idCommande"/>" >
@@ -155,23 +185,48 @@
                         </div>
                         <div class="panel panel-default">
                             <div class="panel-heading">
+                                <span>Liste des Hors Stocks</span>
+                            </div>
+                            <!-- /.panel-heading -->
+                            <div class="panel-body">
+                                <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example1">
+                                    <thead>
+                                        <tr>
+                                            <th>D&eacute;signation</th>
+                                            <th>Qte.</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <s:iterator value="listeHorsStock">
+                                            <tr class="odd gradeX">
+                                                <td> <s:property value="libelle"/> </td>
+                                                <td> <s:property value="doubleToString(quantite)"/> </td>
+                                            </tr>
+                                        </s:iterator>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- /.panel-body -->
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
                                 <span>Liste des articles</span>
                             </div>
                             <!-- /.panel-heading -->
                             <div class="panel-body">
                                 <s:if test="action.equals('preparation')">
                                     <s:if test="commande.isPrepare()==false">
-                                        <a class="btn btn-success" href="commandeprepare?idCommande=<s:property value="idCommande"/>&prepare=true">Commande préparée</a>
+                                        <a class="btn btn-success" href="commandeprepare?idCommande=<s:property value="idCommande"/>&prepare=true">Commande pr&eacute;par&eacute;e</a>
                                     </s:if>
                                     <s:else>
-                                        <a class="btn btn-danger" href="commandeprepare?idCommande=<s:property value="idCommande"/>&prepare=false">Défaire la préparation</a>
+                                        <a class="btn btn-danger" href="commandeprepare?idCommande=<s:property value="idCommande"/>&prepare=false">D&eacute;faire la pr&eacute;paration</a>
                                     </s:else>
                                 </s:if>
                                 <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
                                     <thead>
                                         <tr>
                                             <th>R&eacute;f.</th>
-                                            <th>Désignation</th>
+                                            <th>D&eacute;signation</th>
                                             <th>Qte.</th>
                                         </tr>
                                     </thead>
@@ -201,6 +256,10 @@
                             responsive: true,
                             paging: false
                         });
+                        $('#dataTables-example1').DataTable({
+                            responsive: true,
+                            paging: false
+                        });
                         /*
                          $("#cmd0").click(function(){
                          alert("The paragraph was clicked.");
@@ -208,10 +267,16 @@
                     });
                     function setValueStruts() {
                         //listProduitRetour_0__valueProduitRetour
-                        var size = <s:property value="listeCommandeStock.size()"/>
+                        var size = <s:property value="listeCommandeStock.size()"/>;
                         for (var i = 0; i < size; i++) {
                             var val = document.getElementById('cmd' + i).value;
                             var inputStruts = document.getElementById('listProduitRetour_' + i + '__valueProduitRetour');
+                            inputStruts.value = val;
+                        }
+                        var hs_size = <s:property value="listeHorsStock.size()"/>;
+                        for (var i = 0; i < hs_size; i++) {
+                            var val = document.getElementById('cmd_hs_' + i).value;
+                            var inputStruts = document.getElementById('listHorsStockRetour_' + i + '__valueHorsStockRetour');
                             inputStruts.value = val;
                         }
                     }
