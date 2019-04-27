@@ -219,13 +219,6 @@ public class FactureFilleGenerator {
 
         information = new Paragraph();
         
-        addEmptyLine(information,1);
-        information.add(new Phrase("Date d'évènement: "+ commande.dateDebut(),normalFont));
-        addEmptyLine(information,1);
-        information.add(new Phrase("Date d'acquisition: "+ commande.dateAcquisition(),normalFont));
-        addEmptyLine(information,1);
-        information.add(new Phrase("Date de retour prévu : "+ commande.dateRetour(),normalFont));
-        addEmptyLine(information,1);
         information.add(new Phrase("N° Facture : "+ this.facture.getRef(),boldFont));
         addEmptyLine(information,1);
         information.add(new Phrase("N° de Paiement : "+ this.refFille,boldFont));
@@ -571,6 +564,14 @@ public class FactureFilleGenerator {
         if(leftPage<300)sautPage(document,1);
         
         information = new Paragraph(); 
+        
+        addEmptyLine(information,1);
+        information.add(new Phrase("Date d'évènement: "+ commande.dateDebut(),normalFont));
+        addEmptyLine(information,1);
+        information.add(new Phrase("Date d'acquisition: "+ commande.dateAcquisition(),normalFont));
+        addEmptyLine(information,1);
+        information.add(new Phrase("Date de retour prévu : "+ commande.dateRetour(),normalFont));
+        addEmptyLine(information,1);
         information.add(new Phrase("Arrété la présente facture à  la somme de : "+ConvertionLettre.getLettre(this.getPaye())+" Ariary ",smallFontBold));
         addEmptyLine(information, 3);
         document.add(information);

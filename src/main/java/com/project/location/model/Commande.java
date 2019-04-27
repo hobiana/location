@@ -106,22 +106,22 @@ public class Commande extends BaseModel {
         return dateDebut;
     }
     public String dateDebut() throws Exception{
-        return DateUtil.convert(dateDebut);
+        return DateUtil.convertNormal(dateDebut);
     }
     public String dateFin() throws Exception{
-        return DateUtil.convert(dateFin);
+        return DateUtil.convertNormal(dateFin);
     }
     
     public String dateCommande() throws Exception{
-        return DateUtil.convert(dateCommande);
+        return DateUtil.convertNormal(dateCommande);
     }
     
     public String dateAcquisition() throws Exception{
-        return DateUtil.convert(dateAcquisition);
+        return DateUtil.convertNormal(dateAcquisition);
     }
     
     public String dateRetour() throws Exception{
-        return DateUtil.convert(dateRetour);
+        return DateUtil.convertNormal(dateRetour);
     }
     
     public void setDateDebut(Date dateDebut) {

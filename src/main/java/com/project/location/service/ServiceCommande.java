@@ -356,7 +356,7 @@ public class ServiceCommande extends BaseService{
             for(int i=0;i<size;i++){
                 CommandeStock temp = commandesStock.get(i); 
                 double prixL = temp.getPrixLocation();
-                double quantite = temp.getQuantiteRetour(); 
+                double quantite = temp.getQuantiteCommande(); 
                 double tempremise = temp.getRemise()*quantite*nbrJour;
                 total_remise+=tempremise;
                 totalBrute+= (prixL*quantite*nbrJour);      
@@ -1453,10 +1453,11 @@ public class ServiceCommande extends BaseService{
             if(!commande.isRecu()) throw new NotTakeCLientException("la commande n'a pas encore était reçu par le client");
             if(!commande.isRetour()) throw new NotReturnException("la commande n'a pas encore était retourné par le client");
             List<CommandeStock> commandeStock = this.find(commande,session);
+            List<HorsSotck> hors_stock = this.findListHorsStock(commande, session);
             Facture factureF = ServiceFacture.findFacture(commande, session);
             Client client = this.findClient(commande, session);
             this.initStock(commandeStock, session);
-            FactureQuotient facture = new FactureQuotient(client,commande,commandeStock,factureF,servletRequest);
+            FactureQuotient facture = new FactureQuotient(client,commande,commandeStock, hors_stock,factureF,servletRequest);
             
         } catch( NullPointerException npe) {
             throw new Exception("Les données de la commande sont vide");

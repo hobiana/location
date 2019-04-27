@@ -190,13 +190,6 @@ public class FactureGenerator {
         document.add(information);
 
         information = new Paragraph();
-        addEmptyLine(information,1);
-        information.add(new Phrase("Date d'évènement: "+ commande.dateDebut(),normalFont));
-        addEmptyLine(information,1);
-        information.add(new Phrase("Date d'acquisition: "+ commande.dateAcquisition(),normalFont));
-        addEmptyLine(information,1);
-        information.add(new Phrase("Date de retour prévu : "+ commande.dateRetour(),normalFont));
-        addEmptyLine(information,1);
         information.add(new Phrase("Facture N°: "+ this.facture.getRef(),catFont));
         addEmptyLine(information,1);
             
@@ -452,6 +445,13 @@ public class FactureGenerator {
         if(leftPage<200)sautPage(document,1);
         
         information = new Paragraph(); 
+        addEmptyLine(information,1);
+        information.add(new Phrase("Date d'évènement: "+ commande.dateDebut(),normalFont));
+        addEmptyLine(information,1);
+        information.add(new Phrase("Date d'acquisition: "+ commande.dateAcquisition(),normalFont));
+        addEmptyLine(information,1);
+        information.add(new Phrase("Date de retour prévu : "+ commande.dateRetour(),normalFont));
+        addEmptyLine(information,1);
         information.add(new Phrase("Arrété la présente facture à  la somme de : "+ConvertionLettre.getLettre(total[0]+this.facture.getQuotient()+total[3])+" Ariary ",smallFontBold));
         addEmptyLine(information, 2);
         information.add(new Phrase("Antananarivo le, "+DateUtil.toLettre(Calendar.getInstance().getTime()),smallFont));
